@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shiori (栞) - The AI-Powered Circular Learning Network</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07090E;
+      --surface-dark: #0B0F19;
+      --card-dark: #111827;
+      --card-border: #1F2937;
+      --accent-purple: #6366F1;
+      --accent-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      --accent-green: #10B981;
+      --text-main: #FFFFFF;
+      --text-muted: #9CA3AF;
+      --text-subtle: #6B7280;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 60px; min-height: 100vh; }
+
+    /* Glass Navbar */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; cursor: pointer; color: white; }
+    .brand-logo { background: var(--accent-gradient); color: white; width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+
+    .search-box-top {
+      flex: 1; max-width: 440px; background: #111827; border: 1px solid var(--card-border);
+      border-radius: 20px; padding: 8px 16px; color: white; font-size: 13px; outline: none;
+      transition: border 0.2s;
+    }
+    .search-box-top:focus { border-color: var(--accent-purple); }
+
+    .nav-actions { display: flex; align-items: center; gap: 14px; }
+    .nav-btn { background: var(--accent-gradient); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 13px; cursor: pointer; }
+    .points-badge { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; font-size: 13px; padding: 6px 14px; border-radius: 20px; }
+
+    /* Module Navigation Tabs */
+    .module-nav { display: flex; gap: 8px; background: var(--surface-dark); border-bottom: 1px solid var(--card-border); padding: 10px 32px; overflow-x: auto; }
+    .mod-tab { background: none; border: none; padding: 8px 16px; font-weight: 700; font-size: 13px; color: var(--text-muted); cursor: pointer; border-radius: 10px; transition: 0.2s; white-space: nowrap; }
+    .mod-tab.active { background: #1F2937; color: white; border: 1px solid var(--card-border); }
+
+    /* Main Container & Page Sections */
+    .container { max-width: 1240px; margin: 24px auto; padding: 0 20px; }
+    .page-module { display: none; }
+    .page-module.active { display: block; }
+
+    /* MODULE 1: HERO & FEED */
+    .hero-banner {
+      background: radial-gradient(circle at top right, #1E1B4B 0%, #0B0F19 70%);
+      border: 1px solid var(--card-border); border-radius: 24px; padding: 40px;
+      display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: center; margin-bottom: 32px;
+    }
+    .hero-title { font-size: 40px; font-weight: 800; line-height: 1.15; margin-bottom: 12px; }
+    .hero-title span { color: #A5B4FC; }
+    .hero-subtitle { color: var(--text-muted); font-size: 14px; line-height: 1.5; margin-bottom: 24px; max-width: 480px; }
+    .hero-actions { display: flex; gap: 12px; }
+    .btn-main { background: var(--accent-gradient); color: white; border: none; padding: 12px 22px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
+    .btn-sub { background: #1F2937; color: white; border: 1px solid var(--card-border); padding: 12px 22px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
+
+    .hero-stats { display: flex; flex-direction: column; gap: 12px; }
+    .stat-card { background: rgba(17, 24, 39, 0.8); border: 1px solid var(--card-border); padding: 16px 20px; border-radius: 16px; backdrop-filter: blur(10px); }
+    .stat-num { font-size: 24px; font-weight: 800; }
+    .stat-lbl { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Category Chips */
+    .category-pills { display: flex; gap: 10px; margin-bottom: 28px; overflow-x: auto; }
+    .pill { background: var(--card-dark); border: 1px solid var(--card-border); color: var(--text-muted); padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .pill.active { background: #1F2937; color: white; border-color: var(--accent-purple); }
+
+    /* Books Grid */
+    .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+    .book-card { background: var(--card-dark); border: 1px solid var(--card-border); border-radius: 18px; padding: 14px; transition: transform 0.2s; }
+    .book-card:hover { transform: translateY(-4px); border-color: #374151; }
+
+    .book-cover {
+      height: 200px; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 12px; position: relative;
+    }
+    .cover-1 { background: linear-gradient(135deg, #064E3B 0%, #022C22 100%); border: 1px solid #059669; }
+    .cover-2 { background: linear-gradient(135deg, #311B92 0%, #1A237E 100%); border: 1px solid #3F51B5; }
+    .cover-3 { background: linear-gradient(135deg, #78350F 0%, #451A03 100%); border: 1px solid #D97706; }
+    .cover-4 { background: linear-gradient(135deg, #881337 0%, #4C0519 100%); border: 1px solid #E11D48; }
+
+    .tag-badge { position: absolute; top: 10px; right: 10px; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
+    .tag-like-new { background: #065F46; color: #34D399; }
+    .tag-good { background: #92400E; color: #FBBF24; }
+    .dist-badge { font-size: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 10px; width: fit-content; color: #D1D5DB; }
+
+    .book-title { font-size: 14px; font-weight: 700; color: white; }
+    .book-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+    .seller-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-subtle); margin-bottom: 12px; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .price-now { font-size: 16px; font-weight: 800; }
+    .price-was { font-size: 11px; color: var(--text-subtle); text-decoration: line-through; margin-left: 4px; }
+
+    /* MODULE 2: AI SCANNER */
+    .scanner-container { background: var(--card-dark); border: 1px solid var(--card-border); border-radius: 24px; padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .viewport-box { background: #000; border: 2px dashed #374151; border-radius: 16px; height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+
+    /* MODULE 3: SMART EXCHANGE ENGINE */
+    .exchange-box { background: var(--card-dark); border: 1px solid var(--card-border); border-radius: 24px; padding: 32px; }
+    .dual-input { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 16px; align-items: center; margin-bottom: 24px; }
+    .side-card { background: #1F2937; border: 1px solid var(--card-border); padding: 20px; border-radius: 16px; }
+    .swap-icon { background: var(--accent-gradient); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin: 0 auto; }
+
+    /* MODULE 4: TRUST & SAFETY */
+    .safety-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .safety-card { background: var(--card-dark); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; }
+
+    /* MODULE 5: ESG DASHBOARD */
+    .esg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 24px; }
+    .esg-card { background: var(--card-dark); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="navbar">
+    <div class="brand" onclick="switchModule('module-feed')">
+      <div class="brand-logo">栞</div>
+      <span>Shiori</span>
+    </div>
+    <input type="text" class="search-box-top" placeholder="Search for books, authors, ISBN, subjects...">
+    <div class="nav-actions">
+      <button class="nav-btn" onclick="switchModule('module-scanner')">📷 AI Scan</button>
+      <span class="points-badge">🌱 1,250 pts</span>
+    </div>
+  </header>
+
+  <!-- Module Selector Navigation -->
+  <nav class="module-nav">
+    <button class="mod-tab active" id="tab-feed" onclick="switchModule('module-feed')">📚 Marketplace Feed</button>
+    <button class="mod-tab" id="tab-scanner" onclick="switchModule('module-scanner')">📷 AI Vision Scanner</button>
+    <button class="mod-tab" id="tab-exchange" onclick="switchModule('module-exchange')">🔄 Smart Exchange Engine</button>
+    <button class="mod-tab" id="tab-safety" onclick="switchModule('module-safety')">🛡️ Trust & Safety Hub</button>
+    <button class="mod-tab" id="tab-esg" onclick="switchModule('module-esg')">🌱 ESG & Impact Dashboard</button>
+  </nav>
+
+  <main class="container">
+
+    <!-- MODULE 1: GLOBAL HOMEPAGE & FEED -->
+    <section id="module-feed" class="page-module active">
+      <div class="hero-banner">
+        <div>
+          <span style="font-size: 11px; font-weight: 800; color: #818CF8; letter-spacing: 0.5px; text-transform: uppercase;">The AI-Powered Circular Learning Network</span>
+          <h1 class="hero-title">Learn. Share. Grow.<br><span>Together.</span></h1>
+          <p class="hero-subtitle">Buy, Sell, Donate or Swap educational materials with verified students in your community.</p>
+          <div class="hero-actions">
+            <button class="btn-main" onclick="switchModule('module-scanner')">+ List a Book in 10s</button>
+            <button class="btn-sub" onclick="switchModule('module-exchange')">🔄 Smart Exchange</button>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-num">24,800+</div>
+            <div class="stat-lbl">Books Reused Across Communities</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">₹38.4L</div>
+            <div class="stat-lbl">Total Student Savings And Counting</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">100%</div>
+            <div class="stat-lbl">Privacy Preserved • Your Safety, Our Priority</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="category-pills">
+        <button class="pill active">CBSE</button>
+        <button class="pill">ICSE</button>
+        <button class="pill">Class 10</button>
+        <button class="pill">Class 11</button>
+        <button class="pill">Class 12</button>
+        <button class="pill">Competitive Exams</button>
+        <button class="pill">Free Donations 🎁</button>
+      </div>
+
+      <!-- Book Grid -->
+      <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 16px;">Recommended for You</h3>
+      <div class="books-grid">
+        <div class="book-card">
+          <div class="book-cover cover-1">
+            <span class="tag-badge tag-like-new">Like New</span>
+            <div style="font-weight: 800; font-size: 15px;">NCERT Physics</div>
+            <div class="dist-badge">📍 1.2 km away</div>
+          </div>
+          <div class="book-title">Physics Part 1</div>
+          <div class="book-sub">Class 11 • NCERT</div>
+          <div class="seller-info"><span>Aarav S.</span><span style="color:#FBBF24;">★ 4.8</span></div>
+          <div class="card-footer">
+            <div><span class="price-now">₹280</span><span class="price-was">₹500</span></div>
+            <button class="btn-main" style="padding: 6px 12px; font-size: 11px;">Buy</button>
+          </div>
+        </div>
+
+        <div class="book-card">
+          <div class="book-cover cover-2">
+            <span class="tag-badge tag-good">Good</span>
+            <div style="font-weight: 800; font-size: 15px;">Mathematics</div>
+            <div class="dist-badge">📍 2.1 km away</div>
+          </div>
+          <div class="book-title">Mathematics</div>
+          <div class="book-sub">Class 12 • NCERT</div>
+          <div class="seller-info"><span>Diya S.</span><span style="color:#FBBF24;">★ 4.9</span></div>
+          <div class="card-footer">
+            <div><span class="price-now">₹320</span><span class="price-was">₹650</span></div>
+            <button class="btn-main" style="padding: 6px 12px; font-size: 11px;">Buy</button>
+          </div>
+        </div>
+
+        <div class="book-card">
+          <div class="book-cover cover-3">
+            <span class="tag-badge tag-like-new">Like New</span>
+            <div style="font-weight: 800; font-size: 15px;">Organic Chemistry</div>
+            <div class="dist-badge">📍 1.5 km away</div>
+          </div>
+          <div class="book-title">Organic Chemistry</div>
+          <div class="book-sub">Class 12 • NCERT</div>
+          <div class="seller-info"><span>Rohan D.</span><span style="color:#FBBF24;">★ 4.7</span></div>
+          <div class="card-footer">
+            <div><span class="price-now">₹350</span><span class="price-was">₹700</span></div>
+            <button class="btn-main" style="padding: 6px 12px; font-size: 11px;">Buy</button>
+          </div>
+        </div>
+
+        <div class="book-card">
+          <div class="book-cover cover-4">
+            <span class="tag-badge tag-good">Good</span>
+            <div style="font-weight: 800; font-size: 15px;">Indian Polity</div>
+            <div class="dist-badge">📍 3.2 km away</div>
+          </div>
+          <div class="book-title">Indian Polity</div>
+          <div class="book-sub">UPSC • 6th Edn</div>
+          <div class="seller-info"><span>Meera I.</span><span style="color:#FBBF24;">★ 4.9</span></div>
+          <div class="card-footer">
+            <div><span class="price-now">₹180</span><span class="price-was">₹360</span></div>
+            <button class="btn-main" style="padding: 6px 12px; font-size: 11px;">Buy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 2: AI VISION SCANNER ENGINE -->
+    <section id="module-scanner" class="page-module">
+      <div class="scanner-container">
+        <div>
+          <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">📷 AI Vision Scanner</h2>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Scan book cover or ISBN barcode to extract details instantly using Shiori's optical engine.</p>
+          <div class="viewport-box">
+            <div style="font-size: 40px; margin-bottom: 10px;">📷</div>
+            <div style="font-weight: 700; font-size: 14px;">Align Book Cover or Barcode</div>
+            <p style="color: var(--text-subtle); font-size: 12px; margin-top: 4px;">Click simulate to trigger Vision AI recognition</p>
+            <button class="btn-main" style="margin-top: 20px;" onclick="runAIScan()">Simulate AI Camera Scan</button>
+          </div>
+        </div>
+
+        <div id="scanResultBox" style="background: #1F2937; border-radius: 16px; padding: 24px; border: 1px solid var(--card-border);">
+          <div style="color: #34D399; font-size: 12px; font-weight: 800; margin-bottom: 12px;">✓ SCAN STATUS: READY</div>
+          <h3 id="resTitle" style="font-size: 20px; font-weight: 800; margin-bottom: 16px;">Physics Part 1</h3>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text-muted);">
+            <div><b>Author:</b> <span id="resAuthor">NCERT</span></div>
+            <div><b>Board/System:</b> <span id="resBoard">CBSE</span></div>
+            <div><b>Class:</b> <span id="resClass">Class 11</span></div>
+            <div><b>Est. Resale Price:</b> <span id="resPrice" style="color: white; font-weight: 800;">₹250 - ₹350</span></div>
+          </div>
+          <button class="btn-main" style="width: 100%; margin-top: 24px;" onclick="alert('Book instantly listed on Shiori Graph Network!')">⚡ Instant List Book</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 3: SMART EXCHANGE ENGINE -->
+    <section id="module-exchange" class="page-module">
+      <div class="exchange-box">
+        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">🔄 Smart Exchange Engine</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 24px;">Double-Sided Cashless Swapping. Shiori finds student graph loops near you.</p>
+
+        <div class="dual-input">
+          <div class="side-card">
+            <div style="font-size: 11px; font-weight: 800; color: #818CF8; margin-bottom: 8px;">YOU HAVE (To Offer)</div>
+            <input type="text" value="Mathematics Class 12 - NCERT" style="width: 100%; background: #111827; border: 1px solid var(--card-border); padding: 10px; color: white; border-radius: 8px; font-size: 13px; outline: none;">
+          </div>
+          <div class="swap-icon">🔄</div>
+          <div class="side-card">
+            <div style="font-size: 11px; font-weight: 800; color: #34D399; margin-bottom: 8px;">YOU WANT (In Return)</div>
+            <input type="text" value="Physics Part 1 Class 11 - NCERT" style="width: 100%; background: #111827; border: 1px solid var(--card-border); padding: 10px; color: white; border-radius: 8px; font-size: 13px; outline: none;">
+          </div>
+        </div>
+
+        <button class="btn-main" style="width: 100%;" onclick="alert('Searching Student Graph... 3 Direct Matches Found in Laxmi Nagar!')">Find Graph Matches</button>
+      </div>
+    </section>
+
+    <!-- MODULE 4: TRUST & SAFETY HUB -->
+    <section id="module-safety" class="page-module">
+      <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 16px;">🛡️ Safe. Secure. Student First.</h2>
+      <div class="safety-grid">
+        <div class="safety-card">
+          <div style="font-size: 28px; margin-bottom: 10px;">🎓</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">Verified Student Profiles</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">Verification via official school email domains or Student ID cards.</p>
+        </div>
+        <div class="safety-card">
+          <div style="font-size: 28px; margin-bottom: 10px;">🔒</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">Privacy by Design</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">Exact location is never revealed. Shows only approximate distance.</p>
+        </div>
+        <div class="safety-card">
+          <div style="font-size: 28px; margin-bottom: 10px;">💬</div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">Secure In-App Chat</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">Communicate without sharing phone numbers or personal handles.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 5: ESG & IMPACT DASHBOARD -->
+    <section id="module-esg" class="page-module">
+      <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 16px;">🌱 Your Personal Impact Dashboard</h2>
+      <div class="esg-grid">
+        <div class="esg-card">
+          <div style="font-size: 32px; margin-bottom: 8px;">🌱</div>
+          <div style="font-size: 28px; font-weight: 800; color: #34D399;">1,250</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Impact Points Earned</div>
+        </div>
+        <div class="esg-card">
+          <div style="font-size: 32px; margin-bottom: 8px;">📚</div>
+          <div style="font-size: 28px; font-weight: 800; color: #818CF8;">42</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Books Reused</div>
+        </div>
+        <div class="esg-card">
+          <div style="font-size: 32px; margin-bottom: 8px;">🌍</div>
+          <div style="font-size: 28px; font-weight: 800; color: #FBBF24;">98.4 kg</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">CO₂e Emissions Avoided</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchModule(moduleId) {
+      document.querySelectorAll('.page-module').forEach(m => m.classList.remove('active'));
+      document.querySelectorAll('.mod-tab').forEach(t => t.classList.remove('active'));
+      
+      document.getElementById(moduleId).classList.add('active');
+      
+      const tabMap = {
+        'module-feed': 'tab-feed',
+        'module-scanner': 'tab-scanner',
+        'module-exchange': 'tab-exchange',
+        'module-safety': 'tab-safety',
+        'module-esg': 'tab-esg'
+      };
+      if (tabMap[moduleId]) {
+        document.getElementById(tabMap[moduleId]).classList.add('active');
+      }
+    }
+
+    function runAIScan() {
+      const box = document.getElementById('scanResultBox');
+      box.style.opacity = '0.5';
+      setTimeout(() => {
+        document.getElementById('resTitle').innerText = "HC Verma — Concepts of Physics Vol 1";
+        document.getElementById('resAuthor').innerText = "H.C. Verma";
+        document.getElementById('resBoard').innerText = "CBSE / JEE Prep";
+        document.getElementById('resClass').innerText = "Class 11 / 12";
+        document.getElementById('resPrice').innerText = "₹320 - ₹420";
+        box.style.opacity = '1';
+      }, 800);
+    }
+  </script>
+</body>
+</html>
