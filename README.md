@@ -59,6 +59,8 @@ Supported actions:
 - School & College Books
 
 ---
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/d8c22f35-e31a-4408-be0f-f0ef65cce191" />
+
 
 ## 🤖 AI Book Scanner
 
