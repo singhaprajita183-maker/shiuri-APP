@@ -8,416 +8,290 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); }
+    .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-nav { background: rgba(10, 15, 30, 0.85); backdrop-filter: blur(12px); border-b: 1px solid rgba(255, 255, 255, 0.08); }
+    .glow-emerald { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3); }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col relative">
-
-  <!-- 1. App Launch Splash Screen -->
-  <div id="splashScreen" class="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center transition-opacity duration-700">
-    <div class="w-20 h-20 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-extrabold text-4xl shadow-2xl shadow-emerald-500/20 animate-pulse mb-4">
-      栞
-    </div>
-    <h1 class="text-3xl font-extrabold tracking-wider bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-      Shiori GLOBAL
-    </h1>
-    <p class="text-xs text-emerald-400/80 tracking-widest uppercase font-semibold mt-1">Circular Learning Network</p>
-  </div>
+<body class="bg-[#070B14] text-slate-100 min-h-screen flex flex-col">
 
   <!-- Navigation Bar -->
-  <header class="sticky top-0 z-50 border-b border-slate-800 glass">
+  <header class="sticky top-0 z-50 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('hero')">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-extrabold text-xl shadow-lg shadow-emerald-500/10">
+        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-extrabold text-xl shadow-lg shadow-emerald-500/10">
           栞
         </div>
         <div>
-          <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-            Shiori GLOBAL
-          </span>
-          <span class="block text-[10px] text-emerald-400/80 tracking-widest uppercase font-medium">Circular Learning Network</span>
+          <span class="text-lg font-bold tracking-tight text-white">Shiori <span class="text-emerald-400">GLOBAL</span></span>
+          <span class="block text-[9px] text-emerald-400/80 tracking-widest uppercase font-medium">Circular Learning Network</span>
         </div>
       </div>
 
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
-        <a href="#marketplace" class="hover:text-emerald-400 transition-colors">Marketplace</a>
-        <a href="#scanner" class="hover:text-emerald-400 transition-colors">AI Scanner</a>
-        <a href="#chat" class="hover:text-emerald-400 transition-colors">Peer Chat & AI</a>
-        <a href="#planner" class="hover:text-emerald-400 transition-colors">Planner</a>
-        <a href="#impact" class="hover:text-emerald-400 transition-colors">ESG Impact</a>
+      <nav class="hidden md:flex items-center gap-6 text-xs font-medium text-slate-300">
+        <a href="#hero" class="text-emerald-400 font-semibold">Home</a>
+        <a href="#marketplace" class="hover:text-emerald-400 transition">Explore</a>
+        <a href="#scanner" onclick="return requireAuth('sell')" class="hover:text-emerald-400 transition">Sell Book</a>
+        <a href="#ai-assistant" class="hover:text-emerald-400 transition">AI Assistant</a>
+        <a href="#chat" onclick="return requireAuth('chat')" class="hover:text-emerald-400 transition">Messages</a>
       </nav>
 
       <div class="flex items-center gap-3">
-        <span id="userStatusBadge" class="hidden text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-          👤 <span id="navUserName">Student</span>
-        </span>
+        <div class="hidden sm:flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full text-xs text-emerald-400 font-medium">
+          🌱 ESG Score: <span id="navEsgScore" class="font-bold">0 Points</span>
+        </div>
         <button id="loginBtn" onclick="openLoginModal()" class="px-4 py-2 text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg shadow-md transition-all">
-          Student Login (13-24 Yrs)
+          Student Sign-In
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+  <!-- Main Content Layout -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-    <!-- Hero Section -->
-    <section id="hero" class="text-center py-10 rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 p-8 shadow-2xl relative overflow-hidden">
-      <div class="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- Hero & Sidebar Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       
-      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-4">
-        🌱 Every book deserves a second reader.
-      </span>
-      <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight max-w-3xl mx-auto leading-tight">
-        More Books. Bigger Dreams.<br />
-        <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-          Buy · Sell · Donate · Swap
-        </span>
-      </h1>
-      <p class="mt-4 text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
-        Empowering verified students aged 13–24 with affordable textbooks while driving circular sustainability across schools.
-      </p>
+      <!-- Hero Banner -->
+      <div class="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between min-h-[340px]">
+        <div class="absolute -top-20 -right-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div class="mt-8 flex flex-wrap justify-center gap-4">
-        <a href="#marketplace" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-sm font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20">
-          Explore Marketplace
-        </a>
-        <a href="#scanner" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold rounded-xl border border-slate-700 transition-all">
-          Try Gemini AI Scanner 📷
-        </a>
-      </div>
-    </section>
-
-    <!-- Marketplace Section (Dynamic) -->
-    <section id="marketplace" class="space-y-6">
-      <div class="flex justify-between items-end">
         <div>
-          <h2 class="text-2xl font-bold text-white">Textbook Marketplace</h2>
-          <p class="text-slate-400 text-xs mt-1">Class 9th to 12th & Competitive Exam Books</p>
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-emerald-400 text-[11px] font-medium mb-4">
+            📚 Learn · Share · Build a Greener Future
+          </span>
+          <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            Books Today.<br />
+            <span class="text-emerald-400">A Brighter Tomorrow.</span>
+          </h1>
+          <p class="mt-3 text-slate-400 text-xs sm:text-sm max-w-lg leading-relaxed">
+            Buy, sell, donate, swap and discover books. Connect with a community of learners. Reduce waste. Make education more accessible for everyone.
+          </p>
         </div>
-      </div>
 
-      <!-- Dynamic Book List Container -->
-      <div id="marketplaceContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Empty State Default -->
-        <div class="col-span-full py-12 text-center bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
-          <p class="text-3xl">📚</p>
-          <h3 class="text-slate-200 font-bold">No Books Listed Yet</h3>
-          <p class="text-slate-400 text-xs max-w-sm mx-auto">Be the first student to scan and upload a textbook using our Gemini AI Scanner!</p>
-          <button onclick="showSection('scanner')" class="mt-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold rounded-lg transition-all">
-            Scan & List a Book
+        <div class="mt-6 flex flex-wrap items-center gap-4">
+          <a href="#marketplace" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold rounded-xl transition shadow-lg shadow-emerald-500/20">
+            Explore Books →
+          </a>
+          <button onclick="alert('Shiori GLOBAL Workflow: Login -> Scan Book -> AI Detection -> Marketplace Listing')" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
+            ▶ Watch How It Works
           </button>
         </div>
       </div>
-    </section>
 
-    <!-- AI Book Scanner Feature (Gemini Integration) -->
-    <section id="scanner" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 relative overflow-hidden">
-      <div class="flex flex-col lg:flex-row gap-8 items-center justify-between">
-        <div class="space-y-4 max-w-xl">
-          <span class="text-xs font-semibold text-emerald-400 uppercase tracking-widest">Powered by Google Gemini Vision AI</span>
-          <h2 class="text-2xl font-bold text-white">Instant AI Book Scanner & Metadata Detector</h2>
-          <p class="text-slate-400 text-sm">
-            Upload or capture a photo of any textbook cover. Gemini AI automatically detects book title, subject class, condition score, and adds it to the marketplace!
-          </p>
-          <div class="flex items-center gap-4 text-xs text-slate-300">
-            <span class="flex items-center gap-1">⚡ Auto ISBN Detection</span>
-            <span class="flex items-center gap-1">✨ CO₂ Savings Estimator</span>
+      <!-- Right Sidebar -->
+      <div class="space-y-6">
+        
+        <!-- Impact Card -->
+        <div class="glass-card rounded-3xl p-6 space-y-4">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-white flex items-center gap-2">🌱 Your Impact</span>
+            <span class="text-emerald-400 hover:underline cursor-pointer">View Details →</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-center">
+            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+              <p id="impactBooks" class="text-lg font-bold text-white">0</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">Books Reused</p>
+            </div>
+            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+              <p id="impactSavings" class="text-lg font-bold text-emerald-400">₹0</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">Total Savings</p>
+            </div>
+            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+              <p class="text-lg font-bold text-emerald-400">100%</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">Privacy Preserved</p>
+            </div>
+            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+              <p id="impactPoints" class="text-lg font-bold text-emerald-400">0</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">Impact Points</p>
+            </div>
           </div>
         </div>
 
-        <div class="w-full lg:w-80 bg-slate-950 border-2 border-dashed border-slate-700 hover:border-emerald-500/50 rounded-2xl p-6 text-center transition-all">
-          <input type="file" id="bookImageInput" accept="image/*" class="hidden" onchange="runGeminiScanSimulation(event)" />
-          <label for="bookImageInput" class="cursor-pointer block">
-            <div class="text-4xl mb-2">📸</div>
-            <p class="text-xs font-semibold text-slate-200">Click to Upload Book Photo</p>
-            <p class="text-[10px] text-slate-500 mt-1">PNG, JPG up to 10MB</p>
+        <!-- Quick Actions Card -->
+        <div class="glass-card rounded-3xl p-6 space-y-3">
+          <p class="text-xs font-bold text-white mb-2">⚡ Quick Actions</p>
+          <button onclick="handleQuickAction('sell')" class="w-full py-2 px-3 bg-slate-900/80 hover:bg-emerald-500/10 hover:border-emerald-500/30 border border-slate-800 rounded-xl text-xs text-slate-300 flex justify-between items-center transition">
+            <span>📷 Post a Book for Sale</span>
+            <span>→</span>
+          </button>
+          <button onclick="showSection('marketplace')" class="w-full py-2 px-3 bg-slate-900/80 hover:bg-emerald-500/10 hover:border-emerald-500/30 border border-slate-800 rounded-xl text-xs text-slate-300 flex justify-between items-center transition">
+            <span>🔍 Browse Marketplace</span>
+            <span>→</span>
+          </button>
+          <button onclick="handleQuickAction('chat')" class="w-full py-2 px-3 bg-slate-900/80 hover:bg-emerald-500/10 hover:border-emerald-500/30 border border-slate-800 rounded-xl text-xs text-slate-300 flex justify-between items-center transition">
+            <span>💬 View Messages</span>
+            <span>→</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Marketplace Section -->
+    <section id="marketplace" class="glass-card p-6 rounded-3xl space-y-4">
+      <div>
+        <h2 class="text-lg font-bold text-white">Textbook Marketplace</h2>
+        <p class="text-xs text-slate-400">Class 9th to 12th & Competitive Exam Books</p>
+      </div>
+
+      <div id="marketplaceContainer" class="py-12 text-center bg-slate-900/50 border border-slate-800 rounded-2xl space-y-2">
+        <p class="text-2xl">📚</p>
+        <p class="text-xs font-semibold text-slate-300">No Books Listed Yet</p>
+        <p class="text-[11px] text-slate-500 max-w-xs mx-auto">Sign in and upload a textbook using Gemini AI Scanner to show the first listing!</p>
+      </div>
+    </section>
+
+    <!-- Gemini AI Scanner Section -->
+    <section id="scanner" class="glass-card p-6 sm:p-8 rounded-3xl space-y-4">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="space-y-2">
+          <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Powered by Google Gemini Vision AI</span>
+          <h2 class="text-xl font-bold text-white">Instant AI Book Scanner & Metadata Detector</h2>
+          <p class="text-xs text-slate-400 max-w-md">Upload or capture a photo of any textbook cover. AI automatically extracts metadata and lists it live!</p>
+        </div>
+
+        <div class="w-full md:w-72 bg-slate-900/80 border-2 border-dashed border-slate-700 hover:border-emerald-500/50 p-6 rounded-2xl text-center">
+          <input type="file" id="bookImageInput" accept="image/*" class="hidden" onchange="runGeminiScan(event)" />
+          <label for="bookImageInput" onclick="return checkScanAuth(event)" class="cursor-pointer block">
+            <div class="text-3xl mb-1">📸</div>
+            <p class="text-xs font-semibold text-slate-200">Click to Upload Book Cover</p>
+            <p class="text-[10px] text-slate-500">PNG, JPG up to 10MB</p>
           </label>
         </div>
       </div>
 
-      <div id="scanResult" class="hidden mt-6 p-4 rounded-xl bg-slate-950 border border-emerald-500/40 text-xs text-slate-200 space-y-3">
-      </div>
-    </section>
-
-    <!-- Peer-to-Peer Chat & AI Guardian Section -->
-    <section id="chat" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-        <div>
-          <h2 class="text-2xl font-bold text-white">Safe Student Chat Hub</h2>
-          <p class="text-slate-400 text-xs mt-1">Direct peer messaging protected by Shiori AI Guardian</p>
-        </div>
-        <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-          🛡️ Verified Users (13-24 Yrs)
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-80">
-        <!-- Chat Contacts -->
-        <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 space-y-2 overflow-y-auto">
-          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Active Conversations</p>
-          <p id="noChatText" class="text-xs text-slate-500 italic py-4 text-center">No active chats. Request a book from marketplace to start messaging.</p>
-        </div>
-
-        <!-- Chat Box -->
-        <div class="lg:col-span-2 bg-slate-950 rounded-2xl p-4 border border-slate-800 flex flex-col justify-between">
-          <div id="chatHeader" class="border-b border-slate-800 pb-2 flex justify-between items-center text-xs">
-            <span class="font-bold text-slate-400" id="currentChatUser">Select a chat to start conversation</span>
-            <span class="text-[10px] text-slate-500">🛡️ AI Safety Shield Active</span>
-          </div>
-
-          <!-- Chat Messages Area -->
-          <div id="chatMessages" class="flex-1 my-3 overflow-y-auto space-y-2 text-xs pr-2 flex flex-col justify-center items-center text-slate-500">
-            <span>Messages will appear here</span>
-          </div>
-
-          <!-- Input Bar -->
-          <div class="flex gap-2">
-            <input type="text" id="chatInput" placeholder="Type message..." class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" />
-            <button onclick="sendMessage()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl transition-all">
-              Send
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Student Study Planner (Dynamic) -->
-    <section id="planner" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-2xl font-bold text-white">Personalized Study Planner</h2>
-          <p class="text-slate-400 text-xs mt-1">Track your daily study slots, Board preparation & learning goals</p>
-        </div>
-      </div>
-
-      <div class="flex gap-2 max-w-md">
-        <input type="text" id="plannerTaskInput" placeholder="Add new study goal..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" />
-        <button onclick="addPlannerTask()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl transition-all">
-          Add Goal
-        </button>
-      </div>
-
-      <div id="plannerTaskList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <p id="emptyTaskMsg" class="col-span-full text-xs text-slate-500 italic py-2">No study goals added yet. Type a goal above and click 'Add Goal'.</p>
-      </div>
-    </section>
-
-    <!-- ESG Impact Tracker -->
-    <section id="impact" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
-        <div class="text-emerald-400 text-2xl font-extrabold" id="esgBooksCount">0</div>
-        <div class="text-slate-400 text-xs mt-1">Books Reused</div>
-      </div>
-      <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
-        <div class="text-teal-400 text-2xl font-extrabold" id="esgSavings">₹0</div>
-        <div class="text-slate-400 text-xs mt-1">Student Savings</div>
-      </div>
-      <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
-        <div class="text-cyan-400 text-2xl font-extrabold" id="esgCo2">0 kg</div>
-        <div class="text-slate-400 text-xs mt-1">CO₂ Reduced</div>
-      </div>
-      <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl text-center">
-        <div class="text-emerald-400 text-2xl font-extrabold" id="esgPoints">0</div>
-        <div class="text-slate-400 text-xs mt-1">Impact Points</div>
-      </div>
+      <div id="scanResult" class="hidden p-4 rounded-xl bg-slate-950 border border-emerald-500/30 text-xs space-y-2"></div>
     </section>
 
   </main>
 
-  <!-- Login/Verification Modal -->
+  <!-- Student Sign-In Modal -->
   <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl max-w-md w-full space-y-4">
-      <h3 class="text-lg font-bold text-white">🎓 Student Sign-In (Age 13–24)</h3>
-      <p class="text-slate-400 text-xs">
-        Enter your details to access Shiori Global's protected circular network.
-      </p>
-      
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block text-slate-300 font-semibold mb-1">Full Name</label>
-          <input type="text" id="userNameInput" placeholder="Enter your name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
-        </div>
-        <div>
-          <label class="block text-slate-300 font-semibold mb-1">Email Address</label>
-          <input type="email" id="userEmailInput" placeholder="student@school.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
-        </div>
-        <div>
-          <label class="block text-slate-300 font-semibold mb-1">Age (13 to 24 Years)</label>
-          <input type="number" id="userAgeInput" placeholder="15" min="13" max="24" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
-        </div>
+    <div class="glass-card p-6 rounded-3xl max-w-sm w-full space-y-4">
+      <div>
+        <h3 class="text-sm font-bold text-white">🎓 Student Sign-In (Age 13–24)</h3>
+        <p class="text-[11px] text-slate-400 mt-1">Please log in with your email to list books or message peers.</p>
       </div>
-
-      <div class="flex gap-3 pt-2">
+      <div class="space-y-3 text-xs">
+        <input type="text" id="userNameInput" placeholder="Full Name" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
+        <input type="email" id="userEmailInput" placeholder="Email Address (e.g. student@gmail.com)" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
+        <input type="number" id="userAgeInput" placeholder="Age (13 to 24)" min="13" max="24" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-emerald-500" />
+      </div>
+      <div class="flex gap-2">
         <button onclick="closeLoginModal()" class="flex-1 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold">Cancel</button>
-        <button onclick="completeLogin()" class="flex-1 py-2 bg-emerald-500 text-slate-950 rounded-xl text-xs font-bold">Sign In & Verify</button>
+        <button onclick="completeLogin()" class="flex-1 py-2 bg-emerald-500 text-slate-950 rounded-xl text-xs font-bold">Sign In</button>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-    <p>Shiori GLOBAL · Circular Learning Network | Built for Global Impact & Sustainability</p>
-  </footer>
-
   <script>
-    // 1. Hide Splash Screen after launch
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const splash = document.getElementById('splashScreen');
-        splash.style.opacity = '0';
-        setTimeout(() => splash.classList.add('hidden'), 700);
-      }, 1500);
-    });
+    let currentUser = null;
+    let booksCount = 0;
 
     function showSection(id) {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.remove('hidden');
+    function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+    function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+
+    function requireAuth(action) {
+      if (!currentUser) {
+        alert("🔒 Authentication Required: Please sign in with your email to access this feature.");
+        openLoginModal();
+        return false;
+      }
+      return true;
     }
 
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.add('hidden');
+    function handleQuickAction(action) {
+      if (requireAuth(action)) {
+        if (action === 'sell') showSection('scanner');
+        if (action === 'chat') alert("Chat hub is ready for verified student: " + currentUser.name);
+      }
     }
 
-    let currentUser = null;
-    let booksList = [];
+    function checkScanAuth(e) {
+      if (!currentUser) {
+        e.preventDefault();
+        alert("🔒 Authentication Required: Please sign in with your email before uploading or selling books.");
+        openLoginModal();
+        return false;
+      }
+      return true;
+    }
 
     function completeLogin() {
       const name = document.getElementById('userNameInput').value.trim();
+      const email = document.getElementById('userEmailInput').value.trim();
       const age = parseInt(document.getElementById('userAgeInput').value);
 
-      if (!name) {
-        alert("Please enter your name.");
+      if (!name || !email) {
+        alert("Please enter both Name and Email Address.");
         return;
       }
 
       if (isNaN(age) || age < 13 || age > 24) {
-        alert("⚠️ Shiori GLOBAL is restricted to students aged 13 to 24 years.");
+        alert("⚠️ Access Restricted: Shiori GLOBAL is for verified students aged 13 to 24 years.");
         return;
       }
 
-      currentUser = { name, age };
-      document.getElementById('navUserName').innerText = name;
-      document.getElementById('userStatusBadge').classList.remove('hidden');
-      document.getElementById('loginBtn').classList.add('hidden');
+      currentUser = { name, email, age };
+      document.getElementById('loginBtn').innerText = name + " (Verified)";
       closeLoginModal();
-
-      alert(`✨ Welcome ${name}! Student verification completed.`);
+      alert("✨ Sign-In Successful! Welcome " + name + " (" + email + ").");
     }
 
-    // 2. Dynamic Gemini Book Scanner Simulation
-    function runGeminiScanSimulation(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function runGeminiScan(event) {
+      if (!currentUser) {
+        alert("🔒 Sign-In required to process image.");
+        openLoginModal();
+        return;
+      }
 
+      if (!event.target.files[0]) return;
       const res = document.getElementById('scanResult');
       res.classList.remove('hidden');
       res.innerHTML = `
-        <div class="p-3 rounded-lg bg-emerald-950/60 border border-emerald-500/40 space-y-2">
-          <p class="font-bold text-emerald-400">✨ Gemini AI Scanning Complete!</p>
-          <p><b>Detected Book:</b> Textbook Image Processed</p>
-          <p><b>Condition Score:</b> Verified Excellent (9/10)</p>
-          <p class="text-teal-300"><b>🌱 Estimated CO₂ Saved:</b> 1.4 kg</p>
-          <button onclick="publishScannedBook()" class="mt-2 px-3 py-1.5 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs">
-            + Publish to Marketplace
-          </button>
-        </div>
+        <p class="font-bold text-emerald-400">✨ Gemini AI Scan Complete!</p>
+        <p class="text-slate-300">Book Cover Processed | Verified Condition (9/10)</p>
+        <button onclick="publishBook()" class="mt-2 px-3 py-1 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs">Publish Book Listing</button>
       `;
     }
 
-    function publishScannedBook() {
-      const seller = currentUser ? currentUser.name : "Anonymous Student";
-      const newBook = {
-        title: "Scanned Textbook",
-        seller: seller,
-        price: "₹150",
-        condition: "Verified"
-      };
+    function publishBook() {
+      if (!currentUser) {
+        alert("🔒 Please Sign In first.");
+        openLoginModal();
+        return;
+      }
 
-      booksList.push(newBook);
-      renderMarketplace();
+      booksCount++;
+      document.getElementById('impactBooks').innerText = booksCount;
+      document.getElementById('impactSavings').innerText = "₹" + (booksCount * 150);
+      document.getElementById('impactPoints').innerText = booksCount * 50;
+      document.getElementById('navEsgScore').innerText = (booksCount * 50) + " Points";
+
+      const container = document.getElementById('marketplaceContainer');
+      if (booksCount === 1) {
+        container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4";
+        container.innerHTML = "";
+      }
+
+      container.innerHTML += `
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-left space-y-2">
+          <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-semibold">Verified Listing</span>
+          <h4 class="text-xs font-bold text-white">Scanned Textbook #${booksCount}</h4>
+          <p class="text-[11px] text-slate-400">Seller: ${currentUser.name} (${currentUser.email})</p>
+          <p class="text-xs font-bold text-emerald-400">₹150 (Swap Available)</p>
+        </div>
+      `;
       document.getElementById('scanResult').classList.add('hidden');
       showSection('marketplace');
-
-      // Update ESG
-      document.getElementById('esgBooksCount').innerText = booksList.length;
-      document.getElementById('esgSavings').innerText = "₹" + (booksList.length * 150);
-      document.getElementById('esgCo2').innerText = (booksList.length * 1.4).toFixed(1) + " kg";
-      document.getElementById('esgPoints').innerText = booksList.length * 50;
-    }
-
-    function renderMarketplace() {
-      const container = document.getElementById('marketplaceContainer');
-      if (booksList.length === 0) return;
-
-      container.innerHTML = booksList.map((book, idx) => `
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-emerald-500/50 transition-all">
-          <div class="h-32 rounded-xl bg-slate-800 flex items-center justify-center text-3xl mb-3">📚</div>
-          <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold">${book.condition}</span>
-          <h3 class="font-bold text-white text-base mt-2">${book.title}</h3>
-          <p class="text-xs text-slate-400">Listed by: ${book.seller}</p>
-          <div class="mt-4 flex items-center justify-between pt-3 border-t border-slate-800">
-            <span class="text-base font-bold text-white">${book.price}</span>
-            <button onclick="startChat('${book.seller}')" class="px-3 py-1 bg-emerald-500 text-slate-950 rounded-lg text-xs font-bold">
-              Chat & Request
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // 3. Dynamic Chat
-    function startChat(sellerName) {
-      showSection('chat');
-      document.getElementById('currentChatUser').innerText = "Chat with: " + sellerName;
-      document.getElementById('chatMessages').innerHTML = `
-        <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-xl max-w-xs text-slate-300">
-          Hello! I'm interested in your book. Is it available for swap or purchase?
-        </div>
-      `;
-    }
-
-    function sendMessage() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const chatBox = document.getElementById('chatMessages');
-      const userMsg = document.createElement('div');
-      userMsg.className = "bg-emerald-950/60 border border-emerald-500/30 p-2.5 rounded-xl max-w-xs ml-auto text-emerald-200";
-      userMsg.innerText = text;
-      chatBox.appendChild(userMsg);
-
-      input.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    // 4. Dynamic Study Planner
-    function addPlannerTask() {
-      const input = document.getElementById('plannerTaskInput');
-      const taskText = input.value.trim();
-      if (!taskText) return;
-
-      const emptyMsg = document.getElementById('emptyTaskMsg');
-      if (emptyMsg) emptyMsg.remove();
-
-      const list = document.getElementById('plannerTaskList');
-      const taskCard = document.createElement('div');
-      taskCard.className = "p-4 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between";
-      taskCard.innerHTML = `
-        <div class="flex items-center gap-3">
-          <input type="checkbox" onchange="this.nextElementSibling.classList.toggle('line-through')" class="w-4 h-4 accent-emerald-500 rounded" />
-          <span class="text-xs font-semibold text-slate-200">${taskText}</span>
-        </div>
-        <button onclick="this.parentElement.remove()" class="text-xs text-slate-500 hover:text-red-400">✕</button>
-      `;
-
-      list.appendChild(taskCard);
-      input.value = "";
     }
   </script>
 </body>
