@@ -10,7 +10,6 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
     .glass-nav { background: rgba(10, 15, 30, 0.85); backdrop-filter: blur(12px); border-b: 1px solid rgba(255, 255, 255, 0.08); }
-    .glow-emerald { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3); }
   </style>
 </head>
 <body class="bg-[#070B14] text-slate-100 min-h-screen flex flex-col">
@@ -37,6 +36,9 @@
       </nav>
 
       <div class="flex items-center gap-3">
+        <button onclick="openAdminPasscodeModal()" class="text-xs text-slate-400 hover:text-emerald-400 px-2 py-1 bg-slate-900 border border-slate-800 rounded-lg transition">
+          🛡️ Founder Admin
+        </button>
         <div class="hidden sm:flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full text-xs text-emerald-400 font-medium">
           🌱 ESG Score: <span id="navEsgScore" class="font-bold">0 Points</span>
         </div>
@@ -50,14 +52,10 @@
   <!-- Main Content Layout -->
   <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-    <!-- Hero & Sidebar Section -->
+    <!-- Hero Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
-      <!-- Hero Banner -->
       <div class="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between min-h-[340px]">
         <div class="absolute -top-20 -right-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
         <div>
           <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-emerald-400 text-[11px] font-medium mb-4">
             📚 Learn · Share · Build a Greener Future
@@ -75,20 +73,14 @@
           <a href="#marketplace" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold rounded-xl transition shadow-lg shadow-emerald-500/20">
             Explore Books →
           </a>
-          <button onclick="alert('Shiori GLOBAL Workflow: Login -> Scan Book -> AI Detection -> Marketplace Listing')" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
-            ▶ Watch How It Works
-          </button>
         </div>
       </div>
 
-      <!-- Right Sidebar -->
+      <!-- Impact Widget -->
       <div class="space-y-6">
-        
-        <!-- Impact Card -->
         <div class="glass-card rounded-3xl p-6 space-y-4">
           <div class="flex justify-between items-center text-xs">
             <span class="font-bold text-white flex items-center gap-2">🌱 Your Impact</span>
-            <span class="text-emerald-400 hover:underline cursor-pointer">View Details →</span>
           </div>
 
           <div class="grid grid-cols-2 gap-3 text-center">
@@ -110,24 +102,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Quick Actions Card -->
-        <div class="glass-card rounded-3xl p-6 space-y-3">
-          <p class="text-xs font-bold text-white mb-2">⚡ Quick Actions</p>
-          <button onclick="handleQuickAction('sell')" class="w-full py-2 px-3 bg-slate-900/80 hover:bg-emerald-500/10 hover:border-emerald-500/30 border border-slate-800 rounded-xl text-xs text-slate-300 flex justify-between items-center transition">
-            <span>📷 Post a Book for Sale</span>
-            <span>→</span>
-          </button>
-          <button onclick="showSection('marketplace')" class="w-full py-2 px-3 bg-slate-900/80 hover:bg-emerald-500/10 hover:border-emerald-500/30 border border-slate-800 rounded-xl text-xs text-slate-300 flex justify-between items-center transition">
-            <span>🔍 Browse Marketplace</span>
-            <span>→</span>
-          </button>
-          <button onclick="handleQuickAction('chat')" class="w-full py-2 px-3 bg-slate-900/80 hover:bg-emerald-500/10 hover:border-emerald-500/30 border border-slate-800 rounded-xl text-xs text-slate-300 flex justify-between items-center transition">
-            <span>💬 View Messages</span>
-            <span>→</span>
-          </button>
-        </div>
-
       </div>
     </div>
 
@@ -167,9 +141,40 @@
       <div id="scanResult" class="hidden p-4 rounded-xl bg-slate-950 border border-emerald-500/30 text-xs space-y-2"></div>
     </section>
 
+    <!-- FOUNDER ADMIN PANEL SECTION (SECURE) -->
+    <section id="adminPanel" class="hidden glass-card p-6 rounded-3xl space-y-4 border border-amber-500/30">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">👑 Founder Security & Analytics Dashboard</h2>
+          <p class="text-xs text-slate-400">Real-time user authentication logs & database monitoring</p>
+        </div>
+        <button onclick="closeAdminPanel()" class="text-xs px-3 py-1 bg-slate-800 text-slate-300 rounded-lg">Close Dashboard</button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-900 text-slate-400 uppercase text-[10px] tracking-wider">
+            <tr>
+              <th class="p-3">User Name</th>
+              <th class="p-3">Email Address</th>
+              <th class="p-3">Age</th>
+              <th class="p-3">Status</th>
+              <th class="p-3">Login Time</th>
+              <th class="p-3">Books Listed</th>
+            </tr>
+          </thead>
+          <tbody id="adminUserTableBody">
+            <tr>
+              <td colspan="6" class="p-4 text-center text-slate-500 italic">No user sign-in activity recorded yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Student Sign-In Modal -->
+  <!-- Login Modal -->
   <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass-card p-6 rounded-3xl max-w-sm w-full space-y-4">
       <div>
@@ -191,6 +196,7 @@
   <script>
     let currentUser = null;
     let booksCount = 0;
+    let userLogs = [];
 
     function showSection(id) {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -199,6 +205,21 @@
     function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
     function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
 
+    function openAdminPasscodeModal() {
+      const pass = prompt("🔐 Enter Founder Admin Passcode:");
+      if (pass === "aprajita183" || pass === "shiori2026") {
+        document.getElementById('adminPanel').classList.remove('hidden');
+        renderAdminLogs();
+        showSection('adminPanel');
+      } else if (pass !== null) {
+        alert("❌ Incorrect Founder Passcode!");
+      }
+    }
+
+    function closeAdminPanel() {
+      document.getElementById('adminPanel').classList.add('hidden');
+    }
+
     function requireAuth(action) {
       if (!currentUser) {
         alert("🔒 Authentication Required: Please sign in with your email to access this feature.");
@@ -206,13 +227,6 @@
         return false;
       }
       return true;
-    }
-
-    function handleQuickAction(action) {
-      if (requireAuth(action)) {
-        if (action === 'sell') showSection('scanner');
-        if (action === 'chat') alert("Chat hub is ready for verified student: " + currentUser.name);
-      }
     }
 
     function checkScanAuth(e) {
@@ -240,15 +254,34 @@
         return;
       }
 
-      currentUser = { name, email, age };
+      const loginTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      currentUser = { name, email, age, loginTime, booksListed: 0 };
+      userLogs.push(currentUser);
+
       document.getElementById('loginBtn').innerText = name + " (Verified)";
       closeLoginModal();
-      alert("✨ Sign-In Successful! Welcome " + name + " (" + email + ").");
+      alert("✨ Sign-In Successful! Welcome " + name + ".");
+    }
+
+    function renderAdminLogs() {
+      const tbody = document.getElementById('adminUserTableBody');
+      if (userLogs.length === 0) return;
+
+      tbody.innerHTML = userLogs.map(u => `
+        <tr class="border-t border-slate-800 hover:bg-slate-900/50">
+          <td class="p-3 font-semibold text-white">${u.name}</td>
+          <td class="p-3 text-slate-400">${u.email}</td>
+          <td class="p-3">${u.age} Yrs</td>
+          <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[10px]">Verified Student</span></td>
+          <td class="p-3 text-slate-400">${u.loginTime}</td>
+          <td class="p-3 font-bold text-emerald-400">${u.booksListed}</td>
+        </tr>
+      `).join('');
     }
 
     function runGeminiScan(event) {
       if (!currentUser) {
-        alert("🔒 Sign-In required to process image.");
+        alert("🔒 Sign-In required.");
         openLoginModal();
         return;
       }
@@ -264,13 +297,10 @@
     }
 
     function publishBook() {
-      if (!currentUser) {
-        alert("🔒 Please Sign In first.");
-        openLoginModal();
-        return;
-      }
+      if (!currentUser) return;
 
       booksCount++;
+      currentUser.booksListed++;
       document.getElementById('impactBooks').innerText = booksCount;
       document.getElementById('impactSavings').innerText = "₹" + (booksCount * 150);
       document.getElementById('impactPoints').innerText = booksCount * 50;
