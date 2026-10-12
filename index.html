@@ -1,359 +1,981 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiori GLOBAL | Circular Learning Network</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shiori GLOBAL - Books. Connect. Grow.</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- FontAwesome for fallback icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            shiori: {
+              blue: '#1E3A8A',
+              navy: '#0F172A',
+              orange: '#FF6B4A',
+              orangeHover: '#E05536',
+              lightBg: '#F8FAFC',
+              cardBg: '#FFFFFF',
+              border: '#E2E8F0'
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #070B14; }
-    .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .glass-nav { background: rgba(10, 15, 30, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-    .glow-emerald { box-shadow: 0 0 30px -5px rgba(16, 185, 129, 0.25); }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    
+    /* Smooth transitions */
+    .fade-enter {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    .fade-enter-active {
+      opacity: 1;
+      transform: scale(1);
+      transition: opacity 300ms ease-out, transform 300ms ease-out;
+    }
+
+    /* Custom Glassmorphism */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col">
+<body class="h-screen w-screen overflow-hidden flex flex-col bg-slate-50 text-slate-800">
 
-  <!-- Dynamic Navigation Bar -->
-  <header class="sticky top-0 z-50 glass-nav">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('hero')">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-extrabold text-2xl shadow-lg shadow-emerald-500/10">
-          栞
+  <div id="app" class="relative w-full h-full overflow-hidden flex flex-col">
+
+    <!-- 1. SPLASH SCREEN -->
+    <div id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900 text-white transition-opacity duration-700">
+      <div class="relative flex flex-col items-center text-center p-6 animate-pulse">
+        <!-- Shiori Logo Icon -->
+        <div class="relative mb-6">
+          <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-blue-900 via-indigo-900 to-blue-800 flex items-center justify-center shadow-2xl border border-blue-700/50">
+            <!-- Book + Bookmark SVG -->
+            <svg class="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke-linecap="round"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke-linecap="round"/>
+              <path d="M12 2v10l3-2 3 2V2" fill="#FF6B4A" stroke="#FF6B4A"/>
+            </svg>
+          </div>
+          <!-- Chat bubble badge -->
+          <div class="absolute -top-2 -right-2 bg-[#FF6B4A] text-white p-2 rounded-full shadow-lg border-2 border-slate-900">
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+          </div>
         </div>
-        <div>
-          <span class="text-xl font-extrabold tracking-tight text-white">Shiori <span class="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">GLOBAL</span></span>
-          <span class="block text-[9px] text-emerald-400/80 tracking-widest uppercase font-semibold">Circular Learning Network</span>
+
+        <h1 class="text-4xl font-extrabold tracking-tight text-white mb-2">
+          Shiori <span class="text-[#FF6B4A] text-2xl font-bold tracking-widest block uppercase">GLOBAL</span>
+        </h1>
+        <p class="text-xs uppercase tracking-widest font-semibold text-slate-400 mt-1">
+          BOOKS • CONNECT • GROW
+        </p>
+
+        <!-- Loading spinner bar -->
+        <div class="w-48 h-1.5 bg-slate-800 rounded-full mt-8 overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-blue-500 to-[#FF6B4A] w-full animate-pulse"></div>
+        </div>
+        <p class="text-xs text-slate-500 mt-3">Preparing your learning ecosystem...</p>
+      </div>
+    </div>
+
+    <!-- 2. AUTHENTICATION (LOGIN / SIGN UP) SCREEN -->
+    <div id="auth-screen" class="hidden fixed inset-0 z-40 bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-100 transition-all duration-300">
+        <!-- Auth Header -->
+        <div class="bg-slate-900 text-white p-6 text-center relative overflow-hidden">
+          <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-[#FF6B4A]/20 rounded-full blur-xl"></div>
+          <div class="inline-flex items-center gap-2 mb-2">
+            <div class="w-8 h-8 rounded-lg bg-[#1E3A8A] flex items-center justify-center text-white">
+              <i data-lucide="book-open" class="w-5 h-5 text-[#FF6B4A]"></i>
+            </div>
+            <span class="font-bold text-xl tracking-tight">Shiori <span class="text-[#FF6B4A] text-xs uppercase">GLOBAL</span></span>
+          </div>
+          <p class="text-xs text-slate-400">Welcome to your circular student community</p>
+          
+          <!-- Auth Mode Tabs -->
+          <div class="flex bg-slate-800/80 p-1 rounded-xl mt-5">
+            <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 text-xs font-semibold rounded-lg text-white bg-[#FF6B4A] transition-all">
+              Log In
+            </button>
+            <button id="tab-signup" onclick="switchAuthTab('signup')" class="flex-1 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition-all">
+              Sign Up
+            </button>
+          </div>
+        </div>
+
+        <!-- Auth Body -->
+        <div class="p-6">
+          <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+            <div id="signup-name-field" class="hidden">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Full Name</label>
+              <div class="relative">
+                <i data-lucide="user" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+                <input type="text" id="auth-name" placeholder="Aprajita Sharma" class="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-[#1E3A8A] focus:ring-1 focus:ring-[#1E3A8A]">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Email / Student ID</label>
+              <div class="relative">
+                <i data-lucide="mail" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+                <input type="email" id="auth-email" value="aprajita@shiori.edu" required class="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-[#1E3A8A] focus:ring-1 focus:ring-[#1E3A8A]">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+              <div class="relative">
+                <i data-lucide="lock" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+                <input type="password" id="auth-password" value="••••••••" required class="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-[#1E3A8A] focus:ring-1 focus:ring-[#1E3A8A]">
+              </div>
+            </div>
+
+            <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-[#1E3A8A] hover:bg-blue-900 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2">
+              <span>Sign In to Dashboard</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </form>
+
+          <!-- Quick Demo Login -->
+          <div class="mt-5 pt-4 border-t border-slate-100 text-center">
+            <p class="text-xs text-slate-500 mb-2">Want to explore instantly?</p>
+            <button onclick="quickDemoLogin()" class="w-full py-2 px-3 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-semibold rounded-xl border border-amber-200/60 transition flex items-center justify-center gap-2">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-600"></i>
+              Quick One-Click Demo Student Access
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MAIN APP HEADER / NAVIGATION -->
+    <header class="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between z-20 shrink-0">
+      <div class="flex items-center gap-4">
+        <!-- Logo -->
+        <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+          <div class="w-10 h-10 rounded-xl bg-[#1E3A8A] flex items-center justify-center shadow-md shadow-blue-900/20">
+            <i data-lucide="book-open" class="w-6 h-6 text-[#FF6B4A]"></i>
+          </div>
+          <div>
+            <span class="font-extrabold text-lg text-slate-900 tracking-tight leading-none block">
+              Shiori <span class="text-[#FF6B4A] text-xs font-bold uppercase">GLOBAL</span>
+            </span>
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">Books • Connect • Grow</span>
+          </div>
         </div>
       </div>
 
-      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-300">
-        <a href="#hero" class="text-emerald-400">Home</a>
-        <a href="#marketplace" class="hover:text-emerald-400 transition">Explore</a>
-        <a href="#scanner" onclick="return requireAuth('sell')" class="hover:text-emerald-400 transition">Sell Book</a>
-        <a href="#chat" onclick="return requireAuth('chat')" class="hover:text-emerald-400 transition">Peer Chat</a>
+      <!-- Navigation Links (Desktop) -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl">
+        <button id="nav-home" onclick="navigateTo('home')" class="px-4 py-1.5 text-xs font-bold rounded-lg text-white bg-[#1E3A8A] transition-all">
+          Home Hub
+        </button>
+        <button id="nav-circular" onclick="navigateTo('circular')" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-emerald-600"></i>
+          Circular Book Exchange
+        </button>
+        <button id="nav-ai" onclick="navigateTo('ai')" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1">
+          <i data-lucide="bot" class="w-3.5 h-3.5 text-indigo-600"></i>
+          AI Tutor
+        </button>
+        <button id="nav-opportunities" onclick="navigateTo('opportunities')" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1">
+          <i data-lucide="globe" class="w-3.5 h-3.5 text-[#FF6B4A]"></i>
+          Global Opportunities
+        </button>
       </nav>
 
+      <!-- User Profile & Quick Actions -->
       <div class="flex items-center gap-3">
-        <button onclick="openAdminPasscodeModal()" class="text-xs text-amber-400 hover:text-amber-300 px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-xl transition font-semibold">
-          👑 Admin
-        </button>
-        <div class="hidden sm:flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full text-xs text-emerald-400 font-medium">
-          🌱 ESG: <span id="navEsgScore" class="font-bold">0 Pts</span>
+        <!-- Streak pill -->
+        <div onclick="toggleStreakModal()" class="cursor-pointer bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-bold text-orange-600 shadow-sm hover:scale-105 transition">
+          <i data-lucide="flame" class="w-4 h-4 fill-orange-500 text-orange-500"></i>
+          <span>5 Day Streak</span>
         </div>
-        <button id="loginBtn" onclick="openLoginModal()" class="px-4 py-2 text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl shadow-lg shadow-emerald-500/20 transition-all">
-          Student Sign-In
+
+        <!-- Notification bell -->
+        <button class="relative p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition">
+          <i data-lucide="bell" class="w-5 h-5"></i>
+          <span class="absolute top-1 right-1 w-2 h-2 bg-[#FF6B4A] rounded-full"></span>
         </button>
+
+        <!-- Profile badge -->
+        <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-sm flex items-center justify-center border-2 border-white shadow">
+            AS
+          </div>
+          <div class="hidden sm:block text-left">
+            <span class="text-xs font-bold text-slate-800 block leading-tight">Aprajita S.</span>
+            <span class="text-[10px] text-slate-500 font-medium">B.Tech CS • Yr 3</span>
+          </div>
+          <button onclick="showAuthModal()" class="text-slate-400 hover:text-slate-700 ml-1">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+    <main class="flex-1 overflow-y-auto bg-slate-50 relative">
 
-    <!-- Hero Section -->
-    <div id="hero" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
-      <!-- Hero Banner -->
-      <div class="lg:col-span-2 glass-card rounded-3xl p-8 sm:p-10 relative overflow-hidden flex flex-col justify-between min-h-[380px] glow-emerald">
-        <div class="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <!-- ================= SECTION 1: HOME PAGE & BLURRED BANNER ================= -->
+      <section id="view-home" class="p-4 md:p-8 space-y-8 max-w-7xl mx-auto">
+        
+        <!-- BLURRED BOOK HERO BANNER (User requirement) -->
+        <div class="relative rounded-3xl overflow-hidden shadow-xl min-h-[260px] md:min-h-[320px] flex items-center">
+          <!-- Background Image with Blur and Overlay -->
+          <div class="absolute inset-0 bg-cover bg-center filter blur-[3px] scale-105" 
+               style="background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1600&auto=format&fit=crop');">
+          </div>
+          <!-- Dark Contrast Gradient Overlay for text clarity -->
+          <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/80 to-blue-950/60"></div>
 
-        <div>
-          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-6">
-            📚 Learn · Share · Build a Greener Future
-          </span>
-          <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
-            Books Today.<br />
-            <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-              A Brighter Tomorrow.
+          <!-- Hero Content -->
+          <div class="relative z-10 p-6 md:p-10 max-w-3xl text-white">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6B4A]/20 border border-[#FF6B4A]/40 text-[#FF6B4A] text-xs font-bold mb-4 backdrop-blur-md">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+              Circular Student Ecosystem
+            </div>
+
+            <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight leading-tight text-white mb-3">
+              YOUR SPACE TO LEARN & GROW
+            </h1>
+            
+            <p class="text-sm md:text-base text-slate-200 font-medium mb-6 leading-relaxed">
+              Experience Yuta Sensei's 2-Step Verified Circular Book Exchange, AI-powered study intelligence, and global opportunities catered for ambitious students.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <button onclick="navigateTo('circular')" class="px-5 py-2.5 bg-[#FF6B4A] hover:bg-[#E05536] text-white text-xs font-bold rounded-xl shadow-lg shadow-orange-500/30 transition flex items-center gap-2">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                Scan / Exchange Books
+              </button>
+              <button onclick="navigateTo('ai')" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-bold rounded-xl backdrop-blur-md transition flex items-center gap-2">
+                <i data-lucide="bot" class="w-4 h-4 text-indigo-300"></i>
+                Ask Gemini Assistant
+              </button>
+            </div>
+          </div>
+
+          <!-- Banner Decorative Graphic -->
+          <div class="hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 w-72 p-4 rounded-2xl glass-card text-slate-800 shadow-2xl">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-slate-700">Live Campus Pulse</span>
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            </div>
+            <div class="space-y-2 text-xs">
+              <div class="p-2 rounded-lg bg-white/60 border border-slate-100 flex items-center justify-between">
+                <span>📚 142 Books Listed Today</span>
+                <span class="text-emerald-600 font-bold">+18%</span>
+              </div>
+              <div class="p-2 rounded-lg bg-white/60 border border-slate-100 flex items-center justify-between">
+                <span>🎓 $50k Scholarships Active</span>
+                <span class="text-blue-600 font-bold">New</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STUDENT HUB SUMMARY & DAILY ACTIVITY -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Daily Activity & Streak -->
+          <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
+                  Weekly Study Streak
+                </h3>
+                <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full">5 Days Active</span>
+              </div>
+              
+              <!-- Streak 7-Day Tracker -->
+              <div class="grid grid-cols-7 gap-1.5 text-center my-3">
+                <div class="p-2 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs">Mon<br><i data-lucide="check" class="w-3.5 h-3.5 mx-auto mt-1"></i></div>
+                <div class="p-2 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs">Tue<br><i data-lucide="check" class="w-3.5 h-3.5 mx-auto mt-1"></i></div>
+                <div class="p-2 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs">Wed<br><i data-lucide="check" class="w-3.5 h-3.5 mx-auto mt-1"></i></div>
+                <div class="p-2 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs">Thu<br><i data-lucide="check" class="w-3.5 h-3.5 mx-auto mt-1"></i></div>
+                <div class="p-2 rounded-xl bg-amber-500 text-white font-bold text-xs shadow-md shadow-amber-500/30">Today<br><i data-lucide="flame" class="w-3.5 h-3.5 mx-auto mt-1"></i></div>
+                <div class="p-2 rounded-xl bg-slate-100 text-slate-400 font-medium text-xs">Sat<br><span class="block mt-1 text-[10px]">-</span></div>
+                <div class="p-2 rounded-xl bg-slate-100 text-slate-400 font-medium text-xs">Sun<br><span class="block mt-1 text-[10px]">-</span></div>
+              </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Study 20 more mins today to maintain your 7-day streak bonus points!</p>
+          </div>
+
+          <!-- Saved Books & Credit Wallet -->
+          <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <i data-lucide="coins" class="w-4 h-4 text-amber-500"></i>
+                  Shiori Circular Wallet
+                </h3>
+                <span class="text-xs font-semibold text-slate-400">Tokens</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-3xl font-extrabold text-slate-900">340</span>
+                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+45 this week</span>
+              </div>
+              <p class="text-xs text-slate-500">Earn credits by giving away old textbooks or inspecting physical conditions accurately.</p>
+            </div>
+            <button onclick="navigateTo('circular')" class="mt-4 w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> List a Book & Earn
+            </button>
+          </div>
+
+          <!-- Earned Badges & Sensei Endorsements -->
+          <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <i data-lucide="award" class="w-4 h-4 text-purple-600"></i>
+                Student Badges
+              </h3>
+              <span class="text-xs font-bold text-blue-600">Level 3</span>
+            </div>
+            <div class="flex items-center gap-3 my-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-xl shadow-sm" title="Honest Condition Evaluator">
+                🔍
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-indigo-100 border border-indigo-300 flex items-center justify-center text-xl shadow-sm" title="Knowledge Recycler">
+                ♻️
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-emerald-100 border border-emerald-300 flex items-center justify-center text-xl shadow-sm" title="Top AI Quizzer">
+                🧠
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 text-xs font-bold">
+                +4
+              </div>
+            </div>
+            <p class="text-xs text-slate-500">Yuta Sensei Verification Level: <strong class="text-emerald-600">Tier-1 Trusted Inspector</strong></p>
+          </div>
+        </div>
+
+        <!-- QUICK ACCESS MODULE CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div onclick="navigateTo('circular')" class="bg-gradient-to-br from-blue-900 to-indigo-900 text-white p-6 rounded-3xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl group-hover:scale-150 transition-all"></div>
+            <span class="p-3 bg-white/10 rounded-2xl inline-block mb-4 backdrop-blur-md">
+              <i data-lucide="refresh-cw" class="w-6 h-6 text-[#FF6B4A]"></i>
             </span>
-          </h1>
-          <p class="mt-4 text-slate-300 text-xs sm:text-sm max-w-xl leading-relaxed">
-            Buy, sell, donate, swap and discover books. Connect with a community of learners. Reduce waste. Make education more accessible for everyone.
-          </p>
-        </div>
-
-        <div class="mt-8 flex flex-wrap items-center gap-4">
-          <a href="#marketplace" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold rounded-2xl transition shadow-xl shadow-emerald-500/25">
-            Explore Books →
-          </a>
-          <button onclick="alert('Shiori GLOBAL Workflow:\n1. Student Email Auth Guard\n2. Gemini AI Book Cover Scanner\n3. Dynamic Marketplace Listing\n4. Verified Peer Swap')" class="px-6 py-3 bg-slate-900/90 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-2xl border border-slate-700 transition">
-            ▶ Watch How It Works
-          </button>
-        </div>
-      </div>
-
-      <!-- Impact Metrics Sidebar -->
-      <div class="space-y-6">
-        <div class="glass-card rounded-3xl p-6 space-y-4">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-extrabold text-white flex items-center gap-2">🌱 Your Real-Time Impact</span>
-            <span class="text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Verified Data</span>
+            <h4 class="text-lg font-bold mb-1">Circular Book Exchange</h4>
+            <p class="text-xs text-blue-200 mb-4">Multi-angle inspection, physical condition tags & AI valuation pricing.</p>
+            <span class="text-xs font-bold text-[#FF6B4A] inline-flex items-center gap-1 group-hover:translate-x-1 transition">Open Portal <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 text-center">
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800/80">
-              <p id="impactBooks" class="text-2xl font-black text-white">0</p>
-              <p class="text-[10px] text-slate-400 font-medium mt-1">Books Reused</p>
-            </div>
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800/80">
-              <p id="impactSavings" class="text-2xl font-black text-emerald-400">₹0</p>
-              <p class="text-[10px] text-slate-400 font-medium mt-1">Total Savings</p>
-            </div>
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800/80">
-              <p class="text-2xl font-black text-cyan-400">100%</p>
-              <p class="text-[10px] text-slate-400 font-medium mt-1">Privacy Preserved</p>
-            </div>
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800/80">
-              <p id="impactPoints" class="text-2xl font-black text-emerald-400">0</p>
-              <p class="text-[10px] text-slate-400 font-medium mt-1">Impact Points</p>
-            </div>
+          <div onclick="navigateTo('ai')" class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-3xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl group-hover:scale-150 transition-all"></div>
+            <span class="p-3 bg-white/10 rounded-2xl inline-block mb-4 backdrop-blur-md">
+              <i data-lucide="bot" class="w-6 h-6 text-indigo-400"></i>
+            </span>
+            <h4 class="text-lg font-bold mb-1">Gemini AI Study Hub</h4>
+            <p class="text-xs text-slate-300 mb-4">Explain difficult concepts, summarize chapter notes & generate quick quizzes.</p>
+            <span class="text-xs font-bold text-indigo-400 inline-flex items-center gap-1 group-hover:translate-x-1 transition">Launch Assistant <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+          </div>
+
+          <div onclick="navigateTo('opportunities')" class="bg-gradient-to-br from-orange-600 to-amber-600 text-white p-6 rounded-3xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-amber-400/20 rounded-full blur-2xl group-hover:scale-150 transition-all"></div>
+            <span class="p-3 bg-white/10 rounded-2xl inline-block mb-4 backdrop-blur-md">
+              <i data-lucide="globe" class="w-6 h-6 text-white"></i>
+            </span>
+            <h4 class="text-lg font-bold mb-1">Global Opportunities</h4>
+            <p class="text-xs text-amber-100 mb-4">Curated international scholarships, hackathons & research grants.</p>
+            <span class="text-xs font-bold text-white inline-flex items-center gap-1 group-hover:translate-x-1 transition">Explore Programs <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
           </div>
         </div>
 
-        <div class="glass-card rounded-3xl p-6 space-y-3">
-          <p class="text-xs font-bold text-white mb-1">⚡ Quick Actions</p>
-          <button onclick="handleQuickAction('sell')" class="w-full py-2.5 px-4 bg-slate-900/90 hover:bg-emerald-500/10 hover:border-emerald-500/40 border border-slate-800 rounded-xl text-xs text-slate-300 font-semibold flex justify-between items-center transition">
-            <span>📷 Post a Book for Sale</span>
-            <span>→</span>
+      </section>
+
+      <!-- ================= SECTION 2: CIRCULAR BOOK EXCHANGE ================= -->
+      <section id="view-circular" class="hidden p-4 md:p-8 max-w-7xl mx-auto space-y-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200">
+          <div>
+            <div class="flex items-center gap-2 text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full w-fit mb-2">
+              <i data-lucide="shield-check" class="w-4 h-4"></i>
+              Yuta Sensei's 2-Step Verified Book System
+            </div>
+            <h2 class="text-2xl font-extrabold text-slate-900">Circular Book Exchange & Condition Evaluator</h2>
+            <p class="text-xs text-slate-500">Assess physical condition transparency with multi-angle verification to get accurate credit valuation.</p>
+          </div>
+          
+          <button onclick="openListingModal()" class="px-5 py-2.5 bg-[#FF6B4A] hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-lg shadow-orange-500/20 transition flex items-center gap-2">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> List Used Book
           </button>
-          <button onclick="showSection('marketplace')" class="w-full py-2.5 px-4 bg-slate-900/90 hover:bg-emerald-500/10 hover:border-emerald-500/40 border border-slate-800 rounded-xl text-xs text-slate-300 font-semibold flex justify-between items-center transition">
-            <span>🔍 Browse Marketplace</span>
-            <span>→</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Marketplace Section -->
-    <section id="marketplace" class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
-      <div>
-        <h2 class="text-xl font-bold text-white">Textbook Marketplace</h2>
-        <p class="text-xs text-slate-400 mt-0.5">Verified Listings for Class 9th–12th & Competitive Exams</p>
-      </div>
-
-      <div id="marketplaceContainer" class="py-16 text-center bg-slate-900/40 border border-slate-800/80 rounded-2xl space-y-3">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mx-auto">📚</div>
-        <p class="text-sm font-bold text-slate-200">No Books Listed Yet</p>
-        <p class="text-xs text-slate-500 max-w-sm mx-auto">Sign in with your email and scan a book cover to show the very first listing on Shiori GLOBAL!</p>
-      </div>
-    </section>
-
-    <!-- AI Book Scanner Section -->
-    <section id="scanner" class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="space-y-2">
-          <span class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md">Powered by Google Gemini Vision AI</span>
-          <h2 class="text-2xl font-bold text-white">Instant AI Book Scanner & Metadata Detector</h2>
-          <p class="text-xs text-slate-400 max-w-md leading-relaxed">Upload or capture a photo of any textbook cover. Gemini AI automatically detects the title, subject, condition, and lists it live!</p>
         </div>
 
-        <div class="w-full md:w-80 bg-slate-900/90 border-2 border-dashed border-slate-700 hover:border-emerald-500/50 p-6 rounded-2xl text-center transition">
-          <input type="file" id="bookImageInput" accept="image/*" class="hidden" onchange="runGeminiScan(event)" />
-          <label for="bookImageInput" onclick="return checkScanAuth(event)" class="cursor-pointer block">
-            <div class="text-4xl mb-2">📸</div>
-            <p class="text-xs font-bold text-slate-200">Click to Upload Book Cover</p>
-            <p class="text-[10px] text-slate-500 mt-1">PNG, JPG up to 10MB</p>
-          </label>
+        <!-- 2-STEP EVALUATION SIMULATION BENCH -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+            <i data-lucide="camera" class="w-5 h-5 text-blue-600"></i>
+            Try Interactive Inspection Demo (Multi-Angle & Physical Condition Assessment)
+          </h3>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left: Multi-angle Image Inspector -->
+            <div class="space-y-4">
+              <div class="relative bg-slate-100 rounded-2xl aspect-video overflow-hidden border border-slate-200 flex items-center justify-center group">
+                <img id="demo-book-preview" src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-all duration-300">
+                <div class="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-medium px-3 py-1 rounded-lg">
+                  Angle Preview: <span id="demo-angle-name" class="font-bold text-[#FF6B4A]">Front Cover</span>
+                </div>
+              </div>
+
+              <!-- Angle Thumbnails -->
+              <div class="grid grid-cols-4 gap-2">
+                <button onclick="switchDemoAngle('Front Cover', 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop')" class="p-2 bg-slate-50 rounded-xl border border-blue-500 text-xs font-bold text-slate-700 hover:bg-blue-50 transition text-center">
+                  Front Cover
+                </button>
+                <button onclick="switchDemoAngle('Spine Condition', 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop')" class="p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-blue-50 transition text-center">
+                  Spine Edge
+                </button>
+                <button onclick="switchDemoAngle('Inside Pages', 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800&auto=format&fit=crop')" class="p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-blue-50 transition text-center">
+                  Page Spread
+                </button>
+                <button onclick="switchDemoAngle('Back Cover', 'https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=800&auto=format&fit=crop')" class="p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-blue-50 transition text-center">
+                  Back Cover
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Interactive Condition Tag Toggles -->
+            <div class="space-y-4 flex flex-col justify-between">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">Select Physical Defects / Highlights (Transparent Assessment):</label>
+                <div class="flex flex-wrap gap-2" id="condition-tags-container">
+                  <button onclick="toggleConditionTag(this, 'pencil')" class="condition-tag px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 hover:border-orange-400 transition flex items-center gap-1.5">
+                    <span>✏️ Minor Pencil Marks</span>
+                  </button>
+                  <button onclick="toggleConditionTag(this, 'fading')" class="condition-tag px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 hover:border-orange-400 transition flex items-center gap-1.5">
+                    <span>🍂 Page Color Fading</span>
+                  </button>
+                  <button onclick="toggleConditionTag(this, 'highlight')" class="condition-tag px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 hover:border-orange-400 transition flex items-center gap-1.5">
+                    <span>🖍️ Highlighted Text</span>
+                  </button>
+                  <button onclick="toggleConditionTag(this, 'pristine')" class="condition-tag px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700 hover:border-orange-400 transition flex items-center gap-1.5">
+                    <span>✨ Pristine Binding</span>
+                  </button>
+                </div>
+
+                <div class="mt-5 p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                  <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500">Base Retail Price:</span>
+                    <span class="font-bold text-slate-800">$45.00</span>
+                  </div>
+                  <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500">Condition Factor (Yuta Algorithm):</span>
+                    <span id="valuation-factor" class="font-bold text-emerald-600">85% (Good)</span>
+                  </div>
+                  <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-sm font-extrabold">
+                    <span class="text-slate-900">Suggested Exchange Credit:</span>
+                    <span id="valuation-credits" class="text-[#FF6B4A] text-lg">185 Tokens</span>
+                  </div>
+                </div>
+              </div>
+
+              <button onclick="simulateVerification()" class="w-full py-3 bg-[#1E3A8A] hover:bg-blue-900 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+                Run Yuta Sensei 2-Step Verification
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div id="scanResult" class="hidden p-4 rounded-2xl bg-slate-950 border border-emerald-500/30 text-xs space-y-2"></div>
-    </section>
-
-    <!-- SECRET FOUNDER ADMIN DASHBOARD -->
-    <section id="adminPanel" class="hidden glass-card p-6 sm:p-8 rounded-3xl space-y-6 border border-amber-500/40">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+        <!-- RECENTLY LISTED BOOKS CATALOG -->
         <div>
-          <h2 class="text-xl font-extrabold text-amber-400 flex items-center gap-2">👑 Founder Security & User Analytics</h2>
-          <p class="text-xs text-slate-400">Live monitoring panel for Aprajita (Shiori Founder)</p>
+          <h3 class="font-bold text-slate-900 text-lg mb-4">Available Books in Student Network</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="book-catalog-grid">
+            <!-- Book Cards will be rendered dynamically by JavaScript -->
+          </div>
         </div>
-        <button onclick="closeAdminPanel()" class="text-xs px-3 py-1.5 bg-slate-800 text-slate-300 hover:text-white rounded-xl font-semibold">Close Dashboard</button>
-      </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
-            <tr>
-              <th class="p-3">User Name</th>
-              <th class="p-3">Email Address</th>
-              <th class="p-3">Age</th>
-              <th class="p-3">Verification</th>
-              <th class="p-3">Login Time</th>
-              <th class="p-3">Books Listed</th>
-            </tr>
-          </thead>
-          <tbody id="adminUserTableBody">
-            <tr>
-              <td colspan="6" class="p-6 text-center text-slate-500 italic">No user sign-in activity recorded in current session.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+      </section>
 
-  </main>
+      <!-- ================= SECTION 3: AI STUDY ASSISTANT ================= -->
+      <section id="view-ai" class="hidden p-4 md:p-8 max-w-7xl mx-auto space-y-6">
+        
+        <div class="bg-slate-900 text-white p-6 rounded-3xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold mb-2">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Powered by Gemini 3 Flash
+            </div>
+            <h2 class="text-2xl font-extrabold">Shiori AI Study Intelligence</h2>
+            <p class="text-xs text-slate-300">Your personal academic mentor for instant summaries, concept simplification, and book assessments.</p>
+          </div>
+          <div class="flex gap-2 z-10">
+            <button onclick="setAiPrompt('Explain the concept of Quantum Entanglement using simple real-world analogies.')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-xl text-slate-200 border border-slate-700 transition">
+              💡 Explain Concept
+            </button>
+            <button onclick="setAiPrompt('Summarize key takeaways from Data Structures & Algorithms Chapter 4.')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-xl text-slate-200 border border-slate-700 transition">
+              📝 Summarize Notes
+            </button>
+          </div>
+        </div>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-card p-6 rounded-3xl max-w-sm w-full space-y-4">
-      <div>
-        <h3 class="text-base font-bold text-white">🎓 Student Sign-In (Age 13–24)</h3>
-        <p class="text-[11px] text-slate-400 mt-1">Please enter your verified email to access book listing and chat features.</p>
-      </div>
-      <div class="space-y-3 text-xs">
-        <input type="text" id="userNameInput" placeholder="Full Name" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-        <input type="email" id="userEmailInput" placeholder="Email Address (e.g. student@gmail.com)" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-        <input type="number" id="userAgeInput" placeholder="Age (13 to 24)" min="13" max="24" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-      </div>
-      <div class="flex gap-2 pt-1">
-        <button onclick="closeLoginModal()" class="flex-1 py-2.5 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold">Cancel</button>
-        <button onclick="completeLogin()" class="flex-1 py-2.5 bg-emerald-500 text-slate-950 rounded-xl text-xs font-extrabold shadow-md">Sign In</button>
+        <!-- Chat Container -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col h-[520px] overflow-hidden">
+          
+          <!-- Chat Messages Scroll Area -->
+          <div id="ai-chat-messages" class="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-50/50">
+            <!-- Welcome message -->
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                AI
+              </div>
+              <div class="bg-white p-4 rounded-2xl rounded-tl-none border border-slate-200 max-w-2xl text-xs text-slate-700 leading-relaxed shadow-sm">
+                <p class="font-bold text-slate-900 mb-1">Hello Aprajita! 👋</p>
+                I am your Shiori Gemini Study Assistant. I can summarize complex chapters, break down textbook concepts, or analyze book conditions from your camera! How can I support your study goals today?
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Input -->
+          <div class="p-4 bg-white border-t border-slate-200">
+            <form onsubmit="handleAiSubmit(event)" class="flex items-center gap-2">
+              <input type="text" id="ai-user-input" placeholder="Ask anything about your courses, books, or scholarships..." class="flex-1 px-4 py-3 text-xs md:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
+              <button type="submit" class="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5 shrink-0">
+                <span>Ask</span>
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= SECTION 4: GLOBAL OPPORTUNITIES ================= -->
+      <section id="view-opportunities" class="hidden p-4 md:p-8 max-w-7xl mx-auto space-y-6">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">Global Student Opportunities</h2>
+            <p class="text-xs text-slate-500">Handpicked scholarships, hackathons, and exchange programs for Shiori members.</p>
+          </div>
+
+          <!-- Category filter -->
+          <div class="flex bg-slate-100 p-1 rounded-xl">
+            <button onclick="filterOpportunities('all')" class="opp-tab px-3 py-1.5 text-xs font-bold rounded-lg text-white bg-[#1E3A8A]">All</button>
+            <button onclick="filterOpportunities('Scholarship')" class="opp-tab px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900">Scholarships</button>
+            <button onclick="filterOpportunities('Hackathon')" class="opp-tab px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900">Hackathons</button>
+            <button onclick="filterOpportunities('Exchange')" class="opp-tab px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900">Exchanges</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="opportunities-grid">
+          <!-- Rendered dynamically -->
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- MODAL: ADD NEW BOOK LISTING -->
+    <div id="modal-listing" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 border border-slate-200 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <h3 class="font-extrabold text-slate-900 text-base">List Book for Exchange</h3>
+          <button onclick="closeListingModal()" class="text-slate-400 hover:text-slate-600">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form onsubmit="handleNewListing(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Book Title</label>
+            <input type="text" id="new-book-title" required placeholder="e.g. Artificial Intelligence: A Modern Approach" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-[#1E3A8A]">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Author & Edition</label>
+            <input type="text" id="new-book-author" required placeholder="e.g. Stuart Russell (4th Edition)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-[#1E3A8A]">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Condition Tag</label>
+              <select id="new-book-condition" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-[#1E3A8A]">
+                <option value="Like New">✨ Like New</option>
+                <option value="Good (Pencil Marks)">✏️ Good (Pencil Marks)</option>
+                <option value="Fair (Highlighted)">🖍️ Fair (Highlighted)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Exchange Credit Value</label>
+              <input type="number" id="new-book-price" value="120" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-[#1E3A8A]">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Multi-Angle Image URL</label>
+            <input type="url" id="new-book-image" value="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-[#1E3A8A]">
+          </div>
+
+          <div class="pt-2 flex justify-end gap-2">
+            <button type="button" onclick="closeListingModal()" class="px-4 py-2 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl">Cancel</button>
+            <button type="submit" class="px-5 py-2 text-xs font-bold text-white bg-[#FF6B4A] hover:bg-orange-600 rounded-xl shadow">Submit for Yuta Verification</button>
+          </div>
+        </form>
       </div>
     </div>
+
   </div>
 
-  <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
-    <p>Shiori GLOBAL · Circular Learning Network | Built for Global Impact & Sustainability</p>
-  </footer>
-
   <script>
-    let currentUser = null;
-    let booksCount = 0;
-    let userLogs = [];
+    // State Data
+    const state = {
+      user: {
+        name: "Aprajita Sharma",
+        email: "aprajita@shiori.edu",
+        credits: 340,
+        streak: 5
+      },
+      activeView: 'home',
+      books: [
+        {
+          id: 1,
+          title: "Introduction to Algorithms",
+          author: "Cormen, Leiserson (3rd Ed)",
+          condition: "Good (Pencil Marks)",
+          credits: 180,
+          verifiedByYuta: true,
+          image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: 2,
+          title: "Organic Chemistry Principles",
+          author: "David Klein",
+          condition: "Fair (Highlighted)",
+          credits: 110,
+          verifiedByYuta: true,
+          image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: 3,
+          title: "Principles of Physics",
+          author: "Halliday & Resnick",
+          condition: "✨ Like New",
+          credits: 220,
+          verifiedByYuta: true,
+          image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: 4,
+          title: "Microeconomic Theory",
+          author: "Hal Varian",
+          condition: "Good (Pencil Marks)",
+          credits: 140,
+          verifiedByYuta: true,
+          image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800&auto=format&fit=crop"
+        }
+      ],
+      opportunities: [
+        {
+          id: 1,
+          title: "Global Student AI Fellowship 2026",
+          type: "Scholarship",
+          provider: "Global Tech Foundation",
+          grant: "$10,000",
+          deadline: "15 Nov 2026",
+          badgeColor: "bg-blue-100 text-blue-800"
+        },
+        {
+          id: 2,
+          title: "Circular Economy Hackathon",
+          type: "Hackathon",
+          provider: "Shiori x Tokyo Hub",
+          grant: "$5,000 Prize Pool",
+          deadline: "28 Oct 2026",
+          badgeColor: "bg-emerald-100 text-emerald-800"
+        },
+        {
+          id: 3,
+          title: "Kyoto Student Research Exchange",
+          type: "Exchange",
+          provider: "Kyoto Academic Network",
+          grant: "Fully Funded",
+          deadline: "10 Dec 2026",
+          badgeColor: "bg-purple-100 text-purple-800"
+        }
+      ]
+    };
 
-    function showSection(id) {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    // Splash Screen Transition on Initial Load
+    window.addEventListener('load', () => {
+      lucide.createIcons();
+      setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        splash.classList.add('opacity-0');
+        setTimeout(() => {
+          splash.style.display = 'none';
+          // Show auth modal on start as requested by user flow
+          showAuthModal();
+        }, 700);
+      }, 1500);
+
+      renderBooks();
+      renderOpportunities('all');
+    });
+
+    // Navigation System
+    function navigateTo(viewId) {
+      state.activeView = viewId;
+      
+      const views = ['home', 'circular', 'ai', 'opportunities'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        const navBtn = document.getElementById(`nav-${v}`);
+        if (v === viewId) {
+          el.classList.remove('hidden');
+          if (navBtn) {
+            navBtn.classList.remove('text-slate-600');
+            navBtn.classList.add('text-white', 'bg-[#1E3A8A]');
+          }
+        } else {
+          el.classList.add('hidden');
+          if (navBtn) {
+            navBtn.classList.remove('text-white', 'bg-[#1E3A8A]');
+            navBtn.classList.add('text-slate-600');
+          }
+        }
+      });
     }
 
-    function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
-    function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+    // Auth Modal Handlers
+    function showAuthModal() {
+      document.getElementById('auth-screen').classList.remove('hidden');
+    }
 
-    function openAdminPasscodeModal() {
-      const pass = prompt("🔐 Enter Founder Admin Passcode:");
-      if (pass === "aprajita183" || pass === "shiori2026") {
-        document.getElementById('adminPanel').classList.remove('hidden');
-        renderAdminLogs();
-        showSection('adminPanel');
-      } else if (pass !== null) {
-        alert("❌ Incorrect Founder Passcode!");
+    function switchAuthTab(mode) {
+      const loginTab = document.getElementById('tab-login');
+      const signupTab = document.getElementById('tab-signup');
+      const nameField = document.getElementById('signup-name-field');
+      const submitBtn = document.getElementById('auth-submit-btn');
+
+      if (mode === 'signup') {
+        loginTab.className = "flex-1 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition-all";
+        signupTab.className = "flex-1 py-2 text-xs font-semibold rounded-lg text-white bg-[#FF6B4A] transition-all";
+        nameField.classList.remove('hidden');
+        submitBtn.querySelector('span').innerText = "Create Shiori Account";
+      } else {
+        signupTab.className = "flex-1 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition-all";
+        loginTab.className = "flex-1 py-2 text-xs font-semibold rounded-lg text-white bg-[#FF6B4A] transition-all";
+        nameField.classList.add('hidden');
+        submitBtn.querySelector('span').innerText = "Sign In to Dashboard";
       }
     }
 
-    function closeAdminPanel() {
-      document.getElementById('adminPanel').classList.add('hidden');
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      document.getElementById('auth-screen').classList.add('hidden');
+      navigateTo('home');
     }
 
-    function requireAuth(action) {
-      if (!currentUser) {
-        alert("🔒 Authentication Required: Please sign in with your email to access this feature.");
-        openLoginModal();
-        return false;
-      }
-      return true;
+    function quickDemoLogin() {
+      document.getElementById('auth-screen').classList.add('hidden');
+      navigateTo('home');
     }
 
-    function handleQuickAction(action) {
-      if (requireAuth(action)) {
-        if (action === 'sell') showSection('scanner');
-      }
+    // Interactive Demo Angle Switching
+    function switchDemoAngle(angleName, imgUrl) {
+      document.getElementById('demo-angle-name').innerText = angleName;
+      document.getElementById('demo-book-preview').src = imgUrl;
     }
 
-    function checkScanAuth(e) {
-      if (!currentUser) {
-        e.preventDefault();
-        alert("🔒 Authentication Required: Please sign in with your email before uploading or selling books.");
-        openLoginModal();
-        return false;
+    // Condition Tag Toggle
+    let activeTagCount = 1;
+    function toggleConditionTag(btn, type) {
+      if (btn.classList.contains('border-orange-500')) {
+        btn.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-700');
+        btn.classList.add('border-slate-200', 'bg-slate-50', 'text-slate-700');
+        activeTagCount--;
+      } else {
+        btn.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-700');
+        btn.classList.remove('border-slate-200', 'bg-slate-50');
+        activeTagCount++;
       }
-      return true;
+
+      // Update calculated evaluation credits
+      const baseCredits = 200;
+      const calculated = Math.max(80, baseCredits - (activeTagCount * 15));
+      document.getElementById('valuation-credits').innerText = `${calculated} Tokens`;
     }
 
-    function completeLogin() {
-      const name = document.getElementById('userNameInput').value.trim();
-      const email = document.getElementById('userEmailInput').value.trim();
-      const age = parseInt(document.getElementById('userAgeInput').value);
-
-      if (!name || !email) {
-        alert("Please enter both Name and Email Address.");
-        return;
-      }
-
-      if (isNaN(age) || age < 13 || age > 24) {
-        alert("⚠️ Access Restricted: Shiori GLOBAL is for verified students aged 13 to 24 years.");
-        return;
-      }
-
-      const loginTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      currentUser = { name, email, age, loginTime, booksListed: 0 };
-      userLogs.push(currentUser);
-
-      document.getElementById('loginBtn').innerText = name + " (Verified)";
-      closeLoginModal();
-      alert("✨ Sign-In Successful! Welcome " + name + ".");
+    function simulateVerification() {
+      alert("✅ Yuta Sensei 2-Step Verification Completed! This book physical condition is verified as transparent and ready for exchange.");
     }
 
-    function renderAdminLogs() {
-      const tbody = document.getElementById('adminUserTableBody');
-      if (userLogs.length === 0) return;
+    // Render Books Catalog
+    function renderBooks() {
+      const grid = document.getElementById('book-catalog-grid');
+      grid.innerHTML = state.books.map(book => `
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-lg transition flex flex-col justify-between">
+          <div>
+            <div class="relative h-44 bg-slate-100 overflow-hidden">
+              <img src="${book.image}" class="w-full h-full object-cover">
+              <span class="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md flex items-center gap-1 shadow">
+                <i data-lucide="check" class="w-3 h-3"></i> Verified
+              </span>
+            </div>
+            <div class="p-4">
+              <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">${book.condition}</span>
+              <h4 class="font-bold text-slate-900 text-sm leading-snug mb-1">${book.title}</h4>
+              <p class="text-xs text-slate-500 mb-3">${book.author}</p>
+            </div>
+          </div>
+          <div class="p-4 pt-0 border-t border-slate-100 flex items-center justify-between">
+            <span class="font-extrabold text-[#FF6B4A] text-sm">${book.credits} Credits</span>
+            <button onclick="requestExchange('${book.title}')" class="px-3 py-1.5 bg-[#1E3A8A] hover:bg-blue-900 text-white text-xs font-bold rounded-lg transition">
+              Exchange
+            </button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
 
-      tbody.innerHTML = userLogs.map(u => `
-        <tr class="border-b border-slate-800 hover:bg-slate-900/50">
-          <td class="p-3 font-semibold text-white">${u.name}</td>
-          <td class="p-3 text-slate-400">${u.email}</td>
-          <td class="p-3">${u.age} Yrs</td>
-          <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-semibold">Verified</span></td>
-          <td class="p-3 text-slate-400">${u.loginTime}</td>
-          <td class="p-3 font-bold text-emerald-400">${u.booksListed}</td>
-        </tr>
+    function requestExchange(title) {
+      alert(`🎉 Exchange request initiated for "${title}". Yuta Sensei verified contact shared!`);
+    }
+
+    // Modals
+    function openListingModal() {
+      document.getElementById('modal-listing').classList.remove('hidden');
+    }
+
+    function closeListingModal() {
+      document.getElementById('modal-listing').classList.add('hidden');
+    }
+
+    function handleNewListing(e) {
+      e.preventDefault();
+      const title = document.getElementById('new-book-title').value;
+      const author = document.getElementById('new-book-author').value;
+      const condition = document.getElementById('new-book-condition').value;
+      const credits = parseInt(document.getElementById('new-book-price').value);
+      const image = document.getElementById('new-book-image').value;
+
+      state.books.unshift({
+        id: Date.now(),
+        title,
+        author,
+        condition,
+        credits,
+        verifiedByYuta: true,
+        image
+      });
+
+      renderBooks();
+      closeListingModal();
+      alert("✨ Book listed successfully and sent for Yuta Sensei verification!");
+    }
+
+    // Gemini AI Chat Simulation
+    function setAiPrompt(text) {
+      document.getElementById('ai-user-input').value = text;
+    }
+
+    function handleAiSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('ai-user-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const chatContainer = document.getElementById('ai-chat-messages');
+
+      // Add user message
+      chatContainer.innerHTML += `
+        <div class="flex items-start gap-3 justify-end">
+          <div class="bg-[#1E3A8A] text-white p-3 rounded-2xl rounded-tr-none max-w-md text-xs leading-relaxed shadow-sm">
+            ${val}
+          </div>
+        </div>
+      `;
+
+      input.value = '';
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      // Simulate AI response
+      setTimeout(() => {
+        chatContainer.innerHTML += `
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+              AI
+            </div>
+            <div class="bg-white p-4 rounded-2xl rounded-tl-none border border-slate-200 max-w-2xl text-xs text-slate-700 leading-relaxed shadow-sm">
+              <p class="font-bold text-slate-900 mb-1">Gemini Response:</p>
+              Here is a concise breakdown for your query regarding <strong>"${val}"</strong>:
+              <br><br>
+              1. <strong>Core Principle:</strong> Breaking down knowledge into actionable circular learning steps ensures long-term mastery.<br>
+              2. <strong>Key Insight:</strong> Always cross-verify physical textbook notes with interactive quizzes.<br>
+              3. <strong>Next Step:</strong> You can save this summary directly into your Shiori Study Nest!
+            </div>
+          </div>
+        `;
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }, 1000);
+    }
+
+    // Opportunities Render & Filter
+    function renderOpportunities(type) {
+      const container = document.getElementById('opportunities-grid');
+      const filtered = type === 'all' 
+        ? state.opportunities 
+        : state.opportunities.filter(o => o.type === type);
+
+      container.innerHTML = filtered.map(o => `
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${o.badgeColor}">${o.type}</span>
+              <span class="text-xs text-slate-400 font-medium">Ends ${o.deadline}</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-base mb-1">${o.title}</h4>
+            <p class="text-xs text-slate-500 mb-4">${o.provider}</p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-sm font-extrabold text-emerald-600">${o.grant}</span>
+            <button onclick="alert('Applying for ${o.title}...')" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition">
+              Apply Now
+            </button>
+          </div>
+        </div>
       `).join('');
     }
 
-    function runGeminiScan(event) {
-      if (!currentUser) {
-        alert("🔒 Sign-In required.");
-        openLoginModal();
-        return;
-      }
-
-      if (!event.target.files[0]) return;
-      const res = document.getElementById('scanResult');
-      res.classList.remove('hidden');
-      res.innerHTML = `
-        <p class="font-bold text-emerald-400">✨ Gemini AI Scan Complete!</p>
-        <p class="text-slate-300">Book Cover Processed | Verified Condition (9/10)</p>
-        <button onclick="publishBook()" class="mt-2 px-3 py-1.5 bg-emerald-500 text-slate-950 font-extrabold rounded-lg text-xs">Publish Book Listing</button>
-      `;
-    }
-
-    function publishBook() {
-      if (!currentUser) return;
-
-      booksCount++;
-      currentUser.booksListed++;
-      document.getElementById('impactBooks').innerText = booksCount;
-      document.getElementById('impactSavings').innerText = "₹" + (booksCount * 150);
-      document.getElementById('impactPoints').innerText = booksCount * 50;
-      document.getElementById('navEsgScore').innerText = (booksCount * 50) + " Pts";
-
-      const container = document.getElementById('marketplaceContainer');
-      if (booksCount === 1) {
-        container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4";
-        container.innerHTML = "";
-      }
-
-      container.innerHTML += `
-        <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl text-left space-y-2 hover:border-emerald-500/40 transition">
-          <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-semibold">Verified Listing</span>
-          <h4 class="text-sm font-bold text-white">Scanned Textbook #${booksCount}</h4>
-          <p class="text-xs text-slate-400">Seller: ${currentUser.name}</p>
-          <p class="text-xs font-bold text-emerald-400 pt-1">₹150 (Swap Available)</p>
-        </div>
-      `;
-      document.getElementById('scanResult').classList.add('hidden');
-      showSection('marketplace');
+    function filterOpportunities(type) {
+      renderOpportunities(type);
     }
   </script>
 </body>
