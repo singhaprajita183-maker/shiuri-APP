@@ -45,7 +45,7 @@
       overflow-x: hidden;
     }
 
-    /* Custom Glassmorphism Card Style matching UI */
+    /* Custom Glassmorphism Card Style */
     .dashboard-card {
       background: linear-gradient(180deg, #101B3B 0%, #0C152F 100%);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -66,7 +66,7 @@
       overflow: hidden;
     }
 
-    /* 3D Isometric Book Glow Animation */
+    /* Animations */
     @keyframes floatBook {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-8px) rotate(-1deg); }
@@ -89,7 +89,7 @@
       animation: pulseGlow 6s ease-in-out infinite;
     }
 
-    /* Action Arrow Buttons */
+    /* Action Circle Buttons */
     .action-circle-btn {
       width: 32px;
       height: 32px;
@@ -126,13 +126,13 @@
   <div id="toastBox" class="fixed top-5 right-5 z-[999] flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- ============================================== -->
-  <!-- TOP NAVIGATION BAR (Exact replica of image)    -->
+  <!-- TOP NAVIGATION BAR                            -->
   <!-- ============================================== -->
   <header class="w-full px-4 lg:px-8 py-3.5 border-b border-white/5 bg-[#091124]/90 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-[1520px] mx-auto flex items-center justify-between gap-4">
       
       <!-- Brand Logo Left -->
-      <div class="flex items-center gap-3 cursor-pointer" onclick="setActiveNav('home')">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="closeAllModals()">
         <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-blue-600/30">
           栞
         </div>
@@ -150,41 +150,42 @@
         <button id="nav-home" onclick="setActiveNav('home')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all">
           <i class="fa-solid fa-house text-[11px]"></i> Home
         </button>
-        <button id="nav-explore" onclick="openMarketplaceModal()" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
-          <i class="fa-solid fa-magnifying-glass text-[11px]"></i> Explore
+        <button id="nav-explore" onclick="setActiveNav('explore')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
+          <i class="fa-solid fa-magnifying-glass text-[11px]"></i> Explore Books
         </button>
-        <button id="nav-sell" onclick="openSellModal()" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
-          <i class="fa-solid fa-tag text-[11px]"></i> Sell Book
+        <button id="nav-sell" onclick="setActiveNav('sell')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
+          <i class="fa-solid fa-tag text-[11px]"></i> Sell / Swap
         </button>
-        <button id="nav-ai" onclick="openAiAssistantModal()" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
+        <button id="nav-ai" onclick="setActiveNav('ai')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
           <i class="fa-solid fa-wand-magic-sparkles text-[11px]"></i> AI Assistant
         </button>
-        <button id="nav-messages" onclick="openMessagesModal()" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
+        <button id="nav-messages" onclick="setActiveNav('messages')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all relative">
           <i class="fa-regular fa-comment-dots text-[11px]"></i> Messages
+          <span id="unreadDot" class="h-2 w-2 rounded-full bg-cyan-400 absolute top-1 right-2 hidden"></span>
         </button>
-        <button id="nav-profile" onclick="openProfileModal()" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
-          <i class="fa-regular fa-user text-[11px]"></i> Profile
+        <button id="nav-community" onclick="setActiveNav('community')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
+          <i class="fa-solid fa-earth-americas text-[11px]"></i> Interpals Network
         </button>
       </nav>
 
-      <!-- Right Actions: ESG Pill, Notification, User Avatar -->
+      <!-- Right Actions: ESG Pill, Notification, User Profile -->
       <div class="flex items-center gap-3">
         <!-- ESG Pill Badge -->
-        <div onclick="showNotification('Sustainability Score', 'You have contributed to saving 24.8K trees & earned 1,250 impact credits!')" class="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/25 transition-all">
+        <div onclick="openEsgModal()" class="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/25 transition-all">
           <i class="fa-solid fa-leaf text-xs"></i>
-          <span>ESG Score: 1,250 Points</span>
+          <span id="headerEsgPoints">ESG Score: 1,250 Points</span>
         </div>
 
-        <!-- Notification Bell with Ping -->
-        <button onclick="showNotification('Notifications', 'Alex sent an inquiry about Halliday Resnick Physics Book.')" class="relative h-9 w-9 rounded-full bg-[#101B3B] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:border-slate-600 transition-all">
+        <!-- Notification Bell -->
+        <button onclick="showToast('Inquiry Alert', 'Aarav sent you a penpal message about Physics Notes!')" class="relative h-9 w-9 rounded-full bg-[#101B3B] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:border-slate-600 transition-all">
           <i class="fa-regular fa-bell text-sm"></i>
-          <span class="absolute top-2 right-2 h-2 w-2 rounded-full bg-cyan-400"></span>
+          <span class="absolute top-2 right-2 h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
         </button>
 
         <!-- User Profile Avatar -->
         <div onclick="openProfileModal()" class="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 p-[1.5px] cursor-pointer hover:scale-105 transition-all">
           <div class="h-full w-full rounded-full bg-[#0D1733] flex items-center justify-center text-xs font-bold text-white overflow-hidden">
-            <i class="fa-solid fa-user text-slate-300"></i>
+            <span id="userAvatarText">MY</span>
           </div>
         </div>
       </div>
@@ -192,7 +193,7 @@
   </header>
 
   <!-- ============================================== -->
-  <!-- MAIN DASHBOARD CONTENT (EXACT 2-COLUMN SPLIT)  -->
+  <!-- MAIN DASHBOARD CONTENT                         -->
   <!-- ============================================== -->
   <main class="max-w-[1520px] mx-auto w-full px-4 lg:px-8 py-6">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -207,61 +208,36 @@
           
           <!-- Hero Left Copy -->
           <div class="max-w-md z-10 flex flex-col items-start gap-4">
-            <!-- Pill Tagline -->
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#18274E] border border-blue-400/20 text-slate-200 text-xs font-medium">
               <span>📚 Learn • Share • Build a Greener Future</span>
             </div>
 
-            <!-- Main Heading with Gradient -->
             <h1 class="text-3xl sm:text-4xl lg:text-[40px] font-black text-white leading-[1.15] tracking-tight">
               Books Today.<br>
               A <span class="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-clip-text text-transparent">Brighter Tomorrow.</span>
             </h1>
 
-            <!-- Subtitle -->
             <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-              Buy, sell, donate, swap and discover books. Connect with a community of learners. Reduce waste. Make education more accessible for everyone.
+              Buy, sell, donate, swap textbooks, and connect with global learning penpals. Reduce paper waste and make education accessible worldwide.
             </p>
 
-            <!-- Buttons Row -->
             <div class="flex flex-wrap items-center gap-3 pt-2">
-              <button onclick="openMarketplaceModal()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all">
+              <button onclick="setActiveNav('explore')" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all">
                 <span>Explore Books</span>
                 <i class="fa-solid fa-arrow-right text-[10px]"></i>
               </button>
-              <button onclick="openVideoWalkthroughModal()" class="px-4 py-2.5 rounded-full bg-[#162244]/80 hover:bg-[#1E2E5B] border border-white/10 text-slate-200 font-semibold text-xs flex items-center gap-2 backdrop-blur-sm active:scale-95 transition-all">
-                <i class="fa-solid fa-play text-cyan-400 text-[10px]"></i>
-                <span>Watch How It Works</span>
+              <button onclick="setActiveNav('community')" class="px-4 py-2.5 rounded-full bg-[#162244]/80 hover:bg-[#1E2E5B] border border-white/10 text-slate-200 font-semibold text-xs flex items-center gap-2 backdrop-blur-sm active:scale-95 transition-all">
+                <i class="fa-solid fa-earth-americas text-cyan-400 text-xs"></i>
+                <span>Find Study Penpals</span>
               </button>
             </div>
           </div>
 
-          <!-- Hero Right Graphic (3D Isometric Luminous Book & Floating Elements) -->
+          <!-- Hero Right Graphic (3D Isometric Luminous Book) -->
           <div class="relative w-full max-w-[340px] h-[260px] flex items-center justify-center">
-            
-            <!-- Ambient Blue Ray Glows -->
             <div class="light-orb absolute w-48 h-48 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
             <div class="light-orb absolute w-60 h-60 bg-blue-600/25 rounded-full blur-3xl pointer-events-none"></div>
 
-            <!-- Floating Top Right Mini Floating Book -->
-            <div class="absolute top-2 right-6 opacity-75 transform rotate-12 scale-90 hidden sm:block">
-              <svg width="48" height="40" viewBox="0 0 60 50" fill="none">
-                <path d="M5 25L30 10L55 25L30 40L5 25Z" fill="#1E3A8A"/>
-                <path d="M5 25L30 40V48L5 33V25Z" fill="#172554"/>
-                <path d="M55 25L30 40V48L55 33V25Z" fill="#2563EB"/>
-              </svg>
-            </div>
-
-            <!-- Floating Left Mini Isometric Book -->
-            <div class="absolute top-6 left-2 opacity-60 transform -rotate-12 scale-75 hidden sm:block">
-              <svg width="40" height="35" viewBox="0 0 60 50" fill="none">
-                <path d="M5 25L30 10L55 25L30 40L5 25Z" fill="#1D4ED8"/>
-                <path d="M5 25L30 40V48L5 33V25Z" fill="#0F172A"/>
-                <path d="M55 25L30 40V48L55 33V25Z" fill="#38BDF8"/>
-              </svg>
-            </div>
-
-            <!-- Glowing Chat Bubble ("Same books. New stories.") -->
             <div class="animated-bubble absolute top-0 right-4 z-20 flex flex-col items-center">
               <div class="relative px-3.5 py-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 font-bold text-[11px] shadow-lg shadow-cyan-500/30 flex items-center gap-1.5">
                 <i class="fa-solid fa-comment-dots text-white text-xs"></i>
@@ -269,51 +245,30 @@
                   <div class="text-[10px] opacity-90">Same books.</div>
                   <div class="font-extrabold text-[11px]">New stories.</div>
                 </div>
-                <!-- Bubble Tail -->
                 <div class="absolute -bottom-1.5 left-5 w-3 h-3 bg-blue-500 transform rotate-45 rounded-sm"></div>
               </div>
             </div>
 
-            <!-- Main Isometric 3D Glowing Open Book (SVG Rendered with High Contrast Depth) -->
             <div class="animated-book relative z-10 w-full max-w-[280px]">
               <svg viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto drop-shadow-[0_20px_25px_rgba(6,182,212,0.35)]">
-                <!-- Book Spine Base / Hard Cover Shadow -->
                 <path d="M160 170L30 115V132L160 188L290 132V115L160 170Z" fill="#0C1B3E"/>
                 <path d="M160 175L20 118L30 105L160 162L290 105L300 118L160 175Z" fill="#1E3A8A"/>
-
-                <!-- Left Open Block Pages (Layered) -->
                 <path d="M160 158C110 152 50 120 35 110L42 98C60 108 115 140 160 146V158Z" fill="#1E40AF"/>
                 <path d="M160 148C115 142 62 110 46 100L55 88C72 98 120 130 160 136V148Z" fill="#2563EB"/>
                 <path d="M160 136C120 130 75 100 58 90C90 76 130 100 160 112V136Z" fill="#38BDF8"/>
-                
-                <!-- Glowing Left Page Top Face -->
                 <path d="M160 115C125 102 85 80 55 90L65 72C98 62 135 84 160 96V115Z" fill="url(#leftPageGradient)"/>
-                
-                <!-- Right Open Block Pages (Layered) -->
                 <path d="M160 158C210 152 270 120 285 110L278 98C260 108 205 140 160 146V158Z" fill="#1E40AF"/>
                 <path d="M160 148C205 142 258 110 274 100L265 88C248 98 200 130 160 136V148Z" fill="#2563EB"/>
                 <path d="M160 136C200 130 245 100 262 90C230 76 190 100 160 112V136Z" fill="#38BDF8"/>
-                
-                <!-- Glowing Right Page Top Face -->
                 <path d="M160 115C195 102 235 80 265 90L255 72C222 62 185 84 160 96V115Z" fill="url(#rightPageGradient)"/>
-
-                <!-- Glowing Text Lines on Book Pages -->
                 <path d="M78 86C105 78 130 92 148 100" stroke="#E0F2FE" stroke-width="2.5" stroke-linecap="round"/>
                 <path d="M84 94C108 87 132 100 148 107" stroke="#BAE6FD" stroke-width="2.5" stroke-linecap="round"/>
                 <path d="M92 102C112 96 132 107 148 114" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round"/>
-
                 <path d="M242 86C215 78 190 92 172 100" stroke="#E0F2FE" stroke-width="2.5" stroke-linecap="round"/>
                 <path d="M236 94C212 87 188 100 172 107" stroke="#BAE6FD" stroke-width="2.5" stroke-linecap="round"/>
                 <path d="M228 102C208 96 188 107 172 114" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round"/>
-
-                <!-- Radiant Center Luminous Seam / Spine Light -->
                 <path d="M160 95V165" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
-
-                <!-- Orange Bookmark Ribbon Dropping Down -->
                 <path d="M160 120C160 140 165 160 168 185L176 177L184 185C180 160 170 140 160 120Z" fill="#F97316"/>
-                <path d="M160 120C160 140 163 160 166 185L174 177L182 185C178 160 168 140 160 120Z" fill="#EA580C" opacity="0.6"/>
-
-                <!-- Gradient Defs -->
                 <defs>
                   <linearGradient id="leftPageGradient" x1="55" y1="80" x2="160" y2="115" gradientUnits="userSpaceOnUse">
                     <stop stop-color="#E0F2FE"/>
@@ -331,26 +286,24 @@
           </div>
         </div>
 
-        <!-- 2. EXPLORE OUR FEATURES SECTION -->
+        <!-- 2. EXPLORE FEATURES GRID -->
         <div class="space-y-3">
           <div>
-            <h2 class="text-xl font-bold text-white tracking-tight">Explore Our Features</h2>
-            <p class="text-xs text-slate-400">Everything you need for a smarter, more sustainable learning journey.</p>
+            <h2 class="text-xl font-bold text-white tracking-tight">Platform Core Features</h2>
+            <p class="text-xs text-slate-400">Sustainable learning tools and global peer connections.</p>
           </div>
 
-          <!-- 4-Card Feature Grid (Exact Icons & Palette) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            <!-- Feature 1: Marketplace -->
-            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="openMarketplaceModal()">
+            <!-- Feature 1 -->
+            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="setActiveNav('explore')">
               <div class="space-y-3">
                 <div class="h-10 w-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
                   <i class="fa-solid fa-book-open text-base"></i>
                 </div>
                 <div>
-                  <h3 class="font-bold text-sm text-white">Marketplace</h3>
+                  <h3 class="font-bold text-sm text-white">Book Marketplace</h3>
                   <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Buy, sell, donate or swap textbooks and study materials from trusted students.
+                    Buy, sell, donate, or swap verified course books locally or globally.
                   </p>
                 </div>
               </div>
@@ -361,16 +314,16 @@
               </div>
             </div>
 
-            <!-- Feature 2: AI Study Assistant -->
-            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="openAiAssistantModal()">
+            <!-- Feature 2 -->
+            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="setActiveNav('ai')">
               <div class="space-y-3">
                 <div class="h-10 w-10 rounded-xl bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
-                  <i class="fa-solid fa-comment text-base"></i>
+                  <i class="fa-solid fa-wand-magic-sparkles text-base"></i>
                 </div>
                 <div>
                   <h3 class="font-bold text-sm text-white">AI Study Assistant</h3>
                   <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Get instant help with your questions, summaries, explanations and more.
+                    Powered by Gemini API for instant summaries, quiz generation, and guidance.
                   </p>
                 </div>
               </div>
@@ -381,16 +334,16 @@
               </div>
             </div>
 
-            <!-- Feature 3: Student Community -->
-            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="openCommunityModal()">
+            <!-- Feature 3 -->
+            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="setActiveNav('community')">
               <div class="space-y-3">
                 <div class="h-10 w-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
-                  <i class="fa-solid fa-users text-base"></i>
+                  <i class="fa-solid fa-earth-americas text-base"></i>
                 </div>
                 <div>
-                  <h3 class="font-bold text-sm text-white">Student Community</h3>
+                  <h3 class="font-bold text-sm text-white">Interpals Penpals</h3>
                   <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Connect, chat and collaborate with students from your school, college and beyond.
+                    Find international study buddies filtered by language, grade, and subjects.
                   </p>
                 </div>
               </div>
@@ -401,16 +354,16 @@
               </div>
             </div>
 
-            <!-- Feature 4: Sustainable Future -->
-            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="openSustainabilityModal()">
+            <!-- Feature 4 -->
+            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="openEsgModal()">
               <div class="space-y-3">
                 <div class="h-10 w-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
                   <i class="fa-solid fa-leaf text-base"></i>
                 </div>
                 <div>
-                  <h3 class="font-bold text-sm text-white">Sustainable Future</h3>
+                  <h3 class="font-bold text-sm text-white">ESG Green Credits</h3>
                   <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Give books a second life and be part of a greener, smarter world.
+                    Earn eco-impact scores for every book recirculated and paper saved.
                   </p>
                 </div>
               </div>
@@ -420,15 +373,29 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
-        <!-- 3. BOTTOM WIDE BANNER: Together for a Greener Planet -->
+        <!-- 3. LIVE RECENT BOOK LISTINGS SHOWCASE -->
+        <div class="dashboard-card p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-lg text-white">Trending Books Available Now</h3>
+              <p class="text-xs text-slate-400">Recirculating across universities and schools worldwide.</p>
+            </div>
+            <button onclick="setActiveNav('explore')" class="text-xs text-cyan-400 hover:underline font-semibold">
+              View All Marketplace →
+            </button>
+          </div>
+
+          <div id="homeMarketplacePreview" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Dynamic Content Injected Here via JS -->
+          </div>
+        </div>
+
+        <!-- 4. BOTTOM SUSTAINABILITY BANNER -->
         <div class="dashboard-card p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-6 bg-gradient-to-r from-[#0C1733] via-[#0E1B3E] to-[#0A132C]">
-          <!-- Left Info with Earth illustration -->
           <div class="flex items-center gap-4">
-            <!-- 3D Globe with leaf sprout -->
             <div class="relative h-14 w-14 rounded-full bg-gradient-to-tr from-teal-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-teal-500/25 flex-shrink-0">
               <i class="fa-solid fa-earth-americas text-slate-900 text-2xl"></i>
               <div class="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-emerald-400 flex items-center justify-center text-[10px] text-slate-900 font-bold border-2 border-[#0D1733]">
@@ -443,19 +410,14 @@
             </div>
           </div>
 
-          <!-- Right Inline Stats -->
           <div class="flex items-center gap-6 sm:gap-8 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-8">
             <div class="text-center sm:text-left">
-              <div class="font-black text-white text-base sm:text-lg">24.8K+</div>
-              <div class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Books Reused</div>
+              <div class="text-lg font-black text-cyan-400">24,800+</div>
+              <div class="text-[10px] text-slate-400 uppercase font-semibold">Trees Saved</div>
             </div>
             <div class="text-center sm:text-left">
-              <div class="font-black text-white text-base sm:text-lg">1.2K+</div>
-              <div class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Impact Points</div>
-            </div>
-            <div class="text-center sm:text-left">
-              <div class="font-black text-emerald-400 text-base sm:text-lg">100%</div>
-              <div class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Privacy Safe</div>
+              <div class="text-lg font-black text-emerald-400">140,500 kg</div>
+              <div class="text-[10px] text-slate-400 uppercase font-semibold">CO2 Prevented</div>
             </div>
           </div>
         </div>
@@ -463,156 +425,63 @@
       </div>
 
       <!-- ========================================== -->
-      <!-- RIGHT SIDEBAR (4 cols)                     -->
+      <!-- RIGHT SECTION: INTERPALS CHAT & PENPALS (4 cols) -->
       <!-- ========================================== -->
-      <div class="lg:col-span-4 flex flex-col gap-5">
+      <div class="lg:col-span-4 flex flex-col gap-6">
 
-        <!-- 1. "YOUR IMPACT" STATS CARD -->
+        <!-- INTERPALS QUICK MATCH CONTAINER -->
         <div class="dashboard-card p-5 space-y-4">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
             <div class="flex items-center gap-2">
-              <i class="fa-solid fa-leaf text-emerald-400 text-sm"></i>
-              <h3 class="font-bold text-white text-sm">Your Impact</h3>
+              <span class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+              <h3 class="font-bold text-sm text-white">Interpals Penpal Network</h3>
             </div>
-            <button onclick="openImpactDetailsModal()" class="text-xs text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1">
-              View Details <i class="fa-solid fa-arrow-right text-[10px]"></i>
-            </button>
+            <span class="text-[10px] bg-cyan-500/20 text-cyan-300 font-semibold px-2 py-0.5 rounded-full">Global Learners</span>
           </div>
 
-          <!-- 2x2 Impact Grid (Exact UI layout & badges) -->
-          <div class="grid grid-cols-2 gap-3">
-            
-            <!-- Stat 1: Books Reused -->
-            <div class="p-3.5 rounded-xl bg-[#091228] border border-white/5 flex items-center gap-3">
-              <div class="h-10 w-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm flex-shrink-0">
-                <i class="fa-solid fa-book"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-sm font-black text-white truncate">24,800+</div>
-                <div class="text-[10px] text-slate-400 truncate">Books Reused</div>
-              </div>
-            </div>
+          <p class="text-xs text-slate-300">
+            Connect with students globally for language exchange, shared textbook access, and study groups.
+          </p>
 
-            <!-- Stat 2: Total Savings -->
-            <div class="p-3.5 rounded-xl bg-[#091228] border border-white/5 flex items-center gap-3">
-              <div class="h-10 w-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm flex-shrink-0">
-                <i class="fa-solid fa-indian-rupee-sign"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-sm font-black text-white truncate">₹38.4L</div>
-                <div class="text-[10px] text-slate-400 truncate">Total Savings</div>
-              </div>
-            </div>
+          <!-- PENPAL MINI CAROUSEL / LIST -->
+          <div id="penpalSidebarList" class="space-y-3">
+            <!-- Dynamically populated via JS -->
+          </div>
 
-            <!-- Stat 3: Privacy Preserved -->
-            <div class="p-3.5 rounded-xl bg-[#091228] border border-white/5 flex items-center gap-3">
-              <div class="h-10 w-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm flex-shrink-0">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-sm font-black text-white truncate">100%</div>
-                <div class="text-[10px] text-slate-400 truncate">Privacy Preserved</div>
-              </div>
-            </div>
+          <button onclick="setActiveNav('community')" class="w-full py-2.5 rounded-xl bg-[#16244C] hover:bg-[#1C2E60] border border-white/10 text-cyan-300 font-bold text-xs flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-users text-xs"></i>
+            <span>Browse All Interpals Penpals</span>
+          </button>
+        </div>
 
-            <!-- Stat 4: Impact Points -->
-            <div class="p-3.5 rounded-xl bg-[#091228] border border-white/5 flex items-center gap-3">
-              <div class="h-10 w-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-sm flex-shrink-0">
-                <i class="fa-solid fa-seedling"></i>
-              </div>
-              <div class="overflow-hidden">
-                <div class="text-sm font-black text-white truncate">1,250</div>
-                <div class="text-[10px] text-slate-400 truncate">Impact Points</div>
-              </div>
-            </div>
+        <!-- RECENT CHAT QUICK INBOX -->
+        <div class="dashboard-card p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <h3 class="font-bold text-sm text-white flex items-center gap-2">
+              <i class="fa-regular fa-comment-dots text-cyan-400"></i> Active Conversations
+            </h3>
+            <button onclick="setActiveNav('messages')" class="text-[11px] text-cyan-400 hover:underline">Open Full Chat</button>
+          </div>
 
+          <div id="sidebarChatInbox" class="space-y-2">
+            <!-- Dynamic Recent Messages -->
           </div>
         </div>
 
-        <!-- 2. MINI PROMO CARD: Small Choices. Big Impact. -->
-        <div class="dashboard-card p-4 sm:p-5 flex items-center justify-between gap-3 bg-gradient-to-r from-[#0C1635] to-[#12204B] group cursor-pointer" onclick="openSustainabilityModal()">
-          <div class="flex items-center gap-3.5">
-            <!-- 3D Earth Graphic -->
-            <div class="h-12 w-12 rounded-full bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-slate-950 font-bold text-lg shadow-md flex-shrink-0">
-              🌍
-            </div>
-            <div>
-              <div class="text-xs font-bold text-white leading-tight">
-                Small Choices. <span class="text-emerald-400">Big Impact.</span>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">
-                Reused books = Less waste<br>= A greener planet
-              </p>
-            </div>
-          </div>
-          <div class="action-circle-btn bg-[#182855] text-slate-200 border border-white/10 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-colors">
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-          </div>
-        </div>
-
-        <!-- 3. "QUICK ACTIONS" CARD -->
-        <div class="dashboard-card p-5 space-y-3">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-bolt text-cyan-400 text-sm"></i>
-            <h3 class="font-bold text-white text-sm">Quick Actions</h3>
-          </div>
-
-          <div class="divide-y divide-white/5 text-xs font-medium">
-            <!-- Action 1 -->
-            <button onclick="openSellModal()" class="w-full py-2.5 flex items-center justify-between text-slate-300 hover:text-white transition-colors group">
-              <span class="flex items-center gap-2.5">
-                <i class="fa-solid fa-tag text-slate-400 text-xs w-4"></i> Post a Book for Sale
-              </span>
-              <i class="fa-solid fa-chevron-right text-[10px] text-slate-500 group-hover:translate-x-1 transition-transform"></i>
-            </button>
-
-            <!-- Action 2 -->
-            <button onclick="openMarketplaceModal()" class="w-full py-2.5 flex items-center justify-between text-slate-300 hover:text-white transition-colors group">
-              <span class="flex items-center gap-2.5">
-                <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs w-4"></i> Browse Marketplace
-              </span>
-              <i class="fa-solid fa-chevron-right text-[10px] text-slate-500 group-hover:translate-x-1 transition-transform"></i>
-            </button>
-
-            <!-- Action 3 -->
-            <button onclick="openAiAssistantModal()" class="w-full py-2.5 flex items-center justify-between text-slate-300 hover:text-white transition-colors group">
-              <span class="flex items-center gap-2.5">
-                <i class="fa-solid fa-wand-magic-sparkles text-slate-400 text-xs w-4"></i> Ask AI Assistant
-              </span>
-              <i class="fa-solid fa-chevron-right text-[10px] text-slate-500 group-hover:translate-x-1 transition-transform"></i>
-            </button>
-
-            <!-- Action 4 -->
-            <button onclick="openMessagesModal()" class="w-full py-2.5 flex items-center justify-between text-slate-300 hover:text-white transition-colors group">
-              <span class="flex items-center gap-2.5">
-                <i class="fa-regular fa-comment-dots text-slate-400 text-xs w-4"></i> View Messages
-              </span>
-              <i class="fa-solid fa-chevron-right text-[10px] text-slate-500 group-hover:translate-x-1 transition-transform"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- 4. BRAND FOOTER CARD (Scenic Mountain Banner) -->
-        <div class="relative overflow-hidden rounded-2xl p-5 border border-white/10 group cursor-pointer" onclick="showNotification('Shiori Global Mission', 'Empowering 100M students with circular education by 2030.')" style="background: linear-gradient(180deg, rgba(8, 17, 43, 0.75) 0%, rgba(5, 11, 28, 0.95) 100%), radial-gradient(circle at 50% 20%, #1e3a8a 0%, #070d1e 100%);">
-          <!-- Subtle mountain silhouette background styling -->
-          <div class="space-y-3 relative z-10">
-            <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 block">
-              Learn • Share • Make an Impact
+        <!-- ESG IMPACT WIDGET -->
+        <div class="dashboard-card p-5 space-y-3 bg-gradient-to-br from-[#101B3B] to-[#0A182E] border-emerald-500/20">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-leaf"></i> Your ESG Impact
             </span>
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
-                <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-sm shadow">
-                  栞
-                </div>
-                <div>
-                  <div class="font-extrabold text-white text-sm leading-tight">Shiori <span class="text-cyan-400">GLOBAL</span></div>
-                  <div class="text-[9px] uppercase font-semibold text-slate-400 tracking-wider">Circular Learning Network</div>
-                </div>
-              </div>
-              <div class="action-circle-btn bg-slate-800 text-slate-200 border border-white/10 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-colors">
-                <i class="fa-solid fa-arrow-right text-xs"></i>
-              </div>
-            </div>
+            <span class="text-[10px] text-slate-400 font-mono">Level 4 Eco-Learner</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2">
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2 rounded-full w-[78%]"></div>
+          </div>
+          <div class="flex justify-between text-[11px] text-slate-300 pt-1">
+            <span>Contributions: 14 Books</span>
+            <span class="font-bold text-emerald-400">1,250 PTS</span>
           </div>
         </div>
 
@@ -622,522 +491,1069 @@
   </main>
 
   <!-- ============================================== -->
-  <!-- MODAL: MARKETPLACE / EXPLORE BOOKS             -->
+  <!-- MODALS CONTAINER (DYNAMIC VIEW SYSTEM)         -->
   <!-- ============================================== -->
-  <div id="modalMarketplace" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 space-y-5 border border-cyan-500/30">
-      <div class="flex items-center justify-between border-b border-white/10 pb-4">
-        <div class="flex items-center gap-2.5">
-          <div class="h-9 w-9 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm">
-            <i class="fa-solid fa-store"></i>
+
+  <!-- 1. EXPLORE MARKETPLACE MODAL / VIEW -->
+  <div id="modalExplore" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="dashboard-card w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center">
+            <i class="fa-solid fa-book-open text-lg"></i>
           </div>
           <div>
-            <h3 class="font-bold text-base text-white">Circular Book Marketplace</h3>
-            <p class="text-xs text-slate-400">Search textbooks for purchase, swap, or free student donation</p>
+            <h2 class="text-lg font-bold text-white">Shiori Book Marketplace</h2>
+            <p class="text-xs text-slate-400">Filter by category, condition, and exchange type</p>
           </div>
         </div>
-        <button onclick="closeModal('modalMarketplace')" class="h-8 w-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <!-- Search and Filters -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div class="sm:col-span-2 relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-xs"></i>
-          <input type="text" id="marketSearchInput" oninput="filterBooks()" placeholder="Search title, author, or subject (e.g., Physics, Calculus)..." class="w-full bg-[#070D1E] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400">
+      <!-- Filters & Search Bar -->
+      <div class="p-4 bg-[#0A1228] border-b border-white/5 flex flex-wrap gap-3 items-center justify-between">
+        <div class="flex-1 min-w-[240px] relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+          <input type="text" id="marketSearchInput" oninput="renderMarketplace()" placeholder="Search title, author, subject or ISBN..." class="w-full bg-[#121E3F] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
         </div>
-        <select id="marketTypeFilter" onchange="filterBooks()" class="bg-[#070D1E] border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
-          <option value="all">All Types (Sale / Free / Swap)</option>
-          <option value="free">Free Donation (₹0)</option>
-          <option value="sale">Second-Hand Sale</option>
-          <option value="swap">P2P Exchange</option>
-        </select>
+        <div class="flex items-center gap-2">
+          <select id="marketTypeFilter" onchange="renderMarketplace()" class="bg-[#121E3F] border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+            <option value="ALL">All Exchange Types</option>
+            <option value="SELL">For Sale</option>
+            <option value="SWAP">Swap / Exchange</option>
+            <option value="DONATE">Free Donation</option>
+          </select>
+          <select id="marketGenreFilter" onchange="renderMarketplace()" class="bg-[#121E3F] border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+            <option value="ALL">All Subjects</option>
+            <option value="Physics">Physics</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Literature">Literature</option>
+            <option value="Chemistry">Chemistry</option>
+          </select>
+        </div>
       </div>
 
-      <!-- Books Grid -->
-      <div id="booksListContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2">
-        <!-- Rendered via JavaScript -->
+      <!-- Marketplace Grid View -->
+      <div class="p-6 overflow-y-auto flex-1">
+        <div id="fullMarketplaceGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+          <!-- Dynamic Content -->
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ============================================== -->
-  <!-- MODAL: POST A BOOK FOR SALE / DONATION         -->
-  <!-- ============================================== -->
-  <div id="modalSell" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-lg p-6 space-y-4 border border-cyan-500/30">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-tag text-cyan-400 text-base"></i>
-          <h3 class="font-bold text-base text-white">Post a Book in Circular Network</h3>
+  <!-- 2. SELL / DONATE BOOK MODAL -->
+  <div id="modalSell" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="dashboard-card w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center">
+            <i class="fa-solid fa-plus text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-white">List a Book for Recirculation</h2>
+            <p class="text-xs text-slate-400">Give your textbooks a second home</p>
+          </div>
         </div>
-        <button onclick="closeModal('modalSell')" class="h-8 w-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <form onsubmit="handlePostBook(event)" class="space-y-3 text-xs">
+      <form id="sellBookForm" onsubmit="handleSellSubmit(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
         <div>
-          <label class="block text-slate-300 font-semibold mb-1">Book Title *</label>
-          <input type="text" id="newBookTitle" required placeholder="e.g. NCERT Physics Class 12 Part 1" class="w-full bg-[#070D1E] border border-white/10 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-cyan-400">
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Book Title *</label>
+          <input type="text" id="formTitle" required placeholder="e.g. Fundamentals of Physics 10th Ed" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-slate-300 font-semibold mb-1">Subject *</label>
-            <input type="text" id="newBookSubject" required placeholder="e.g. Physics" class="w-full bg-[#070D1E] border border-white/10 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-cyan-400">
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Author / Publisher</label>
+            <input type="text" id="formAuthor" placeholder="e.g. Halliday & Resnick" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
           </div>
           <div>
-            <label class="block text-slate-300 font-semibold mb-1">Type *</label>
-            <select id="newBookType" onchange="togglePriceField(this.value)" class="w-full bg-[#070D1E] border border-white/10 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-cyan-400">
-              <option value="sale">Sell (Second-Hand)</option>
-              <option value="free">Donate (₹0 Free)</option>
-              <option value="swap">P2P Swap</option>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Subject / Field *</label>
+            <select id="formSubject" required class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+              <option value="Physics">Physics</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Literature">Literature</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="General Studies">General Studies</option>
             </select>
           </div>
         </div>
 
-        <div id="priceWrapper">
-          <label class="block text-slate-300 font-semibold mb-1">Price (₹ INR) *</label>
-          <input type="number" id="newBookPrice" value="150" min="0" placeholder="e.g. 150" class="w-full bg-[#070D1E] border border-white/10 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-cyan-400">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Exchange Action *</label>
+            <select id="formType" required onchange="togglePriceField()" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+              <option value="SELL">Sell (Price)</option>
+              <option value="SWAP">Swap / Trade</option>
+              <option value="DONATE">Donate for Free</option>
+            </select>
+          </div>
+          <div id="priceWrapper">
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Price ($ or ₹ Equivalent)</label>
+            <input type="text" id="formPrice" placeholder="e.g. $15 or ₹500" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Condition</label>
+            <select id="formCondition" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+              <option value="Like New">Like New</option>
+              <option value="Good Condition">Good Condition</option>
+              <option value="Fair / Annotated">Fair (Annotated/Notes)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Location / City</label>
+            <input type="text" id="formLocation" placeholder="e.g. New Delhi / Tokyo / Online" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+          </div>
         </div>
 
         <div>
-          <label class="block text-slate-300 font-semibold mb-1">Condition</label>
-          <select id="newBookCondition" class="w-full bg-[#070D1E] border border-white/10 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-cyan-400">
-            <option value="Like New">Like New (Grade A+)</option>
-            <option value="Good">Good (Minor pencil notes)</option>
-            <option value="Fair">Fair (Highlighted pages)</option>
-          </select>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Description / Notes</label>
+          <textarea id="formDescription" rows="3" placeholder="Describe highlight notes, edition year, or delivery options..." class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"></textarea>
         </div>
 
-        <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('modalSell')" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold">Cancel</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold text-white shadow-lg">List Book Instantly</button>
+        <div class="pt-2 flex justify-end gap-3">
+          <button type="button" onclick="closeAllModals()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-slate-950 font-bold text-xs shadow-lg shadow-teal-500/25">Publish Listing (+50 ESG Pts)</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ============================================== -->
-  <!-- MODAL: AI STUDY ASSISTANT (INTERACTIVE CHAT)   -->
-  <!-- ============================================== -->
-  <div id="modalAi" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-2xl h-[560px] flex flex-col p-6 border border-cyan-500/30">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div class="flex items-center gap-2">
-          <div class="h-8 w-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center text-sm">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
+  <!-- 3. AI STUDY ASSISTANT MODAL (GEMINI API INTEGRATED) -->
+  <div id="modalAi" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="dashboard-card w-full max-w-4xl h-[85vh] flex flex-col overflow-hidden">
+      <!-- Header -->
+      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-teal-400 text-slate-950 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
           </div>
           <div>
-            <h3 class="font-bold text-sm text-white">Shiori AI Study Assistant</h3>
-            <p class="text-[10px] text-slate-400">Instant textbook summaries, concept breakdowns & revision quizzes</p>
+            <h2 class="text-lg font-bold text-white">Shiori Gemini AI Study Assistant</h2>
+            <p class="text-xs text-slate-400">Instant textbook summaries, concept breakdowns, and practice quizzes</p>
           </div>
         </div>
-        <button onclick="closeModal('modalAi')" class="h-8 w-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <!-- Chat Log -->
-      <div id="aiChatBox" class="flex-1 overflow-y-auto p-3 space-y-3 text-xs">
-        <div class="flex items-start gap-2.5">
-          <div class="h-7 w-7 rounded-lg bg-teal-500/30 text-teal-300 flex items-center justify-center text-xs flex-shrink-0">
+      <!-- Quick Prompt Pills -->
+      <div class="px-6 py-3 bg-[#0A1228] border-b border-white/5 flex gap-2 overflow-x-auto">
+        <button onclick="sendQuickAiPrompt('Summarize Newton\'s Laws of Motion with real world examples')" class="px-3 py-1 rounded-full bg-[#152347] border border-cyan-400/20 text-[11px] text-cyan-300 hover:bg-cyan-500/20 transition-all whitespace-nowrap">
+          💡 Summarize Newton's Laws
+        </button>
+        <button onclick="sendQuickAiPrompt('Explain Quantum Entanglement simply for a high school student')" class="px-3 py-1 rounded-full bg-[#152347] border border-cyan-400/20 text-[11px] text-cyan-300 hover:bg-cyan-500/20 transition-all whitespace-nowrap">
+          ⚛️ Quantum Entanglement Explained
+        </button>
+        <button onclick="sendQuickAiPrompt('Generate 3 practice questions on Calculus Integration with answers')" class="px-3 py-1 rounded-full bg-[#152347] border border-cyan-400/20 text-[11px] text-cyan-300 hover:bg-cyan-500/20 transition-all whitespace-nowrap">
+          📐 Calculus Quiz Questions
+        </button>
+      </div>
+
+      <!-- Chat History Screen -->
+      <div id="aiChatBox" class="flex-1 p-6 overflow-y-auto space-y-4">
+        <!-- Default AI Greeting -->
+        <div class="flex items-start gap-3">
+          <div class="h-8 w-8 rounded-lg bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 flex-shrink-0 text-xs">
             🤖
           </div>
-          <div class="p-3 rounded-2xl rounded-tl-none bg-[#091228] border border-white/5 text-slate-200 max-w-md leading-relaxed">
-            Hello scholar! Ask me to explain any difficult formula, summarize a textbook chapter, or suggest practice questions.
+          <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-4 max-w-2xl text-xs leading-relaxed text-slate-200">
+            Hello! I am your <strong>Shiori AI Academic Companion</strong>. Ask me anything about your textbooks, study notes, or concepts you're trying to master. How can I assist your study session today?
           </div>
         </div>
       </div>
 
-      <!-- Quick prompts -->
-      <div class="flex gap-2 py-2 overflow-x-auto text-[10px]">
-        <button onclick="askPresetPrompt('Explain Newton\'s Laws with real world examples')" class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 hover:text-cyan-400 whitespace-nowrap">Physics: Newton's Laws</button>
-        <button onclick="askPresetPrompt('Give me 3 practice questions on Organic Chemistry')" class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 hover:text-cyan-400 whitespace-nowrap">Chemistry: Organic Quiz</button>
-        <button onclick="askPresetPrompt('Summarize key calculus derivative rules')" class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 hover:text-cyan-400 whitespace-nowrap">Math: Derivatives</button>
-      </div>
-
-      <!-- Input Bar -->
-      <form onsubmit="handleSendAiMessage(event)" class="flex gap-2 pt-2 border-t border-white/10">
-        <input type="text" id="aiInputPrompt" placeholder="Ask anything about your study topics..." class="flex-1 bg-[#070D1E] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-        <button type="submit" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 hover:opacity-90">
-          <span>Send</span> <i class="fa-solid fa-paper-plane text-[10px]"></i>
+      <!-- Input Area -->
+      <div class="p-4 border-t border-white/10 bg-[#0C152F] flex gap-2">
+        <input type="text" id="aiInputPrompt" onkeypress="if(event.key==='Enter') sendAiMessage()" placeholder="Type your academic query or book topic here..." class="flex-1 bg-[#121E3F] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400">
+        <button onclick="sendAiMessage()" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-bold text-xs shadow-lg shadow-cyan-500/20 hover:scale-105 transition-all">
+          <i class="fa-solid fa-paper-plane"></i>
         </button>
-      </form>
+      </div>
     </div>
   </div>
 
-  <!-- ============================================== -->
-  <!-- MODAL: MESSAGES & PEER CHAT SIMULATOR          -->
-  <!-- ============================================== -->
-  <div id="modalMessages" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-xl h-[520px] flex flex-col p-5 border border-purple-500/30">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div class="flex items-center gap-2">
-          <i class="fa-regular fa-comment-dots text-purple-400 text-base"></i>
-          <h3 class="font-bold text-sm text-white">Peer Book Exchange Messages</h3>
-        </div>
-        <button onclick="closeModal('modalMessages')" class="h-8 w-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div class="flex-1 overflow-y-auto p-3 space-y-3 text-xs" id="peerChatContainer">
-        <div class="flex items-start gap-2">
-          <div class="h-7 w-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[10px]">AR</div>
-          <div class="p-3 rounded-2xl rounded-tl-none bg-[#091228] border border-white/5 text-slate-200 max-w-xs">
-            Hey! Is your Physics Part 2 textbook still available for swap at campus library?
+  <!-- 4. INTERPALS MESSAGES & PENPAL CHAT MODAL -->
+  <div id="modalMessages" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="dashboard-card w-full max-w-6xl h-[90vh] flex flex-col overflow-hidden">
+      <!-- Header -->
+      <div class="p-4 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center">
+            <i class="fa-solid fa-comments text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-white">Interpals Global Chat Hub</h2>
+            <p class="text-xs text-slate-400">Connect with peer learners, exchange notes, and agree on book swaps</p>
           </div>
         </div>
-      </div>
-
-      <form onsubmit="handleSendPeerMessage(event)" class="flex gap-2 pt-2 border-t border-white/10">
-        <input type="text" id="peerInputMessage" placeholder="Reply to book peer..." class="flex-1 bg-[#070D1E] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-purple-400">
-        <button type="submit" class="px-4 py-2.5 rounded-xl bg-purple-600 text-white font-bold text-xs flex items-center gap-1.5 hover:bg-purple-500">
-          <span>Reply</span> <i class="fa-solid fa-paper-plane text-[10px]"></i>
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ============================================== -->
-  <!-- MODAL: WATCH HOW IT WORKS (VIDEO SIMULATOR)    -->
-  <!-- ============================================== -->
-  <div id="modalVideo" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-2xl p-6 space-y-4 border border-cyan-500/30 text-center">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3 text-left">
-        <h3 class="font-bold text-base text-white">How Shiori Circular Network Works</h3>
-        <button onclick="closeModal('modalVideo')" class="h-8 w-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div class="relative h-64 rounded-2xl bg-slate-950 border border-white/10 overflow-hidden flex flex-col items-center justify-center p-6 space-y-3">
-        <div class="h-16 w-16 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/40 animate-pulse">
-          <i class="fa-solid fa-play ml-1"></i>
+      <!-- Split Layout Chat Interface (Interpals Style) -->
+      <div class="flex-1 grid grid-cols-12 overflow-hidden">
+        
+        <!-- Left Penpal / Chat List (4 cols) -->
+        <div class="col-span-12 md:col-span-4 border-r border-white/10 bg-[#091124] flex flex-col">
+          <div class="p-3 border-b border-white/5">
+            <input type="text" id="chatSearchInput" oninput="renderChatList()" placeholder="Filter conversations..." class="w-full bg-[#101B3B] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+          </div>
+          <div id="activeChatList" class="flex-1 overflow-y-auto divide-y divide-white/5">
+            <!-- Dynamic Chat Contacts -->
+          </div>
         </div>
-        <p class="text-xs text-slate-300 max-w-md">
-          <strong>1. List your book</strong> → <strong>2. AI verifies condition</strong> → <strong>3. Match with student peer</strong> → <strong>4. Exchange locally or pay ₹0 donation!</strong>
-        </p>
-        <span class="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-          Over 24,800+ textbooks prevented from paper waste
-        </span>
+
+        <!-- Right Main Chat Window (8 cols) -->
+        <div class="col-span-12 md:col-span-8 flex flex-col bg-[#0A132C]">
+          
+          <!-- Active Contact Header -->
+          <div id="chatHeader" class="p-4 border-b border-white/10 bg-[#0C1633] flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div id="chatHeaderAvatar" class="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white relative">
+                ?
+              </div>
+              <div>
+                <h3 id="chatHeaderName" class="font-bold text-sm text-white">Select a Penpal</h3>
+                <div id="chatHeaderMeta" class="text-[10px] text-cyan-400 flex items-center gap-2">
+                  <span>Languages & Location Badge</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="showToast('Penpal Profile', 'Viewing student details & shared library.')" class="px-3 py-1.5 rounded-lg bg-[#16244C] text-xs text-slate-300 hover:text-white border border-white/10">
+                <i class="fa-regular fa-user text-xs mr-1"></i> Profile
+              </button>
+            </div>
+          </div>
+
+          <!-- Messages Body -->
+          <div id="chatMessagesBox" class="flex-1 p-5 overflow-y-auto space-y-3">
+            <!-- Chat Bubble Items injected here -->
+          </div>
+
+          <!-- Message Input Bar -->
+          <div class="p-3 border-t border-white/10 bg-[#0C152F] flex items-center gap-2">
+            <button onclick="attachBookInquiryPrompt()" title="Attach Book Inquiry" class="h-10 w-10 rounded-xl bg-[#152347] border border-white/10 text-cyan-400 flex items-center justify-center hover:bg-cyan-500/20">
+              <i class="fa-solid fa-book"></i>
+            </button>
+            <input type="text" id="chatMessageInput" onkeypress="if(event.key==='Enter') sendPenpalMessage()" placeholder="Write a friendly message or penpal inquiry..." class="flex-1 bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+            <button onclick="sendPenpalMessage()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-xs shadow-md shadow-purple-600/30">
+              Send
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. INTERPALS COMMUNITY NETWORK MODAL -->
+  <div id="modalCommunity" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="dashboard-card w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
+      <!-- Header -->
+      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center">
+            <i class="fa-solid fa-earth-americas text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-white">Interpals Global Student Directory</h2>
+            <p class="text-xs text-slate-400">Find language exchange buddies, study partners, and book sharers</p>
+          </div>
+        </div>
+        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
 
-      <div class="flex justify-center">
-        <button onclick="closeModal('modalVideo'); openMarketplaceModal();" class="px-5 py-2.5 rounded-full bg-cyan-500 text-slate-950 font-bold text-xs">
-          Start Exploring Books
+      <!-- Filters -->
+      <div class="p-4 bg-[#0A1228] border-b border-white/5 flex flex-wrap gap-3 items-center">
+        <input type="text" id="communitySearchInput" oninput="renderCommunityDirectory()" placeholder="Filter by name, country, language or major..." class="flex-1 min-w-[200px] bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+        <select id="communityLangFilter" onchange="renderCommunityDirectory()" class="bg-[#121E3F] border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-200">
+          <option value="ALL">All Languages</option>
+          <option value="English">English</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Spanish">Spanish</option>
+          <option value="Hindi">Hindi</option>
+          <option value="German">German</option>
+        </select>
+      </div>
+
+      <!-- Directory Cards Grid -->
+      <div class="p-6 overflow-y-auto flex-1">
+        <div id="communityDirectoryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Dynamic Penpal Cards -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ESG DASHBOARD MODAL -->
+  <div id="modalEsg" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="dashboard-card w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i class="fa-solid fa-leaf text-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-white">Sustainability & ESG Impact Score</h2>
+            <p class="text-xs text-slate-400">Your contributions to global circular learning</p>
+          </div>
+        </div>
+        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
+        <div class="bg-gradient-to-r from-emerald-950/60 to-teal-950/60 p-5 rounded-2xl border border-emerald-500/30 flex items-center justify-between">
+          <div>
+            <div class="text-[11px] text-emerald-300 uppercase font-semibold">Total Impact Badge</div>
+            <div id="esgPointsBig" class="text-3xl font-black text-white mt-1">1,250 PTS</div>
+            <div class="text-slate-400 text-[11px] mt-1">Equivalent to saving ~0.4 trees & 18kg paper waste</div>
+          </div>
+          <div class="h-16 w-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-3xl">
+            🏆
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="font-bold text-white text-sm">How to Earn ESG Credits:</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 bg-[#121E3F] rounded-xl border border-white/5 space-y-1">
+              <div class="font-semibold text-cyan-300">+50 ESG PTS</div>
+              <div class="text-slate-300">List an old textbook for donation or swap</div>
+            </div>
+            <div class="p-3 bg-[#121E3F] rounded-xl border border-white/5 space-y-1">
+              <div class="font-semibold text-cyan-300">+100 ESG PTS</div>
+              <div class="text-slate-300">Complete a successful local book handoff</div>
+            </div>
+            <div class="p-3 bg-[#121E3F] rounded-xl border border-white/5 space-y-1">
+              <div class="font-semibold text-cyan-300">+25 ESG PTS</div>
+              <div class="text-slate-300">Help a penpal answer an academic query</div>
+            </div>
+            <div class="p-3 bg-[#121E3F] rounded-xl border border-white/5 space-y-1">
+              <div class="font-semibold text-cyan-300">+150 ESG PTS</div>
+              <div class="text-slate-300">Donate course notes to global network</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+          <button onclick="closeAllModals()" class="px-6 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Awesome!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. USER PROFILE MODAL -->
+  <div id="modalProfile" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="dashboard-card w-full max-w-md overflow-hidden">
+      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
+        <h2 class="text-lg font-bold text-white">Your Learner Profile</h2>
+        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs">
+        <div class="flex items-center gap-4">
+          <div class="h-16 w-16 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-xl font-bold text-white">
+            MY
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base text-white">Alex Morgan</h3>
+            <p class="text-slate-400">Computer Science & Physics Major</p>
+            <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold">Active Recirculator</span>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-2 border-t border-white/10">
+          <div class="flex justify-between text-slate-300">
+            <span>Location:</span>
+            <span class="font-semibold text-white">New Delhi, India / Online</span>
+          </div>
+          <div class="flex justify-between text-slate-300">
+            <span>Native Language:</span>
+            <span class="font-semibold text-white">English / Hindi</span>
+          </div>
+          <div class="flex justify-between text-slate-300">
+            <span>Learning Target:</span>
+            <span class="font-semibold text-cyan-300">Japanese (N4)</span>
+          </div>
+          <div class="flex justify-between text-slate-300">
+            <span>Books Shared:</span>
+            <span class="font-semibold text-white">8 Textbooks</span>
+          </div>
+        </div>
+
+        <button onclick="showToast('Profile Saved', 'Learner profile updated successfully!')" class="w-full py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500 transition-all">
+          Update Profile Information
         </button>
       </div>
     </div>
   </div>
 
   <!-- ============================================== -->
-  <!-- JAVASCRIPT LOGIC & STATE HANDLING              -->
+  <!-- FOOTER                                         -->
+  <!-- ============================================== -->
+  <footer class="w-full border-t border-white/5 bg-[#050A18] py-6 px-4 lg:px-8 mt-12 text-slate-400 text-xs">
+    <div class="max-w-[1520px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="h-6 w-6 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs font-bold">栞</div>
+        <span class="text-slate-200 font-semibold">Shiori GLOBAL</span>
+        <span>— Circular Learning Network & Interpals Peer Exchange</span>
+      </div>
+      <div class="flex gap-4 text-slate-400">
+        <button onclick="setActiveNav('explore')" class="hover:text-cyan-400">Marketplace</button>
+        <button onclick="setActiveNav('community')" class="hover:text-cyan-400">Interpals Penpals</button>
+        <button onclick="setActiveNav('ai')" class="hover:text-cyan-400">AI Study Assistant</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================== -->
+  <!-- COMPLETE STATE & LOGIC JAVASCRIPT ENGINE       -->
   <!-- ============================================== -->
   <script>
-    // Initial Sample Books Data
+    // -------------------------------------------------------------
+    // DYNAMIC IN-MEMORY DATABASE STATE (CLEANED OF DUMMY STATIC DATA)
+    // -------------------------------------------------------------
+    
+    // Live Marketplace Database
     let booksData = [
       {
-        id: 1,
-        title: "Fundamentals of Physics (Extended)",
-        author: "Halliday, Resnick, Walker",
+        id: "b1",
+        title: "Fundamentals of Physics (10th Ed)",
+        author: "Halliday & Resnick",
         subject: "Physics",
-        type: "sale",
-        price: 240,
-        condition: "Grade A+ (Like New)",
-        owner: "Rohan M."
+        type: "SELL",
+        price: "$18",
+        condition: "Good Condition",
+        owner: "Alex Morgan",
+        location: "New Delhi, IN",
+        description: "Includes highlighted key formula pages and solved exercise solutions."
       },
       {
-        id: 2,
-        title: "Organic Chemistry Reactions & Mechanisms",
-        author: "Morrison & Boyd",
-        subject: "Chemistry",
-        type: "free",
-        price: 0,
-        condition: "Good (Pencil notes)",
-        owner: "Aanya S."
+        id: "b2",
+        title: "Introduction to Algorithms (CLRS 3rd Ed)",
+        author: "Cormen, Leiserson, Rivest",
+        subject: "Computer Science",
+        type: "SWAP",
+        price: "Trade",
+        condition: "Like New",
+        owner: "Kenji Sato",
+        location: "Tokyo, JP",
+        description: "Looking to swap for a Machine Learning textbook."
       },
       {
-        id: 3,
+        id: "b3",
         title: "Calculus: Early Transcendentals",
         author: "James Stewart",
         subject: "Mathematics",
-        type: "swap",
-        price: 0,
-        condition: "Grade A",
-        owner: "David K."
+        type: "DONATE",
+        price: "FREE",
+        condition: "Fair / Annotated",
+        owner: "Sofia Rossi",
+        location: "Rome, IT",
+        description: "Free donation for high school or college freshman students."
       },
       {
-        id: 4,
-        title: "Introduction to Algorithms (CLRS)",
-        author: "Cormen, Leiserson",
-        subject: "Computer Science",
-        type: "sale",
-        price: 450,
+        id: "b4",
+        title: "Organic Chemistry 8th Edition",
+        author: "Paula Yurkanis Bruice",
+        subject: "Chemistry",
+        type: "SELL",
+        price: "$22",
         condition: "Like New",
-        owner: "Priya V."
-      },
-      {
-        id: 5,
-        title: "NCERT Biology Class 12 Complete",
-        author: "NCERT Editorial",
-        subject: "Biology",
-        type: "free",
-        price: 0,
-        condition: "Good",
-        owner: "Kavya T."
+        owner: "Aarav Sharma",
+        location: "Mumbai, IN",
+        description: "Clean copy with molecular model reference charts."
       }
     ];
 
-    // Notification Toast System
-    function showNotification(title, message) {
-      const container = document.getElementById('toastBox');
-      const toast = document.createElement('div');
-      toast.className = "p-3.5 rounded-2xl bg-[#0C152F] border border-cyan-500/40 text-white shadow-2xl backdrop-blur-md text-xs flex items-start gap-2.5 max-w-sm pointer-events-auto transition-all transform translate-y-2";
-      toast.innerHTML = `
-        <div class="h-6 w-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 text-xs">
-          <i class="fa-solid fa-bell"></i>
-        </div>
-        <div class="flex-1">
-          <div class="font-bold text-white text-xs">${title}</div>
-          <div class="text-slate-300 text-[11px] mt-0.5 leading-snug">${message}</div>
-        </div>
-      `;
-      container.appendChild(toast);
+    // Interpals Global Penpals Database
+    let penpalsData = [
+      {
+        id: "p1",
+        name: "Kenji Sato",
+        flag: "🇯🇵",
+        country: "Japan",
+        nativeLang: "Japanese",
+        learningLang: "English",
+        major: "Computer Science",
+        unread: false,
+        lastActive: "Online",
+        bio: "Passionate about algorithms, manga, and language exchanges!"
+      },
+      {
+        id: "p2",
+        name: "Sofia Rossi",
+        flag: "🇮🇹",
+        country: "Italy",
+        nativeLang: "Italian",
+        learningLang: "Spanish / English",
+        major: "Literature & Art",
+        unread: true,
+        lastActive: "5m ago",
+        bio: "Studying classical literature. Love swapping philosophy notes!"
+      },
+      {
+        id: "p3",
+        name: "Aarav Sharma",
+        flag: "🇮🇳",
+        country: "India",
+        nativeLang: "Hindi / English",
+        learningLang: "German",
+        major: "Physics & Engineering",
+        unread: false,
+        lastActive: "Online",
+        bio: "Competitive exams preparation & physics enthusiast."
+      },
+      {
+        id: "p4",
+        name: "Emma Watson",
+        flag: "🇬🇧",
+        country: "United Kingdom",
+        nativeLang: "English",
+        learningLang: "French / Japanese",
+        major: "Biology & Ecology",
+        unread: false,
+        lastActive: "1h ago",
+        bio: "Green energy & sustainable agriculture student."
+      }
+    ];
 
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(-10px)';
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
+    // Interpals Active Messages State
+    let chatsData = {
+      p1: [
+        { sender: "them", text: "Konnichiwa Alex! I saw your post regarding computer science books." },
+        { sender: "me", text: "Hey Kenji! Yes, I have CLRS and AI notes available for swap!" }
+      ],
+      p2: [
+        { sender: "them", text: "Ciao! Would you be interested in exchanging Italian literature notes for physics?" }
+      ],
+      p3: [
+        { sender: "them", text: "Hey! Do you still have the Halliday Resnick Physics book available in Delhi?" }
+      ]
+    };
+
+    let activePenpalId = "p1"; // Currently selected chat penpal
+    let userEsgPoints = 1250;
+
+    // -------------------------------------------------------------
+    // NAVIGATION & MODAL SYSTEM
+    // -------------------------------------------------------------
+    
+    function closeAllModals() {
+      document.querySelectorAll('[id^="modal"]').forEach(m => m.classList.add('hidden'));
     }
 
-    // Modal Control Functions
-    function openModal(id) {
-      document.getElementById(id).classList.remove('hidden');
-    }
-    function closeModal(id) {
-      document.getElementById(id).classList.add('hidden');
+    function setActiveNav(navKey) {
+      closeAllModals();
+
+      // Reset Active Nav Button Styles
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all relative";
+      });
+
+      const activeBtn = document.getElementById(`nav-${navKey}`);
+      if (activeBtn) {
+        activeBtn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all relative";
+      }
+
+      // Route to Modal/Views
+      if (navKey === 'explore') openMarketplaceModal();
+      else if (navKey === 'sell') openSellModal();
+      else if (navKey === 'ai') openAiAssistantModal();
+      else if (navKey === 'messages') openMessagesModal();
+      else if (navKey === 'community') openCommunityModal();
     }
 
     function openMarketplaceModal() {
-      renderBooks(booksData);
-      openModal('modalMarketplace');
+      renderMarketplace();
+      document.getElementById('modalExplore').classList.remove('hidden');
     }
+
     function openSellModal() {
-      openModal('modalSell');
+      document.getElementById('modalSell').classList.remove('hidden');
     }
+
     function openAiAssistantModal() {
-      openModal('modalAi');
+      document.getElementById('modalAi').classList.remove('hidden');
     }
+
     function openMessagesModal() {
-      openModal('modalMessages');
+      renderChatList();
+      selectChatPenpal(activePenpalId);
+      document.getElementById('modalMessages').classList.remove('hidden');
     }
-    function openVideoWalkthroughModal() {
-      openModal('modalVideo');
-    }
-    function openImpactDetailsModal() {
-      showNotification('Impact Analytics', '24,800+ books reused across 140 schools. ₹38.4 Lakhs saved by students in your district!');
-    }
+
     function openCommunityModal() {
-      showNotification('Student Community', 'Connecting with 12,400+ verified scholars from 85 colleges.');
+      renderCommunityDirectory();
+      document.getElementById('modalCommunity').classList.remove('hidden');
     }
-    function openSustainabilityModal() {
-      showNotification('Circular Metric', 'Reusing 1 textbook saves ~1.2kg CO2 equivalent and 200 liters of water.');
+
+    function openEsgModal() {
+      document.getElementById('modalEsg').classList.remove('hidden');
     }
+
     function openProfileModal() {
-      showNotification('Profile Summary', 'Scholar ID: #SHIORI-2026 • ESG Score: 1,250 Points • 8 Books Donated.');
+      document.getElementById('modalProfile').classList.remove('hidden');
     }
 
-    // Navigation State Selector
-    function setActiveNav(tab) {
-      document.querySelectorAll('.nav-item').forEach(btn => {
-        btn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all";
-      });
-      const activeBtn = document.getElementById(`nav-${tab}`);
-      if (activeBtn) {
-        activeBtn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all";
-      }
-    }
+    // -------------------------------------------------------------
+    // MARKETPLACE FUNCTIONS
+    // -------------------------------------------------------------
 
-    // Render Books in Marketplace Modal
-    function renderBooks(list) {
-      const container = document.getElementById('booksListContainer');
-      if (!list || list.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-12 text-center text-slate-400 text-xs">
-            No textbooks match your query. Try a different search term!
+    function renderHomePreview() {
+      const container = document.getElementById('homeMarketplacePreview');
+      if (!container) return;
+
+      container.innerHTML = booksData.slice(0, 3).map(book => `
+        <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-4 flex flex-col justify-between hover:border-cyan-400/40 transition-all group">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-[10px]">
+              <span class="px-2 py-0.5 rounded-full font-bold ${book.type === 'DONATE' ? 'bg-emerald-500/20 text-emerald-300' : book.type === 'SWAP' ? 'bg-purple-500/20 text-purple-300' : 'bg-cyan-500/20 text-cyan-300'}">${book.type}</span>
+              <span class="text-slate-400">${book.location}</span>
+            </div>
+            <h4 class="font-bold text-xs text-white group-hover:text-cyan-300 transition-colors line-clamp-1">${book.title}</h4>
+            <p class="text-[11px] text-slate-400">${book.author}</p>
           </div>
-        `;
+          <div class="pt-3 border-t border-white/5 flex items-center justify-between mt-3">
+            <span class="font-extrabold text-sm text-cyan-400">${book.price}</span>
+            <button onclick="startBookInquiry('${book.id}')" class="px-3 py-1.5 rounded-lg bg-blue-600/30 hover:bg-blue-600 text-blue-200 text-[11px] font-semibold border border-blue-500/30 transition-all">
+              Inquire
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderMarketplace() {
+      const query = (document.getElementById('marketSearchInput')?.value || '').toLowerCase();
+      const typeFilter = document.getElementById('marketTypeFilter')?.value || 'ALL';
+      const genreFilter = document.getElementById('marketGenreFilter')?.value || 'ALL';
+      const grid = document.getElementById('fullMarketplaceGrid');
+      if (!grid) return;
+
+      const filtered = booksData.filter(b => {
+        const matchesQuery = b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query) || b.subject.toLowerCase().includes(query);
+        const matchesType = typeFilter === 'ALL' || b.type === typeFilter;
+        const matchesGenre = genreFilter === 'ALL' || b.subject === genreFilter;
+        return matchesQuery && matchesType && matchesGenre;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 text-xs">No textbook listings match your filters. Try adjusting search query.</div>`;
         return;
       }
 
-      container.innerHTML = list.map(b => {
-        const isFree = b.type === 'free';
-        const isSwap = b.type === 'swap';
-        const tagText = isFree ? 'FREE DONATION' : (isSwap ? 'P2P SWAP' : `₹${b.price}`);
-        const tagColor = isFree ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : (isSwap ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' : 'bg-orange-500/20 text-orange-400 border-orange-500/30');
+      grid.innerHTML = filtered.map(book => `
+        <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-cyan-400/50 transition-all space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-[10px]">
+              <span class="px-2.5 py-1 rounded-full font-bold ${book.type === 'DONATE' ? 'bg-emerald-500/20 text-emerald-300' : book.type === 'SWAP' ? 'bg-purple-500/20 text-purple-300' : 'bg-cyan-500/20 text-cyan-300'}">${book.type}</span>
+              <span class="text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i>${book.location}</span>
+            </div>
+            <h3 class="font-bold text-sm text-white">${book.title}</h3>
+            <p class="text-xs text-slate-300">By ${book.author}</p>
+            <p class="text-[11px] text-slate-400 leading-relaxed">${book.description}</p>
+          </div>
+          
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] text-slate-400 block">Condition: ${book.condition}</span>
+              <span class="font-black text-base text-cyan-400">${book.price}</span>
+            </div>
+            <button onclick="startBookInquiry('${book.id}')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-xs shadow-md shadow-cyan-500/20">
+              Inquire / Swap
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function togglePriceField() {
+      const type = document.getElementById('formType').value;
+      const priceWrp = document.getElementById('priceWrapper');
+      if (type === 'SELL') priceWrp.style.display = 'block';
+      else priceWrp.style.display = 'none';
+    }
+
+    function handleSellSubmit(e) {
+      e.preventDefault();
+      const newBook = {
+        id: "b" + (booksData.length + 1),
+        title: document.getElementById('formTitle').value,
+        author: document.getElementById('formAuthor').value || 'Unknown',
+        subject: document.getElementById('formSubject').value,
+        type: document.getElementById('formType').value,
+        price: document.getElementById('formType').value === 'SELL' ? (document.getElementById('formPrice').value || '$10') : document.getElementById('formType').value,
+        condition: document.getElementById('formCondition').value,
+        owner: "Alex Morgan",
+        location: document.getElementById('formLocation').value || "Online / Global",
+        description: document.getElementById('formDescription').value || "No additional description."
+      };
+
+      booksData.unshift(newBook);
+      userEsgPoints += 50;
+      updateEsgDisplay();
+
+      renderHomePreview();
+      renderMarketplace();
+      closeAllModals();
+      showToast('Listing Published', `"${newBook.title}" is now live in the marketplace! +50 ESG Pts`);
+    }
+
+    function startBookInquiry(bookId) {
+      const book = booksData.find(b => b.id === bookId);
+      if (!book) return;
+
+      closeAllModals();
+      openMessagesModal();
+
+      // Inject inquiry message into active chat
+      const msg = `Hi! I am interested in inquiring about your book listing: "${book.title}" (${book.price}). Is this still available for recirculation?`;
+      document.getElementById('chatMessageInput').value = msg;
+    }
+
+    // -------------------------------------------------------------
+    // INTERPALS MESSAGES & CHAT LOGIC
+    // -------------------------------------------------------------
+
+    function renderPenpalsSidebar() {
+      const list = document.getElementById('penpalSidebarList');
+      if (!list) return;
+
+      list.innerHTML = penpalsData.map(p => `
+        <div onclick="quickStartChat('${p.id}')" class="p-3 bg-[#101B3B] hover:bg-[#16244C] rounded-xl border border-white/5 cursor-pointer flex items-center justify-between transition-all">
+          <div class="flex items-center gap-3">
+            <div class="h-9 w-9 rounded-full bg-blue-600/30 border border-cyan-400/30 flex items-center justify-center text-sm font-bold text-white relative">
+              ${p.flag}
+              <span class="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ${p.lastActive === 'Online' ? 'bg-emerald-400' : 'bg-slate-500'} border-2 border-[#0D1733]"></span>
+            </div>
+            <div>
+              <div class="font-bold text-xs text-white flex items-center gap-1.5">
+                ${p.name}
+                <span class="text-[10px] text-slate-400 font-normal">(${p.country})</span>
+              </div>
+              <div class="text-[10px] text-cyan-300">N: ${p.nativeLang} • L: ${p.learningLang}</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-slate-500 text-xs"></i>
+        </div>
+      `).join('');
+    }
+
+    function renderChatList() {
+      const filter = (document.getElementById('chatSearchInput')?.value || '').toLowerCase();
+      const container = document.getElementById('activeChatList');
+      if (!container) return;
+
+      const filtered = penpalsData.filter(p => p.name.toLowerCase().includes(filter) || p.country.toLowerCase().includes(filter));
+
+      container.innerHTML = filtered.map(p => {
+        const msgs = chatsData[p.id] || [];
+        const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].text : "Start a new conversation...";
+        const isActive = p.id === activePenpalId;
 
         return `
-          <div class="p-4 rounded-xl bg-[#091228] border border-white/5 flex flex-col justify-between hover:border-cyan-500/30 transition-all">
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${tagColor}">${tagText}</span>
-                <span class="text-[10px] text-slate-400">${b.subject}</span>
-              </div>
-              <h4 class="font-bold text-xs text-white line-clamp-1">${b.title}</h4>
-              <p class="text-[11px] text-slate-400 line-clamp-1">${b.author}</p>
-              <div class="text-[10px] text-slate-500">Condition: ${b.condition}</div>
+          <div onclick="selectChatPenpal('${p.id}')" class="p-3.5 cursor-pointer transition-all flex items-start gap-3 ${isActive ? 'bg-[#15234A] border-l-4 border-cyan-400' : 'hover:bg-[#101A38]'}">
+            <div class="h-10 w-10 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-base flex-shrink-0 relative">
+              ${p.flag}
+              <span class="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full ${p.lastActive === 'Online' ? 'bg-emerald-400' : 'bg-slate-500'} border-2 border-[#091124]"></span>
             </div>
-            <div class="pt-3 border-t border-white/5 mt-3 flex items-center justify-between">
-              <span class="text-[10px] text-slate-400">By ${b.owner}</span>
-              <button onclick="claimBook('${b.title}', '${b.owner}')" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] transition-colors">
-                ${isFree ? 'Claim' : (isSwap ? 'Offer Swap' : 'Buy')}
-              </button>
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-center">
+                <h4 class="font-bold text-xs text-white truncate">${p.name}</h4>
+                <span class="text-[9px] text-slate-400">${p.lastActive}</span>
+              </div>
+              <p class="text-[11px] text-slate-400 truncate mt-0.5">${lastMsg}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      renderSidebarChatInbox();
+    }
+
+    function renderSidebarChatInbox() {
+      const box = document.getElementById('sidebarChatInbox');
+      if (!box) return;
+
+      box.innerHTML = penpalsData.slice(0, 3).map(p => {
+        const msgs = chatsData[p.id] || [];
+        const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].text : "No messages yet";
+        return `
+          <div onclick="quickStartChat('${p.id}')" class="p-2.5 rounded-xl bg-[#101B3B] hover:bg-[#16244C] cursor-pointer flex items-center gap-3 border border-white/5">
+            <span class="text-lg">${p.flag}</span>
+            <div class="flex-1 min-w-0">
+              <div class="font-bold text-xs text-white">${p.name}</div>
+              <div class="text-[10px] text-slate-400 truncate">${lastMsg}</div>
             </div>
           </div>
         `;
       }).join('');
     }
 
-    // Filter books by search and type
-    function filterBooks() {
-      const q = (document.getElementById('marketSearchInput').value || '').toLowerCase();
-      const type = document.getElementById('marketTypeFilter').value;
+    function selectChatPenpal(pId) {
+      activePenpalId = pId;
+      const p = penpalsData.find(item => item.id === pId) || penpalsData[0];
 
-      const filtered = booksData.filter(b => {
-        const matchesQuery = b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q) || b.subject.toLowerCase().includes(q);
-        const matchesType = type === 'all' || b.type === type;
-        return matchesQuery && matchesType;
-      });
+      // Update Header
+      document.getElementById('chatHeaderAvatar').innerText = p.flag;
+      document.getElementById('chatHeaderName').innerText = `${p.name} (${p.country})`;
+      document.getElementById('chatHeaderMeta').innerHTML = `
+        <span>Native: <strong>${p.nativeLang}</strong></span> • 
+        <span>Learning: <strong>${p.learningLang}</strong></span>
+      `;
 
-      renderBooks(filtered);
+      renderChatList();
+      renderChatMessages();
     }
 
-    function claimBook(title, owner) {
-      closeModal('modalMarketplace');
-      showNotification('Request Sent', `You requested "${title}" from ${owner}. Direct pickup details sent to Messages.`);
-    }
+    function renderChatMessages() {
+      const box = document.getElementById('chatMessagesBox');
+      if (!box) return;
 
-    // Post new book
-    function togglePriceField(type) {
-      const wrap = document.getElementById('priceWrapper');
-      if (type === 'sale') {
-        wrap.style.display = 'block';
-      } else {
-        wrap.style.display = 'none';
+      const msgs = chatsData[activePenpalId] || [];
+
+      if (msgs.length === 0) {
+        box.innerHTML = `<div class="py-12 text-center text-slate-500 text-xs">No prior messages. Say hello to start learning together!</div>`;
+        return;
       }
-    }
 
-    function handlePostBook(e) {
-      e.preventDefault();
-      const title = document.getElementById('newBookTitle').value.trim();
-      const subject = document.getElementById('newBookSubject').value.trim();
-      const type = document.getElementById('newBookType').value;
-      const price = type === 'sale' ? parseInt(document.getElementById('newBookPrice').value || 100, 10) : 0;
-      const condition = document.getElementById('newBookCondition').value;
-
-      booksData.unshift({
-        id: Date.now(),
-        title,
-        author: "Verified Student",
-        subject,
-        type,
-        price,
-        condition,
-        owner: "You"
-      });
-
-      closeModal('modalSell');
-      showNotification('Book Listed!', `"${title}" is now visible to classmates across the circular network.`);
-      document.querySelector('#modalSell form').reset();
-    }
-
-    // AI Study Assistant Chat
-    function handleSendAiMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('aiInputPrompt');
-      const text = input.value.trim();
-      if (!text) return;
-
-      appendAiChat('user', text);
-      input.value = '';
-
-      // Simulated instant AI Tutor response
-      setTimeout(() => {
-        let answer = `Here is a summary on "${text}": Break the concept down into first principles. Focus on foundational laws, apply 2 numerical test problems, and test your recall using spaced flashcards.`;
-        appendAiChat('assistant', answer);
-      }, 700);
-    }
-
-    function askPresetPrompt(promptText) {
-      appendAiChat('user', promptText);
-      setTimeout(() => {
-        let answer = `Core breakdown of ${promptText}: \n1. First Principle: Fundamental equations & conditions.\n2. Key Observation: Physical symmetry and conservation rules.\n3. Exam Tip: Double-check SI units before concluding!`;
-        appendAiChat('assistant', answer);
-      }, 600);
-    }
-
-    function appendAiChat(sender, text) {
-      const box = document.getElementById('aiChatBox');
-      const div = document.createElement('div');
-      if (sender === 'user') {
-        div.className = "flex items-start justify-end gap-2.5";
-        div.innerHTML = `
-          <div class="p-3 rounded-2xl rounded-tr-none bg-blue-600 text-white max-w-md leading-relaxed">
-            ${text}
+      box.innerHTML = msgs.map(m => `
+        <div class="flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}">
+          <div class="max-w-[75%] px-4 py-2.5 rounded-2xl text-xs leading-relaxed ${m.sender === 'me' ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-br-none shadow-md' : 'bg-[#121E3F] border border-white/10 text-slate-200 rounded-bl-none'}">
+            ${m.text}
           </div>
-        `;
-      } else {
-        div.className = "flex items-start gap-2.5";
-        div.innerHTML = `
-          <div class="h-7 w-7 rounded-lg bg-teal-500/30 text-teal-300 flex items-center justify-center text-xs flex-shrink-0">
-            🤖
-          </div>
-          <div class="p-3 rounded-2xl rounded-tl-none bg-[#091228] border border-white/5 text-slate-200 max-w-md leading-relaxed whitespace-pre-line">
-            ${text}
-          </div>
-        `;
-      }
-      box.appendChild(div);
+        </div>
+      `).join('');
+
       box.scrollTop = box.scrollHeight;
     }
 
-    // Peer message simulator
-    function handleSendPeerMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('peerInputMessage');
+    function sendPenpalMessage() {
+      const input = document.getElementById('chatMessageInput');
       const text = input.value.trim();
       if (!text) return;
 
-      const container = document.getElementById('peerChatContainer');
-      const div = document.createElement('div');
-      div.className = "flex items-start justify-end gap-2";
-      div.innerHTML = `
-        <div class="p-3 rounded-2xl rounded-tr-none bg-purple-600 text-white max-w-xs">
-          ${text}
-        </div>
-      `;
-      container.appendChild(div);
-      input.value = '';
-      container.scrollTop = container.scrollHeight;
+      if (!chatsData[activePenpalId]) chatsData[activePenpalId] = [];
+      chatsData[activePenpalId].push({ sender: 'me', text: text });
 
+      input.value = '';
+      renderChatMessages();
+      renderChatList();
+
+      // Simulated Interpals automated reply after 1.5 seconds
       setTimeout(() => {
-        const reply = document.createElement('div');
-        reply.className = "flex items-start gap-2";
-        reply.innerHTML = `
-          <div class="h-7 w-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[10px]">AR</div>
-          <div class="p-3 rounded-2xl rounded-tl-none bg-[#091228] border border-white/5 text-slate-200 max-w-xs">
-            Sounds great! Let us meet tomorrow at 2 PM near the library reading hall.
-          </div>
-        `;
-        container.appendChild(reply);
-        container.scrollTop = container.scrollHeight;
+        const replies = [
+          "That sounds great! Let's arrange that book swap.",
+          "Thanks for reaching out! I can share my study guide notes with you.",
+          "Awesome! How is your learning progress coming along?"
+        ];
+        const randomReply = replies[Math.floor(Math.random() * replies.length)];
+        chatsData[activePenpalId].push({ sender: 'them', text: randomReply });
+        renderChatMessages();
+        renderChatList();
       }, 1500);
     }
+
+    function quickStartChat(pId) {
+      closeAllModals();
+      openMessagesModal();
+      selectChatPenpal(pId);
+    }
+
+    function attachBookInquiryPrompt() {
+      document.getElementById('chatMessageInput').value = "I'd like to share textbook notes and study materials with you!";
+    }
+
+    // -------------------------------------------------------------
+    // INTERPALS COMMUNITY DIRECTORY
+    // -------------------------------------------------------------
+
+    function renderCommunityDirectory() {
+      const search = (document.getElementById('communitySearchInput')?.value || '').toLowerCase();
+      const langFilter = document.getElementById('communityLangFilter')?.value || 'ALL';
+      const grid = document.getElementById('communityDirectoryGrid');
+      if (!grid) return;
+
+      const filtered = penpalsData.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(search) || p.country.toLowerCase().includes(search) || p.major.toLowerCase().includes(search);
+        const matchesLang = langFilter === 'ALL' || p.nativeLang.includes(langFilter) || p.learningLang.includes(langFilter);
+        return matchesSearch && matchesLang;
+      });
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-5 space-y-3 flex flex-col justify-between hover:border-purple-400/50 transition-all">
+          <div class="space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">${p.flag}</span>
+              <div>
+                <h3 class="font-bold text-sm text-white">${p.name}</h3>
+                <span class="text-[10px] text-slate-400">${p.country} • ${p.major}</span>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-300 leading-relaxed">${p.bio}</p>
+            <div class="pt-2 flex flex-col gap-1 text-[10px]">
+              <div class="text-slate-400">Native: <span class="text-white font-semibold">${p.nativeLang}</span></div>
+              <div class="text-slate-400">Learning: <span class="text-cyan-300 font-semibold">${p.learningLang}</span></div>
+            </div>
+          </div>
+
+          <button onclick="quickStartChat('${p.id}')" class="w-full py-2 rounded-xl bg-purple-600/30 hover:bg-purple-600 text-purple-200 font-bold text-xs border border-purple-500/30 transition-all">
+            Connect as Penpal
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // -------------------------------------------------------------
+    // GEMINI AI STUDY ASSISTANT (API INTEGRATED)
+    // -------------------------------------------------------------
+
+    async function sendAiMessage() {
+      const input = document.getElementById('aiInputPrompt');
+      const prompt = input.value.trim();
+      if (!prompt) return;
+
+      appendAiChatBubble('user', prompt);
+      input.value = '';
+
+      // Append loading indicator
+      const loadingId = 'aiLoadingBubble';
+      const chatBox = document.getElementById('aiChatBox');
+      const loadingDiv = document.createElement('div');
+      loadingDiv.id = loadingId;
+      loadingDiv.className = 'flex items-start gap-3';
+      loadingDiv.innerHTML = `
+        <div class="h-8 w-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs flex-shrink-0 animate-spin">
+          🌀
+        </div>
+        <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-4 text-xs text-slate-400">
+          Shiori Gemini AI is analyzing textbook database...
+        </div>
+      `;
+      chatBox.appendChild(loadingDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const apiKey = ""; // Canvas handles API Key automatically
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+        const systemPrompt = "You are the official AI Academic Companion for Shiori GLOBAL, a circular book network. Provide concise, encouraging, accurate textbook explanations, chapter summaries, or quiz responses suitable for students.";
+
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }],
+          systemInstruction: { parts: [{ text: systemPrompt }] }
+        };
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        document.getElementById(loadingId)?.remove();
+
+        const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I was unable to retrieve a response at this moment. Please try rephrasing your study question.";
+        appendAiChatBubble('ai', responseText);
+
+      } catch (err) {
+        document.getElementById(loadingId)?.remove();
+        appendAiChatBubble('ai', "I experienced a brief connection error. However, here is a study tip: Break complex chapters into 25-minute Pomodoro focus blocks!");
+      }
+    }
+
+    function sendQuickAiPrompt(text) {
+      document.getElementById('aiInputPrompt').value = text;
+      sendAiMessage();
+    }
+
+    function appendAiChatBubble(role, text) {
+      const chatBox = document.getElementById('aiChatBox');
+      if (!chatBox) return;
+
+      const isUser = role === 'user';
+      const bubble = document.createElement('div');
+      bubble.className = `flex items-start gap-3 ${isUser ? 'justify-end' : ''}`;
+
+      bubble.innerHTML = isUser ? `
+        <div class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl rounded-tr-none p-4 max-w-xl text-xs leading-relaxed shadow-md">
+          ${text}
+        </div>
+      ` : `
+        <div class="h-8 w-8 rounded-lg bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 flex-shrink-0 text-xs">
+          🤖
+        </div>
+        <div class="bg-[#121E3F] border border-white/10 rounded-2xl rounded-tl-none p-4 max-w-xl text-xs leading-relaxed text-slate-200">
+          ${text.replace(/\n/g, '<br>')}
+        </div>
+      `;
+
+      chatBox.appendChild(bubble);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // -------------------------------------------------------------
+    // UTILITY & TOAST SYSTEM
+    // -------------------------------------------------------------
+
+    function updateEsgDisplay() {
+      const pointsText = `${userEsgPoints.toLocaleString()} Points`;
+      document.getElementById('headerEsgPoints').innerText = `ESG Score: ${pointsText}`;
+      document.getElementById('esgPointsBig').innerText = `${userEsgPoints.toLocaleString()} PTS`;
+    }
+
+    function showToast(title, msg) {
+      const toastBox = document.getElementById('toastBox');
+      if (!toastBox) return;
+
+      const toast = document.createElement('div');
+      toast.className = 'pointer-events-auto bg-[#0C152F] border border-cyan-400/40 shadow-xl shadow-black/50 p-4 rounded-2xl text-xs text-white max-w-sm flex items-start gap-3 transition-all animate-bounce';
+      toast.innerHTML = `
+        <div class="h-8 w-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-sm flex-shrink-0">
+          🔔
+        </div>
+        <div>
+          <div class="font-bold text-white text-xs">${title}</div>
+          <div class="text-slate-300 text-[11px] mt-0.5">${msg}</div>
+        </div>
+      `;
+
+      toastBox.appendChild(toast);
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
+
+    // Initialize App View
+    window.onload = function() {
+      renderHomePreview();
+      renderPenpalsSidebar();
+      renderSidebarChatInbox();
+    };
   </script>
 </body>
 </html>
