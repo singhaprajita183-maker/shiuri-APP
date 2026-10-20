@@ -45,6 +45,7 @@
       overflow-x: hidden;
     }
 
+    /* Custom Glassmorphism Card Style */
     .dashboard-card {
       background: linear-gradient(180deg, #101B3B 0%, #0C152F 100%);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -56,6 +57,7 @@
       border-color: rgba(56, 189, 248, 0.25);
     }
 
+    /* Ambient Hero Glow */
     .hero-glow-container {
       background: radial-gradient(ellipse at 70% 50%, rgba(37, 99, 235, 0.25) 0%, rgba(16, 27, 59, 0.95) 75%), #0D1733;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -64,14 +66,30 @@
       overflow: hidden;
     }
 
+    /* Animations */
     @keyframes floatBook {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-8px) rotate(-1deg); }
     }
+    @keyframes floatBubble {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.06); }
+    }
     .animated-book {
       animation: floatBook 5s ease-in-out infinite;
     }
+    .animated-bubble {
+      animation: floatBubble 4s ease-in-out infinite 0.5s;
+    }
+    .light-orb {
+      animation: pulseGlow 6s ease-in-out infinite;
+    }
 
+    /* Action Circle Buttons */
     .action-circle-btn {
       width: 32px;
       height: 32px;
@@ -85,6 +103,7 @@
       transform: scale(1.1);
     }
 
+    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -96,11 +115,14 @@
       background: #1E293B;
       border-radius: 999px;
     }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #38BDF8;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white">
 
-  <!-- Toast Notification Center -->
+  <!-- Interactive Toast Notification Center -->
   <div id="toastBox" class="fixed top-5 right-5 z-[999] flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- TOP NAVIGATION BAR -->
@@ -108,7 +130,7 @@
     <div class="max-w-[1520px] mx-auto flex items-center justify-between gap-4">
       
       <!-- Brand Logo Left -->
-      <div class="flex items-center gap-3 cursor-pointer" onclick="showToast('Shiori GLOBAL', 'Welcome to Circular Learning Network')">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
         <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-blue-600/30">
           栞
         </div>
@@ -121,27 +143,31 @@
         </div>
       </div>
 
-      <!-- Center Navigation Bar -->
+      <!-- Center Pill Navigation Bar -->
       <nav class="hidden md:flex items-center bg-[#0C152F] p-1 rounded-full border border-white/10 shadow-inner">
-        <button onclick="switchTab('home')" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow">
+        <button id="nav-home" onclick="switchTab('home')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all">
           <i class="fa-solid fa-house text-[11px]"></i> Home
         </button>
-        <button onclick="switchTab('marketplace')" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white">
+        <button id="nav-marketplace" onclick="switchTab('marketplace')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
           <i class="fa-solid fa-book-open text-[11px]"></i> Marketplace
         </button>
-        <button onclick="switchTab('scholar-lounge')" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white">
+        <button id="nav-scholar-lounge" onclick="switchTab('scholar-lounge')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all relative">
           <i class="fa-solid fa-comments text-[11px]"></i> Scholar Lounge
+          <span id="unreadDot" class="h-2 w-2 rounded-full bg-cyan-400 absolute top-1 right-2 hidden"></span>
         </button>
       </nav>
 
-      <!-- Right ESG Pill & User Avatar -->
+      <!-- Right Actions: ESG Pill, User Avatar -->
       <div class="flex items-center gap-3">
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+        <!-- ESG Pill Badge -->
+        <div onclick="showToast('Impact Score', 'You earn +50 ESG credits for every book contributed!')" class="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/25 transition-all">
           <i class="fa-solid fa-leaf text-xs"></i>
           <span>ESG Impact: <span id="userImpactPoints">0</span> Points</span>
         </div>
-        <div class="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 p-[1.5px] cursor-pointer">
-          <div class="h-full w-full rounded-full bg-[#0D1733] flex items-center justify-center text-xs font-bold text-white">
+
+        <!-- User Profile Avatar -->
+        <div class="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 p-[1.5px] cursor-pointer hover:scale-105 transition-all">
+          <div class="h-full w-full rounded-full bg-[#0D1733] flex items-center justify-center text-xs font-bold text-white overflow-hidden">
             <i class="fa-solid fa-user text-slate-300"></i>
           </div>
         </div>
@@ -149,61 +175,107 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT AREA -->
+  <!-- MAIN DASHBOARD CONTENT -->
   <main class="max-w-[1520px] mx-auto w-full px-4 lg:px-8 py-6 flex-1">
     
-    <!-- HOME TAB CONTENT -->
+    <!-- 1. HOME TAB -->
     <div id="tab-home" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      
-      <!-- LEFT HERO & FEATURES -->
+
+      <!-- LEFT SECTION: HERO + FEATURES -->
       <div class="lg:col-span-8 flex flex-col gap-6">
-        
-        <!-- HERO CARD -->
-        <div class="hero-glow-container p-6 sm:p-8 lg:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+
+        <!-- HERO BANNER CARD -->
+        <div class="hero-glow-container p-6 sm:p-8 lg:p-10 flex flex-col md:flex-row items-center justify-between gap-8 min-h-[360px]">
+          
+          <!-- Hero Left Copy -->
           <div class="max-w-md z-10 flex flex-col items-start gap-4">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#18274E] border border-blue-400/20 text-slate-200 text-xs font-medium">
               <span>📚 Learn • Share • Build a Greener Future</span>
             </div>
-            <h1 class="text-3xl sm:text-4xl font-black text-white leading-tight">
+
+            <h1 class="text-3xl sm:text-4xl lg:text-[40px] font-black text-white leading-[1.15] tracking-tight">
               Books Today.<br>
               A <span class="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-clip-text text-transparent">Brighter Tomorrow.</span>
             </h1>
-            <p class="text-slate-300 text-xs sm:text-sm">
-              Connect with fellow global learners. Buy, sell, donate, or swap educational books safely with AI Guardian protection.
+
+            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+              Buy, sell, donate, and swap textbooks. Connect safely with global peer learners in our AI-moderated Scholar Lounge.
             </p>
-            <div class="flex items-center gap-3 pt-2">
-              <button onclick="switchTab('marketplace')" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-xs flex items-center gap-2">
+
+            <div class="flex flex-wrap items-center gap-3 pt-2">
+              <button onclick="switchTab('marketplace')" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all">
                 <span>Explore Marketplace</span>
                 <i class="fa-solid fa-arrow-right text-[10px]"></i>
               </button>
-              <button onclick="switchTab('scholar-lounge')" class="px-4 py-2.5 rounded-full bg-[#162244] border border-white/10 text-slate-200 font-semibold text-xs flex items-center gap-2">
-                <i class="fa-solid fa-comments text-cyan-400 text-[10px]"></i>
+              <button onclick="switchTab('scholar-lounge')" class="px-4 py-2.5 rounded-full bg-[#162244]/80 hover:bg-[#1E2E5B] border border-white/10 text-slate-200 font-semibold text-xs flex items-center gap-2 backdrop-blur-sm active:scale-95 transition-all">
+                <i class="fa-solid fa-comments text-cyan-400 text-xs"></i>
                 <span>Scholar Lounge</span>
               </button>
+            </div>
+          </div>
+
+          <!-- Hero Right Graphic (Isometric Glowing Book SVG) -->
+          <div class="relative w-full max-w-[340px] h-[260px] flex items-center justify-center">
+            <div class="light-orb absolute w-48 h-48 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="light-orb absolute w-60 h-60 bg-blue-600/25 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="animated-bubble absolute top-0 right-4 z-20 flex flex-col items-center">
+              <div class="relative px-3.5 py-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 font-bold text-[11px] shadow-lg shadow-cyan-500/30 flex items-center gap-1.5">
+                <i class="fa-solid fa-comment-dots text-white text-xs"></i>
+                <div class="text-left text-white leading-tight">
+                  <div class="text-[10px] opacity-90">Same books.</div>
+                  <div class="font-extrabold text-[11px]">New stories.</div>
+                </div>
+                <div class="absolute -bottom-1.5 left-5 w-3 h-3 bg-blue-500 transform rotate-45 rounded-sm"></div>
+              </div>
+            </div>
+
+            <div class="animated-book relative z-10 w-full max-w-[280px]">
+              <svg viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto drop-shadow-[0_20px_25px_rgba(6,182,212,0.35)]">
+                <path d="M160 170L30 115V132L160 188L290 132V115L160 170Z" fill="#0C1B3E"/>
+                <path d="M160 175L20 118L30 105L160 162L290 105L300 118L160 175Z" fill="#1E3A8A"/>
+                <path d="M160 158C110 152 50 120 35 110L42 98C60 108 115 140 160 146V158Z" fill="#1E40AF"/>
+                <path d="M160 148C115 142 62 110 46 100L55 88C72 98 120 130 160 136V148Z" fill="#2563EB"/>
+                <path d="M160 136C120 130 75 100 58 90C90 76 130 100 160 112V136Z" fill="#38BDF8"/>
+                <path d="M160 115C125 102 85 80 55 90L65 72C98 62 135 84 160 96V115Z" fill="url(#leftGrad)"/>
+                <path d="M160 158C210 152 270 120 285 110L278 98C260 108 205 140 160 146V158Z" fill="#1E40AF"/>
+                <path d="M160 148C205 142 258 110 274 100L265 88C248 98 200 130 160 136V148Z" fill="#2563EB"/>
+                <path d="M160 136C200 130 245 100 262 90C230 76 190 100 160 112V136Z" fill="#38BDF8"/>
+                <path d="M160 115C195 102 235 80 265 90L255 72C222 62 185 84 160 96V115Z" fill="url(#rightGrad)"/>
+                <path d="M160 95V165" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                <defs>
+                  <linearGradient id="leftGrad" x1="55" y1="80" x2="160" y2="115" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#E0F2FE"/><stop offset="0.6" stop-color="#BAE6FD"/><stop offset="1" stop-color="#60A5FA"/>
+                  </linearGradient>
+                  <linearGradient id="rightGrad" x1="265" y1="80" x2="160" y2="115" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#E0F2FE"/><stop offset="0.6" stop-color="#BAE6FD"/><stop offset="1" stop-color="#60A5FA"/>
+                  </linearGradient>
+                </defs>
+              </svg>
             </div>
           </div>
         </div>
 
         <!-- FEATURE CARDS GRID -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="dashboard-card p-5 cursor-pointer" onclick="switchTab('marketplace')">
-            <div class="h-10 w-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-3">
+          <div class="dashboard-card p-5 cursor-pointer group" onclick="switchTab('marketplace')">
+            <div class="h-10 w-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-3 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-book-open text-base"></i>
             </div>
             <h3 class="font-bold text-sm text-white">Book Marketplace</h3>
             <p class="text-[11px] text-slate-400 mt-1">Direct peer-to-peer textbook reuse & exchange.</p>
           </div>
 
-          <div class="dashboard-card p-5 cursor-pointer" onclick="switchTab('scholar-lounge')">
-            <div class="h-10 w-10 rounded-xl bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-teal-400 mb-3">
+          <div class="dashboard-card p-5 cursor-pointer group" onclick="switchTab('scholar-lounge')">
+            <div class="h-10 w-10 rounded-xl bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-teal-400 mb-3 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-shield-halved text-base"></i>
             </div>
             <h3 class="font-bold text-sm text-white">Shiori Guardian AI</h3>
             <p class="text-[11px] text-slate-400 mt-1">Smart 3-Strike AI moderation for 100% safe student chat.</p>
           </div>
 
-          <div class="dashboard-card p-5 cursor-pointer" onclick="showToast('Impact Ledger', 'Every book shared saves ~2.5kg CO2!')">
-            <div class="h-10 w-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-3">
+          <div class="dashboard-card p-5 cursor-pointer group" onclick="showToast('Impact Ledger', 'Every book shared saves ~2.5kg CO2!')">
+            <div class="h-10 w-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-3 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-leaf text-base"></i>
             </div>
             <h3 class="font-bold text-sm text-white">Verified Impact</h3>
@@ -213,7 +285,7 @@
 
       </div>
 
-      <!-- RIGHT IMPACT SIDEBAR -->
+      <!-- RIGHT SIDEBAR: REAL METRICS -->
       <div class="lg:col-span-4 flex flex-col gap-5">
         <div class="dashboard-card p-5 space-y-4">
           <h3 class="font-bold text-white text-sm flex items-center gap-2">
@@ -234,27 +306,26 @@
 
     </div>
 
-    <!-- MARKETPLACE TAB CONTENT -->
+    <!-- 2. MARKETPLACE TAB -->
     <div id="tab-marketplace" class="hidden space-y-6">
       <div class="flex justify-between items-center">
         <div>
           <h2 class="text-2xl font-bold text-white">Peer Book Marketplace</h2>
           <p class="text-xs text-slate-400">Post books for sale, swap, or free donation.</p>
         </div>
-        <button onclick="toggleModal('postBookModal')" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold">
+        <button onclick="toggleModal('postBookModal')" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all shadow-md">
           + Post a Book
         </button>
       </div>
 
       <div id="bookGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Dynamic Books render here -->
         <div class="col-span-full text-center py-12 text-slate-500 text-sm">
           No active books listed yet. Be the first to post a book!
         </div>
       </div>
     </div>
 
-    <!-- SCHOLAR LOUNGE CHAT TAB (Clean & Safe) -->
+    <!-- 3. SCHOLAR LOUNGE TAB (AI GUARD PROTECTED) -->
     <div id="tab-scholar-lounge" class="hidden space-y-4">
       <div class="dashboard-card p-5">
         <div class="flex justify-between items-center pb-4 border-b border-white/10">
@@ -269,13 +340,13 @@
 
         <div id="chatBox" class="h-64 overflow-y-auto my-4 space-y-3 p-3 bg-[#091124] rounded-xl border border-white/5">
           <div class="text-xs text-slate-400 bg-blue-500/10 p-2.5 rounded-lg border border-blue-500/20">
-            <strong>🤖 Shiori Guardian:</strong> Welcome to the Lounge! Please maintain respectful academic discussions. Inappropriate or harmful messages will trigger safety warnings.
+            <strong>🤖 Shiori Guardian:</strong> Welcome to the Lounge! Please maintain respectful academic discussions. Inappropriate messages trigger automated safety warnings.
           </div>
         </div>
 
         <div class="flex gap-2">
           <input type="text" id="chatInput" placeholder="Type your academic inquiry or message..." class="flex-1 bg-[#091124] border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
-          <button onclick="sendChatMessage()" class="px-5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs">
+          <button onclick="sendChatMessage()" class="px-5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs hover:bg-cyan-400 transition-all">
             Send
           </button>
         </div>
@@ -288,22 +359,22 @@
   <div id="postBookModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
     <div class="dashboard-card p-6 max-w-md w-full space-y-4">
       <h3 class="text-lg font-bold text-white">Post a Book to Marketplace</h3>
-      <input type="text" id="bookTitle" placeholder="Book Title (e.g., NCERT Physics Class 12)" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white">
-      <select id="bookType" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white">
+      <input type="text" id="bookTitle" placeholder="Book Title (e.g., NCERT Physics Class 12)" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+      <select id="bookType" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
         <option value="Sale">Sell for Cash</option>
         <option value="Swap">Swap with another Book</option>
         <option value="Donate">Free Donation</option>
       </select>
-      <input type="number" id="bookPrice" placeholder="Price in ₹ (0 if Free/Swap)" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white">
+      <input type="number" id="bookPrice" placeholder="Price in ₹ (0 if Free/Swap)" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
       <div class="flex justify-end gap-2 pt-2">
         <button onclick="toggleModal('postBookModal')" class="px-4 py-2 bg-slate-700 text-xs text-white rounded-xl">Cancel</button>
-        <button onclick="addNewBook()" class="px-4 py-2 bg-blue-600 text-xs text-white font-bold rounded-xl">Publish Listing</button>
+        <button onclick="addNewBook()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-xs text-white font-bold rounded-xl">Publish Listing</button>
       </div>
     </div>
   </div>
 
   <script>
-    // State Engine (Zero hardcoded data)
+    // Live State Engine (Zero hardcoded mock data)
     let booksList = [];
     let strikes = 0;
     let impactPoints = 0;
@@ -312,6 +383,16 @@
       document.getElementById('tab-home').classList.add('hidden');
       document.getElementById('tab-marketplace').classList.add('hidden');
       document.getElementById('tab-scholar-lounge').classList.add('hidden');
+
+      // Update Nav pill buttons active styles
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all";
+      });
+
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      if(activeBtn) {
+        activeBtn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all";
+      }
 
       document.getElementById(`tab-${tabId}`).classList.remove('hidden');
     }
@@ -343,7 +424,7 @@
 
       const newBook = { title, type, price };
       booksList.push(newBook);
-      impactPoints += 50; // Earn ESG points for sharing
+      impactPoints += 50; // Earn ESG credits
 
       document.getElementById('userImpactPoints').innerText = impactPoints;
       document.getElementById('statESG').innerText = impactPoints;
@@ -364,7 +445,7 @@
         return;
       }
 
-      booksList.forEach((book, index) => {
+      booksList.forEach((book) => {
         grid.innerHTML += `
           <div class="dashboard-card p-4 space-y-2">
             <div class="flex justify-between items-start">
@@ -372,7 +453,7 @@
               <span class="text-xs font-bold text-white">${book.price > 0 ? '₹' + book.price : 'FREE'}</span>
             </div>
             <h4 class="font-bold text-sm text-white">${book.title}</h4>
-            <button onclick="switchTab('scholar-lounge')" class="w-full mt-2 py-1.5 bg-[#162244] border border-white/10 hover:border-cyan-400 text-xs text-white rounded-lg">
+            <button onclick="switchTab('scholar-lounge')" class="w-full mt-2 py-1.5 bg-[#162244] border border-white/10 hover:border-cyan-400 text-xs text-white rounded-lg transition-colors">
               Inquire via Scholar Lounge
             </button>
           </div>
@@ -390,7 +471,7 @@
         return;
       }
 
-      // Shiori Guardian Safety Check (Automated AI Moderation)
+      // Shiori Guardian 3-Strike AI Moderation Check
       const badWords = ['hate', 'abuse', 'stupid', 'idiot', 'spam', 'scam'];
       const isViolation = badWords.some(word => text.toLowerCase().includes(word));
 
