@@ -1,1 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shiori GLOBAL — CIRCULAR LEARNING NETWORK</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#070D1E',
+            cardBg: '#0D1733',
+            cardBorder: 'rgba(255, 255, 255, 0.08)',
+            navPill: '#101F44',
+            accentCyan: '#38BDF8',
+            accentBlue: '#2563EB',
+            accentGreen: '#10B981',
+            accentOrange: '#F59E0B',
+            accentPurple: '#8B5CF6'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #070D1E;
+      color: #F8FAFC;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .dashboard-card {
+      background: linear-gradient(180deg, #101B3B 0%, #0C152F 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .dashboard-card:hover {
+      border-color: rgba(56, 189, 248, 0.25);
+    }
+
+    .hero-glow-container {
+      background: radial-gradient(ellipse at 70% 50%, rgba(37, 99, 235, 0.25) 0%, rgba(16, 27, 59, 0.95) 75%), #0D1733;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes floatBook {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(-1deg); }
+    }
+    .animated-book {
+      animation: floatBook 5s ease-in-out infinite;
+    }
+
+    .action-circle-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+    .action-circle-btn:hover {
+      transform: scale(1.1);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #070D1E;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white">
+
+  <!-- Toast Notification Center -->
+  <div id="toastBox" class="fixed top-5 right-5 z-[999] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="w-full px-4 lg:px-8 py-3.5 border-b border-white/5 bg-[#091124]/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-[1520px] mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="setActiveNav('home')">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-blue-600/30">
+          栞
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5 leading-none">
+            <span class="font-extrabold text-lg tracking-tight text-white">Shiori</span>
+            <span class="text-cyan-400 font-bold text-sm tracking-wide">GLOBAL</span>
+          </div>
+          <span class="text-[9.5px] uppercase font-semibold text-slate-400 tracking-wider">Circular Learning Network</span>
+        </div>
+      </div>
+
+      <!-- Center Nav -->
+      <nav class="hidden md:flex items-center bg-[#0C152F] p-1 rounded-full border border-white/10 shadow-inner">
+        <button id="nav-home" onclick="setActiveNav('home')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all">
+          <i class="fa-solid fa-house text-[11px]"></i> Home
+        </button>
+        <button id="nav-explore" onclick="setActiveNav('explore')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
+          <i class="fa-solid fa-book-open text-[11px]"></i> Marketplace
+        </button>
+        <button id="nav-ai" onclick="setActiveNav('ai')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
+          <i class="fa-solid fa-wand-magic-sparkles text-[11px]"></i> AI Assistant[cite: 2]
+        </button>
+        <button id="nav-community" onclick="setActiveNav('community')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
+          <i class="fa-solid fa-earth-americas text-[11px]"></i> Scholar Lounge[cite: 2]
+        </button>
+      </nav>
+
+      <!-- Right ESG & Avatar -->
+      <div class="flex items-center gap-3">
+        <div class="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+          <i class="fa-solid fa-leaf text-xs"></i>
+          <span id="headerEsgPoints">ESG Score: 1,250 PTS[cite: 2]</span>
+        </div>
+        <div class="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 p-[1.5px] cursor-pointer">
+          <div class="h-full w-full rounded-full bg-[#0D1733] flex items-center justify-center text-xs font-bold text-white">
+            <i class="fa-solid fa-user text-slate-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="max-w-[1520px] mx-auto w-full px-4 lg:px-8 py-6 flex-1">
+    
+    <!-- HOME TAB -->
+    <div id="tab-home" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div class="lg:col-span-8 flex flex-col gap-6">
+        <div class="hero-glow-container p-6 sm:p-8 lg:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div class="max-w-md z-10 flex flex-col items-start gap-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#18274E] border border-blue-400/20 text-slate-200 text-xs font-medium">
+              <span>📚 Learn • Share • Build a Greener Future</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-black text-white leading-tight">
+              Books Today.<br>
+              A <span class="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-clip-text text-transparent">Brighter Tomorrow.</span>
+            </h1>
+            <p class="text-slate-300 text-xs sm:text-sm">
+              Connect securely with peer learners worldwide. Buy, sell, donate, or swap textbooks protected by Shiori Guardian AI[cite: 2].
+            </p>
+            <div class="flex items-center gap-3 pt-2">
+              <button onclick="setActiveNav('explore')" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-xs flex items-center gap-2">
+                <span>Explore Marketplace</span>[cite: 2]
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </button>
+              <button onclick="setActiveNav('community')" class="px-4 py-2.5 rounded-full bg-[#162244] border border-white/10 text-slate-200 font-semibold text-xs flex items-center gap-2">
+                <i class="fa-solid fa-comments text-cyan-400 text-[10px]"></i>
+                <span>Scholar Lounge</span>[cite: 2]
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEATURE CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="dashboard-card p-5 cursor-pointer" onclick="setActiveNav('explore')">
+            <div class="h-10 w-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-3">
+              <i class="fa-solid fa-book-open text-base"></i>
+            </div>
+            <h3 class="font-bold text-sm text-white">Book Marketplace[cite: 2]</h3>
+            <p class="text-[11px] text-slate-400 mt-1">Direct peer-to-peer textbook reuse & exchange[cite: 2].</p>
+          </div>
+
+          <div class="dashboard-card p-5 cursor-pointer" onclick="setActiveNav('ai')">
+            <div class="h-10 w-10 rounded-xl bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-teal-400 mb-3">
+              <i class="fa-solid fa-wand-magic-sparkles text-base"></i>
+            </div>
+            <h3 class="font-bold text-sm text-white">Gemini AI Assistant[cite: 2]</h3>
+            <p class="text-[11px] text-slate-400 mt-1">Instant summaries, quizzes, and concept explanations[cite: 2].</p>
+          </div>
+
+          <div class="dashboard-card p-5 cursor-pointer" onclick="setActiveNav('community')">
+            <div class="h-10 w-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-3">
+              <i class="fa-solid fa-shield-halved text-base"></i>
+            </div>
+            <h3 class="font-bold text-sm text-white">Shiori Guardian AI</h3>
+            <p class="text-[11px] text-slate-400 mt-1">Smart 3-Strike moderation policy for 100% safe chats.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT METRICS -->
+      <div class="lg:col-span-4 flex flex-col gap-5">
+        <div class="dashboard-card p-5 space-y-4">
+          <h3 class="font-bold text-white text-sm flex items-center gap-2">
+            <i class="fa-solid fa-chart-line text-cyan-400"></i> Platform Statistics
+          </h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3.5 rounded-xl bg-[#091228] border border-white/5">
+              <div class="text-sm font-black text-white" id="statBooks">4</div>
+              <div class="text-[10px] text-slate-400">Active Listings</div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-[#091228] border border-white/5">
+              <div class="text-sm font-black text-emerald-400" id="statESG">1,250</div>
+              <div class="text-[10px] text-slate-400">ESG Points[cite: 2]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARKETPLACE TAB -->
+    <div id="tab-marketplace" class="hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Peer Book Marketplace[cite: 2]</h2>
+          <p class="text-xs text-slate-400">Post books for sale, swap, or free donation[cite: 2].</p>
+        </div>
+        <button onclick="openSellModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold">
+          + Post a Book
+        </button>
+      </div>
+      <div id="bookGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+
+    <!-- AI ASSISTANT TAB -->
+    <div id="tab-ai" class="hidden space-y-4">
+      <div class="dashboard-card p-5 h-[70vh] flex flex-col">
+        <div class="pb-3 border-b border-white/10 flex items-center justify-between">
+          <h2 class="text-lg font-bold text-white">Shiori Gemini AI Study Assistant[cite: 2]</h2>
+          <span class="text-xs text-cyan-400">Powered by Gemini API[cite: 2]</span>
+        </div>
+        <div id="aiChatBox" class="flex-1 overflow-y-auto my-4 space-y-3 p-3 bg-[#091124] rounded-xl border border-white/5 text-xs">
+          <div class="text-slate-300 bg-blue-500/10 p-3 rounded-lg border border-blue-500/20">
+            <strong>🤖 Shiori AI:</strong> Hello! Ask me any academic question, chapter summary, or concept explanation[cite: 2].
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <input type="text" id="aiInputPrompt" onkeypress="if(event.key==='Enter') sendAiMessage()" placeholder="Ask a study question..." class="flex-1 bg-[#091124] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+          <button onclick="sendAiMessage()" class="px-5 py-2.5 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHOLAR LOUNGE CHAT TAB (GUARDIAN AI) -->
+    <div id="tab-community" class="hidden space-y-4">
+      <div class="dashboard-card p-5">
+        <div class="flex justify-between items-center pb-4 border-b border-white/10">
+          <div>
+            <h2 class="text-xl font-bold text-white">Shiori Scholar Lounge & Penpal Chat[cite: 2]</h2>
+            <p class="text-xs text-slate-400">Protected by Shiori Guardian AI (3-Strike Safety Policy)</p>
+          </div>
+          <div class="text-xs text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+            ⚠️ Active Strikes: <span id="strikeCount">0</span>/3
+          </div>
+        </div>
+
+        <div id="chatBox" class="h-64 overflow-y-auto my-4 space-y-3 p-3 bg-[#091124] rounded-xl border border-white/5">
+          <div class="text-xs text-slate-400 bg-blue-500/10 p-2.5 rounded-lg border border-blue-500/20">
+            <strong>🤖 Shiori Guardian:</strong> Welcome! Maintain respectful academic chats. Inappropriate language will trigger automated warnings.
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <input type="text" id="chatInput" placeholder="Type message to global peers..." class="flex-1 bg-[#091124] border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+          <button onclick="sendChatMessage()" class="px-5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs">
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- POST BOOK MODAL -->
+  <div id="postBookModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="dashboard-card p-6 max-w-md w-full space-y-4">
+      <h3 class="text-lg font-bold text-white">Post a Book to Marketplace[cite: 2]</h3>
+      <input type="text" id="formTitle" placeholder="Book Title (e.g. Physics Class 12)" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white">
+      <select id="formType" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white">
+        <option value="SELL">Sell for Cash</option>
+        <option value="SWAP">Swap with Peer</option>
+        <option value="DONATE">Free Donation</option>
+      </select>
+      <input type="text" id="formPrice" placeholder="Price ($15 or ₹500)" class="w-full bg-[#091124] border border-white/10 rounded-xl p-2.5 text-xs text-white">
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="toggleModal('postBookModal', false)" class="px-4 py-2 bg-slate-700 text-xs text-white rounded-xl">Cancel</button>
+        <button onclick="addNewBook()" class="px-4 py-2 bg-blue-600 text-xs text-white font-bold rounded-xl">Publish Listing[cite: 2]</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let booksData = [
+      { id: "b1", title: "Fundamentals of Physics", author: "Halliday & Resnick", type: "SELL", price: "₹500", location: "New Delhi, IN" },
+      { id: "b2", title: "Introduction to Algorithms", author: "Cormen et al.", type: "SWAP", price: "Trade", location: "Tokyo, JP" },
+      { id: "b3", title: "Calculus: Early Transcendentals", author: "James Stewart", type: "DONATE", price: "FREE", location: "Rome, IT" }
+    ];
+    let strikes = 0;
+    let impactPoints = 1250;
+
+    function setActiveNav(tabKey) {
+      document.getElementById('tab-home').classList.add('hidden');
+      document.getElementById('tab-marketplace').classList.add('hidden');
+      document.getElementById('tab-ai').classList.add('hidden');
+      document.getElementById('tab-community').classList.add('hidden');
+
+      document.querySelectorAll('.nav-item').forEach(b => {
+        b.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all";
+      });
+
+      const activeBtn = document.getElementById(`nav-${tabKey}`);
+      if(activeBtn) activeBtn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all";
+
+      if(tabKey === 'explore') {
+        renderMarketplace();
+        document.getElementById('tab-marketplace').classList.remove('hidden');
+      } else {
+        document.getElementById(`tab-${tabKey}`).classList.remove('hidden');
+      }
+    }
+
+    function toggleModal(modalId, show) {
+      const modal = document.getElementById(modalId);
+      if(show) modal.classList.replace('hidden', 'flex');
+      else modal.classList.replace('flex', 'hidden');
+    }
+
+    function openSellModal() { toggleModal('postBookModal', true); }
+
+    function showToast(title, msg) {
+      const toastBox = document.getElementById('toastBox');
+      const toast = document.createElement('div');
+      toast.className = 'bg-[#101B3B] border border-cyan-500/30 text-white p-3 rounded-xl text-xs shadow-lg flex items-center gap-2 animate-bounce';
+      toast.innerHTML = `<div><strong>${title}:</strong> ${msg}</div>`;
+      toastBox.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    function addNewBook() {
+      const title = document.getElementById('formTitle').value.trim();
+      const type = document.getElementById('formType').value;
+      const price = document.getElementById('formPrice').value || 'FREE';
+
+      if(!title) { showToast('Error', 'Please enter a book title.'); return; }
+
+      booksData.unshift({ id: "b"+(booksData.length+1), title, author: "Self", type, price, location: "Online" });
+      impactPoints += 50;
+      document.getElementById('headerEsgPoints').innerText = `ESG Score: ${impactPoints} PTS[cite: 2]`;
+      document.getElementById('statESG').innerText = impactPoints;
+      document.getElementById('statBooks').innerText = booksData.length;
+
+      renderMarketplace();
+      toggleModal('postBookModal', false);
+      document.getElementById('formTitle').value = '';
+      showToast('Success', 'Book listed successfully! +50 ESG Pts[cite: 2]');
+    }
+
+    function renderMarketplace() {
+      const grid = document.getElementById('bookGrid');
+      grid.innerHTML = booksData.map(b => `
+        <div class="dashboard-card p-4 space-y-2">
+          <div class="flex justify-between items-start">
+            <span class="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded">${b.type}</span>
+            <span class="text-xs font-bold text-white">${b.price}</span>
+          </div>
+          <h4 class="font-bold text-sm text-white">${b.title}</h4>
+          <p class="text-[11px] text-slate-400">${b.author} • ${b.location}</p>
+        </div>
+      `).join('');
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if(!text) return;
+
+      if(strikes >= 3) {
+        showToast('Blocked', 'Chat access suspended due to safety strikes.');
+        return;
+      }
+
+      const badWords = ['hate', 'abuse', 'stupid', 'idiot', 'spam'];
+      if(badWords.some(w => text.toLowerCase().includes(w))) {
+        strikes++;
+        document.getElementById('strikeCount').innerText = strikes;
+        showToast('Warning', `Safety violation! Strike ${strikes}/3 issued.`);
+      } else {
+        document.getElementById('chatBox').innerHTML += `<div class="text-xs bg-[#101B3B] text-slate-200 p-2.5 rounded-lg"><strong>You:</strong> ${text}</div>`;
+      }
+      input.value = '';
+    }
+
+    async function sendAiMessage() {
+      const input = document.getElementById('aiInputPrompt');
+      const text = input.value.trim();
+      if(!text) return;
+
+      const chatBox = document.getElementById('aiChatBox');
+      chatBox.innerHTML += `<div class="text-right text-cyan-300 my-1"><strong>You:</strong> ${text}</div>`;
+      input.value = '';
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ contents: [{ parts: [{ text }] }] })
+        });
+        const data = await response.json();
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Study tip: Break your tasks into Pomodoro intervals!";
+        chatBox.innerHTML += `<div class="text-slate-200 bg-[#121E3F] p-3 rounded-lg my-1"><strong>Gemini AI:</strong> ${reply}</div>`;
+      } catch(e) {
+        chatBox.innerHTML += `<div class="text-slate-200 bg-[#121E3F] p-3 rounded-lg my-1"><strong>Gemini AI:</strong> Keep revising consistently!</div>`;
+      }
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
