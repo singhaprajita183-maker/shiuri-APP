@@ -1,1721 +1,852 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shiori GLOBAL — CIRCULAR LEARNING NETWORK</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brandDark: '#070D1E',
-            cardBg: '#0D1733',
-            cardBorder: 'rgba(255, 255, 255, 0.08)',
-            navPill: '#101F44',
-            accentCyan: '#38BDF8',
-            accentBlue: '#2563EB',
-            accentGreen: '#10B981',
-            accentOrange: '#F59E0B',
-            accentPurple: '#8B5CF6'
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-  <!-- Google Fonts & FontAwesome Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1120">
+<title>Shiori GLOBAL | Circular Learning Network</title>
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #070D1E;
-      color: #F8FAFC;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    }
-
-    .dashboard-card {
-      background: linear-gradient(180deg, #101B3B 0%, #0C152F 100%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .dashboard-card:hover {
-      border-color: rgba(56, 189, 248, 0.25);
-    }
-
-    .hero-glow-container {
-      background: radial-gradient(ellipse at 70% 50%, rgba(37, 99, 235, 0.25) 0%, rgba(16, 27, 59, 0.95) 75%), #0D1733;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    @keyframes floatBook {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-8px) rotate(-1deg); }
-    }
-    @keyframes floatBubble {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-    }
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 0.9; transform: scale(1.06); }
-    }
-    .animated-book {
-      animation: floatBook 5s ease-in-out infinite;
-    }
-    .animated-bubble {
-      animation: floatBubble 4s ease-in-out infinite 0.5s;
-    }
-    .light-orb {
-      animation: pulseGlow 6s ease-in-out infinite;
-    }
-
-    .action-circle-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s ease;
-    }
-    .action-circle-btn:hover {
-      transform: scale(1.1);
-    }
-
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #070D1E;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1E293B;
-      border-radius: 999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #38BDF8;
-    }
-  </style>
+<style>
+:root {
+  --bg:#0b1120;
+  --panel:#111c30;
+  --card:#16243a;
+  --border:#283950;
+  --text:#edf5ff;
+  --muted:#9aacc4;
+  --cyan:#06b6d4;
+  --orange:#ff795e;
+  --green:#34d399;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+}
+button,input,textarea,select {font:inherit}
+button {cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible {
+  outline:2px solid var(--cyan);outline-offset:3px
+}
+.app {display:flex;min-height:100vh}
+.sidebar {
+  width:245px;background:#0d1729;border-right:1px solid var(--border);
+  padding:25px 17px;display:flex;flex-direction:column;gap:25px;
+  flex-shrink:0
+}
+.brand {display:flex;gap:12px;align-items:center;padding:0 8px}
+.logo {
+  display:grid;place-items:center;width:44px;height:44px;
+  border-radius:14px;background:linear-gradient(135deg,#06b6d4,#2563eb);
+  color:white;font-size:24px;font-weight:bold
+}
+.brand h2 {font-size:17px;margin:0}
+.brand small {color:var(--muted);font-size:11px}
+.nav-label {
+  color:#7487a1;font-size:10px;font-weight:bold;
+  letter-spacing:1.7px;padding:0 12px
+}
+nav {display:grid;gap:7px}
+.nav-btn {
+  border:0;background:transparent;color:#9aacc4;text-align:left;
+  border-radius:10px;padding:12px;display:flex;gap:12px;
+  align-items:center;width:100%;font-size:13px
+}
+.nav-btn:hover,.nav-btn.active {
+  background:#18314a;color:#67e8f9
+}
+.nav-btn span:first-child {width:20px;text-align:center}
+.sidebar-note {
+  margin-top:auto;padding:16px;background:var(--panel);
+  border:1px solid var(--border);border-radius:14px
+}
+.sidebar-note p {font-size:12px;color:var(--muted);line-height:1.6}
+.main {flex:1;min-width:0}
+.topbar {
+  height:76px;padding:0 30px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:15px
+}
+.search {width:min(360px,45%);position:relative}
+.search input {
+  width:100%;background:var(--panel);border:1px solid var(--border);
+  padding:12px 14px;border-radius:10px;color:var(--text)
+}
+.avatar {
+  width:38px;height:38px;border-radius:50%;background:#164e63;
+  display:grid;place-items:center;color:#a5f3fc;font-weight:bold
+}
+.profile {display:flex;align-items:center;gap:10px;font-size:13px}
+.profile small {display:block;color:var(--muted);margin-top:3px}
+.content {padding:28px 30px;max-width:1450px;margin:auto}
+.page {display:none}
+.page.active {display:block}
+.hero {
+  position:relative;overflow:hidden;padding:32px;
+  background:linear-gradient(115deg,#102b43,#14213b 65%,#202447);
+  border:1px solid #29465d;border-radius:20px;margin-bottom:25px
+}
+.hero:after {
+  content:"栞";position:absolute;right:6%;top:-30px;
+  font-size:180px;color:#67e8f9;opacity:.08;pointer-events:none
+}
+.eyebrow {
+  color:#67e8f9;font-size:11px;letter-spacing:2px;font-weight:bold
+}
+h1 {font-size:clamp(26px,4vw,40px);margin:13px 0 12px}
+h2 {font-size:21px;margin:0 0 9px}
+h3 {font-size:15px;margin:0 0 10px}
+p {line-height:1.6}
+.muted {color:var(--muted)}
+.hero p {max-width:560px;color:#b6c7da;font-size:14px}
+.actions {display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn {
+  border:1px solid var(--border);border-radius:9px;padding:11px 15px;
+  background:#1b2b42;color:var(--text);font-size:12px;font-weight:600
+}
+.btn:hover {filter:brightness(1.15)}
+.btn.primary {background:var(--cyan);border-color:var(--cyan);color:#06202b}
+.btn.orange {background:var(--orange);border-color:var(--orange);color:#28100b}
+.btn.green {background:#065f46;border-color:#047857;color:#d1fae5}
+.btn:disabled {opacity:.45;cursor:not-allowed}
+.stats {
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;margin-bottom:28px
+}
+.stat,.panel {
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:15px;padding:19px
+}
+.stat .symbol {font-size:20px}
+.stat .value {font-size:27px;font-weight:750;margin:13px 0 5px}
+.stat small {font-size:12px;color:var(--muted)}
+.section-head {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;margin:26px 0 15px
+}
+.book-grid {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px
+}
+.book {
+  border:1px solid var(--border);background:var(--panel);
+  border-radius:14px;overflow:hidden
+}
+.book-art {
+  height:145px;display:grid;place-items:center;font-size:56px;
+  background:linear-gradient(135deg,#163a54,#17213e)
+}
+.book-body {padding:16px}
+.book-body h3 {margin-bottom:6px}
+.tag {
+  display:inline-block;border:1px solid #31546a;border-radius:6px;
+  padding:5px 8px;color:#8deafa;font-size:10px;margin:5px 4px 8px 0
+}
+.tag.green {color:#86efac;border-color:#245c4d}
+.tag.orange {color:#ffc0a9;border-color:#744438}
+.book-meta {font-size:11px;color:var(--muted);margin:7px 0 13px}
+.book-footer {display:flex;justify-content:space-between;align-items:center;gap:8px}
+.book-footer strong {font-size:16px}
+.filters {display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.filter.active {border-color:var(--cyan);color:#67e8f9}
+.two-col {display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.progress {
+  height:7px;background:#25374c;border-radius:20px;overflow:hidden;margin:12px 0
+}
+.progress div {height:100%;background:var(--green);border-radius:20px}
+.field {display:grid;gap:7px;margin:14px 0}
+.field label {font-size:12px;color:#c1d0e1}
+.field input,.field textarea,.field select {
+  width:100%;background:#0c1729;color:var(--text);
+  border:1px solid var(--border);border-radius:9px;padding:12px
+}
+.field textarea {resize:vertical;min-height:100px}
+.output {
+  padding:15px;background:#0b1727;border:1px solid var(--border);
+  border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;
+  font-size:13px;line-height:1.7;min-height:60px
+}
+.chat-log {
+  display:flex;flex-direction:column;gap:12px;min-height:180px;
+  max-height:380px;overflow:auto;padding:12px 0
+}
+.message {
+  padding:12px 14px;border-radius:12px;max-width:90%;
+  background:#1b2c42;align-self:flex-start;font-size:13px;
+  white-space:pre-wrap;overflow-wrap:anywhere
+}
+.message.mine {align-self:flex-end;background:#124354}
+.notice {
+  padding:12px;border-radius:9px;background:#172c35;
+  border:1px solid #24505b;color:#a5f3fc;font-size:12px;line-height:1.6
+}
+.notice.warn {background:#33241d;border-color:#71462e;color:#fed7aa}
+.notice.danger {background:#351d2a;border-color:#79334d;color:#fecdd3}
+.small {font-size:11px}
+hr {border:0;border-top:1px solid var(--border);margin:18px 0}
+.empty {text-align:center;padding:32px 15px;color:var(--muted)}
+.footer {padding:24px 0;text-align:center;color:#6e829c;font-size:11px}
+.mobile-menu {display:none}
+@media(max-width:1000px) {
+  .sidebar {width:205px}
+  .book-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats {grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px) {
+  .app {display:block}
+  .sidebar {
+    display:none;position:fixed;z-index:5;inset:0 auto 0 0;
+    width:260px;box-shadow:20px 0 50px #0008
+  }
+  .sidebar.open {display:flex}
+  .mobile-menu {display:inline-block}
+  .topbar {height:65px;padding:0 14px}
+  .content {padding:18px 14px}
+  .hero {padding:24px 19px}
+  .two-col {grid-template-columns:1fr}
+  .book-grid {grid-template-columns:1fr}
+  .search {width:48%}
+  .profile .profile-name {display:none}
+  .stats {gap:9px}
+  .stat {padding:13px}
+  .stat .value {font-size:23px}
+}
+</style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white">
 
-  <!-- Interactive Toast Notification Center -->
-  <div id="toastBox" class="fixed top-5 right-5 z-[999] flex flex-col gap-2 pointer-events-none"></div>
+<body>
+<div class="app">
 
-  <!-- GUARDIAN AI SUSPENSION MODAL (STRIKE 3 LOCKOUT) -->
-  <div id="guardianLockoutModal" class="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-xl hidden flex items-center justify-center p-4">
-    <div class="dashboard-card max-w-md w-full p-6 text-center border-red-500/50 space-y-4">
-      <div class="h-16 w-16 mx-auto rounded-full bg-red-600/20 border-2 border-red-500 flex items-center justify-center text-red-500 text-3xl animate-pulse">
-        <i class="fa-solid fa-shield-virus"></i>
-      </div>
-      <div>
-        <h2 class="text-xl font-black text-white">Account Temporarily Suspended</h2>
-        <span class="inline-block mt-1 px-3 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[11px] font-bold">Shiori Guardian AI: 3-Strike Trigger</span>
-      </div>
-      <p class="text-xs text-slate-300 leading-relaxed">
-        Your account accumulated <strong>3 Safety Strikes</strong> for repeated violations of peer conduct guidelines (inappropriate slang, harassment, or unsafe personal solicitations).
-      </p>
-      <div class="p-3 bg-[#0A1128] rounded-xl border border-red-500/20 text-[11px] text-slate-400 text-left space-y-1">
-        <div>• Strike 1: Warning issued</div>
-        <div>• Strike 2: Final peer conduct notice</div>
-        <div class="text-red-400 font-semibold">• Strike 3: Automatic security lockout</div>
-      </div>
-      <button onclick="guardianResetSession()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300">
-        Reset Account & Accept Student Safety Oath
-      </button>
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="logo">栞</div>
+    <div><h2>Shiori GLOBAL</h2><small>CIRCULAR LEARNING NETWORK</small></div>
+  </div>
+
+  <div class="nav-label">WORKSPACE</div>
+  <nav>
+    <button class="nav-btn active" data-page="dashboard"><span>◈</span> Dashboard</button>
+    <button class="nav-btn" data-page="marketplace"><span>▤</span> Book Marketplace</button>
+    <button class="nav-btn" data-page="sell"><span>＋</span> List a Book</button>
+    <button class="nav-btn" data-page="lounge"><span>◎</span> Scholar Lounge</button>
+    <button class="nav-btn" data-page="assistant"><span>✧</span> AI Study Assistant</button>
+    <button class="nav-btn" data-page="guardian"><span>⬡</span> Guardian AI</button>
+    <button class="nav-btn" data-page="impact"><span>♧</span> Green Impact</button>
+    <button class="nav-btn" data-page="account"><span>⚙</span> Account & Seller Level</button>
+  </nav>
+
+  <div class="sidebar-note">
+    <div class="eyebrow">OUR MISSION</div>
+    <p>Books Today. A Brighter Tomorrow.</p>
+    <small class="muted">Reuse knowledge. Reduce waste.</small>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:10px;min-width:0">
+    <button class="btn mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="search"><input id="globalSearch" placeholder="Search books..." aria-label="Search books"></div>
+  </div>
+  <div class="profile">
+    <div class="avatar" id="avatar">S</div>
+    <div class="profile-name"><strong id="profileName">Student</strong><small id="profileLevel">Level 1 · Starter</small></div>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+  <div class="hero">
+    <div class="eyebrow">YOUR KNOWLEDGE. OUR SHARED FUTURE.</div>
+    <h1>Learn together.<br>Make knowledge circular.</h1>
+    <p>Discover educational books, exchange learning resources and build a more sustainable student community.</p>
+    <div class="actions">
+      <button class="btn primary" data-go="marketplace">Explore Marketplace →</button>
+      <button class="btn" data-go="assistant">Ask Study AI ✧</button>
     </div>
   </div>
 
-  <!-- ============================================== -->
-  <!-- TOP NAVIGATION BAR                            -->
-  <!-- ============================================== -->
-  <header class="w-full px-4 lg:px-8 py-3.5 border-b border-white/5 bg-[#091124]/90 backdrop-blur-md sticky top-0 z-40">
-    <div class="max-w-[1520px] mx-auto flex items-center justify-between gap-4">
-      
-      <!-- Brand Logo Left -->
-      <div class="flex items-center gap-3 cursor-pointer" onclick="closeAllModals(); setActiveNav('home');">
-        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-blue-600/30">
-          栞
-        </div>
-        <div>
-          <div class="flex items-center gap-1.5 leading-none">
-            <span class="font-extrabold text-lg tracking-tight text-white">Shiori</span>
-            <span class="text-cyan-400 font-bold text-sm tracking-wide">GLOBAL</span>
-          </div>
-          <span class="text-[9.5px] uppercase font-semibold text-slate-400 tracking-wider">Circular Learning Network</span>
-        </div>
-      </div>
-
-      <!-- Center Pill Navigation Bar -->
-      <nav class="hidden md:flex items-center bg-[#0C152F] p-1 rounded-full border border-white/10 shadow-inner">
-        <button id="nav-home" onclick="setActiveNav('home')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all">
-          <i class="fa-solid fa-house text-[11px]"></i> Home
-        </button>
-        <button id="nav-explore" onclick="setActiveNav('explore')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
-          <i class="fa-solid fa-magnifying-glass text-[11px]"></i> Explore Books
-        </button>
-        <button id="nav-sell" onclick="setActiveNav('sell')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
-          <i class="fa-solid fa-tag text-[11px]"></i> List / Donate
-        </button>
-        <button id="nav-ai" onclick="setActiveNav('ai')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
-          <i class="fa-solid fa-wand-magic-sparkles text-[11px]"></i> Gemini AI Tutor
-        </button>
-        <button id="nav-messages" onclick="setActiveNav('messages')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all relative">
-          <i class="fa-regular fa-comment-dots text-[11px]"></i> Messages
-          <span id="unreadDot" class="h-2 w-2 rounded-full bg-cyan-400 absolute top-1 right-2 hidden"></span>
-        </button>
-        <button id="nav-community" onclick="setActiveNav('community')" class="nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all">
-          <i class="fa-solid fa-earth-americas text-[11px]"></i> Scholar Lounge
-        </button>
-      </nav>
-
-      <!-- Right Actions: ESG Points, Safety Shield, Avatar -->
-      <div class="flex items-center gap-3">
-        <!-- ESG Pill Badge -->
-        <div onclick="openEsgModal()" class="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/25 transition-all">
-          <i class="fa-solid fa-leaf text-xs"></i>
-          <span id="headerEsgPoints">ESG Score: 0 Points</span>
-        </div>
-
-        <!-- Guardian Shield Status Indicator -->
-        <div id="guardianShieldBtn" onclick="showGuardianStatus()" class="relative h-9 w-9 rounded-full bg-[#101B3B] border border-cyan-500/30 flex items-center justify-center text-cyan-400 hover:border-cyan-400 transition-all cursor-pointer" title="Shiori Guardian AI Shield Active">
-          <i class="fa-solid fa-shield-halved text-xs"></i>
-          <span id="strikeBadge" class="absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-emerald-500 text-[9px] font-black text-slate-950">0</span>
-        </div>
-
-        <!-- User Profile Avatar -->
-        <div onclick="openProfileModal()" class="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 p-[1.5px] cursor-pointer hover:scale-105 transition-all">
-          <div class="h-full w-full rounded-full bg-[#0D1733] flex items-center justify-center text-xs font-bold text-white overflow-hidden">
-            <span id="userAvatarText">ST</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- ============================================== -->
-  <!-- MAIN DASHBOARD CONTENT                         -->
-  <!-- ============================================== -->
-  <main class="max-w-[1520px] mx-auto w-full px-4 lg:px-8 py-6">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-
-      <!-- LEFT SECTION (8 cols) -->
-      <div class="lg:col-span-8 flex flex-col gap-6">
-
-        <!-- 1. HERO BANNER CARD -->
-        <div class="hero-glow-container p-6 sm:p-8 lg:p-10 flex flex-col md:flex-row items-center justify-between gap-8 min-h-[360px]">
-          
-          <div class="max-w-md z-10 flex flex-col items-start gap-4">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#18274E] border border-blue-400/20 text-slate-200 text-xs font-medium">
-              <span>📚 Learn • Share • Build a Greener Future</span>
-            </div>
-
-            <h1 class="text-3xl sm:text-4xl lg:text-[40px] font-black text-white leading-[1.15] tracking-tight">
-              Books Today.<br>
-              A <span class="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-clip-text text-transparent">Brighter Tomorrow.</span>
-            </h1>
-
-            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-              Buy, sell, donate, swap textbooks, and connect with global learning penpals. Zero dummy data, 100% genuine student recirculations protected by Guardian AI.
-            </p>
-
-            <div class="flex flex-wrap items-center gap-3 pt-2">
-              <button onclick="setActiveNav('explore')" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-cyan-500/20 active:scale-95 transition-all">
-                <span>Explore Books</span>
-                <i class="fa-solid fa-arrow-right text-[10px]"></i>
-              </button>
-              <button onclick="setActiveNav('community')" class="px-4 py-2.5 rounded-full bg-[#162244]/80 hover:bg-[#1E2E5B] border border-white/10 text-slate-200 font-semibold text-xs flex items-center gap-2 backdrop-blur-sm active:scale-95 transition-all">
-                <i class="fa-solid fa-earth-americas text-cyan-400 text-xs"></i>
-                <span>Scholar Lounge</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Hero Right Graphic -->
-          <div class="relative w-full max-w-[340px] h-[260px] flex items-center justify-center">
-            <div class="light-orb absolute w-48 h-48 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="light-orb absolute w-60 h-60 bg-blue-600/25 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="animated-bubble absolute top-0 right-4 z-20 flex flex-col items-center">
-              <div class="relative px-3.5 py-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 font-bold text-[11px] shadow-lg shadow-cyan-500/30 flex items-center gap-1.5">
-                <i class="fa-solid fa-comment-dots text-white text-xs"></i>
-                <div class="text-left text-white leading-tight">
-                  <div class="text-[10px] opacity-90">Same books.</div>
-                  <div class="font-extrabold text-[11px]">New stories.</div>
-                </div>
-                <div class="absolute -bottom-1.5 left-5 w-3 h-3 bg-blue-500 transform rotate-45 rounded-sm"></div>
-              </div>
-            </div>
-
-            <div class="animated-book relative z-10 w-full max-w-[280px]">
-              <svg viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto drop-shadow-[0_20px_25px_rgba(6,182,212,0.35)]">
-                <path d="M160 170L30 115V132L160 188L290 132V115L160 170Z" fill="#0C1B3E"/>
-                <path d="M160 175L20 118L30 105L160 162L290 105L300 118L160 175Z" fill="#1E3A8A"/>
-                <path d="M160 158C110 152 50 120 35 110L42 98C60 108 115 140 160 146V158Z" fill="#1E40AF"/>
-                <path d="M160 148C115 142 62 110 46 100L55 88C72 98 120 130 160 136V148Z" fill="#2563EB"/>
-                <path d="M160 136C120 130 75 100 58 90C90 76 130 100 160 112V136Z" fill="#38BDF8"/>
-                <path d="M160 115C125 102 85 80 55 90L65 72C98 62 135 84 160 96V115Z" fill="url(#heroLeftGrad)"/>
-                <path d="M160 158C210 152 270 120 285 110L278 98C260 108 205 140 160 146V158Z" fill="#1E40AF"/>
-                <path d="M160 148C205 142 258 110 274 100L265 88C248 98 200 130 160 136V148Z" fill="#2563EB"/>
-                <path d="M160 136C200 130 245 100 262 90C230 76 190 100 160 112V136Z" fill="#38BDF8"/>
-                <path d="M160 115C195 102 235 80 265 90L255 72C222 62 185 84 160 96V115Z" fill="url(#heroRightGrad)"/>
-                <path d="M78 86C105 78 130 92 148 100" stroke="#E0F2FE" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M84 94C108 87 132 100 148 107" stroke="#BAE6FD" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M242 86C215 78 190 92 172 100" stroke="#E0F2FE" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M236 94C212 87 188 100 172 107" stroke="#BAE6FD" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M160 95V165" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M160 120C160 140 165 160 168 185L176 177L184 185C180 160 170 140 160 120Z" fill="#F97316"/>
-                <defs>
-                  <linearGradient id="heroLeftGrad" x1="55" y1="80" x2="160" y2="115" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#E0F2FE"/>
-                    <stop offset="0.6" stop-color="#BAE6FD"/>
-                    <stop offset="1" stop-color="#60A5FA"/>
-                  </linearGradient>
-                  <linearGradient id="heroRightGrad" x1="265" y1="80" x2="160" y2="115" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#E0F2FE"/>
-                    <stop offset="0.6" stop-color="#BAE6FD"/>
-                    <stop offset="1" stop-color="#60A5FA"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2. EXPLORE FEATURES 4-GRID -->
-        <div class="space-y-3">
-          <div>
-            <h2 class="text-xl font-bold text-white tracking-tight">Platform Core Features</h2>
-            <p class="text-xs text-slate-400">Pure student activity with circular green impact.</p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Feature 1 -->
-            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="setActiveNav('explore')">
-              <div class="space-y-3">
-                <div class="h-10 w-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-                  <i class="fa-solid fa-book-open text-base"></i>
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Marketplace</h3>
-                  <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Student-listed books for purchase, zero-cost donations, or local peer swaps.
-                  </p>
-                </div>
-              </div>
-              <div class="pt-3 flex justify-start">
-                <div class="action-circle-btn bg-blue-600 text-white shadow-md shadow-blue-600/30">
-                  <i class="fa-solid fa-arrow-right text-xs"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- Feature 2 -->
-            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="setActiveNav('ai')">
-              <div class="space-y-3">
-                <div class="h-10 w-10 rounded-xl bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
-                  <i class="fa-solid fa-wand-magic-sparkles text-base"></i>
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Gemini AI Tutor</h3>
-                  <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Real-time chapter breakdowns, formula flashcards, and custom revision quizzes.
-                  </p>
-                </div>
-              </div>
-              <div class="pt-3 flex justify-start">
-                <div class="action-circle-btn bg-teal-500 text-slate-950 shadow-md shadow-teal-500/30">
-                  <i class="fa-solid fa-arrow-right text-xs"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- Feature 3 -->
-            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="setActiveNav('community')">
-              <div class="space-y-3">
-                <div class="h-10 w-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
-                  <i class="fa-solid fa-earth-americas text-base"></i>
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">Scholar Lounge</h3>
-                  <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Interpals-style global penpals filtered by language exchange, class, and subjects.
-                  </p>
-                </div>
-              </div>
-              <div class="pt-3 flex justify-start">
-                <div class="action-circle-btn bg-purple-600 text-white shadow-md shadow-purple-600/30">
-                  <i class="fa-solid fa-arrow-right text-xs"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- Feature 4 -->
-            <div class="dashboard-card p-5 flex flex-col justify-between min-h-[190px] group cursor-pointer" onclick="openEsgModal()">
-              <div class="space-y-3">
-                <div class="h-10 w-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
-                  <i class="fa-solid fa-leaf text-base"></i>
-                </div>
-                <div>
-                  <h3 class="font-bold text-sm text-white">ESG Green Credits</h3>
-                  <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                    Earn verifiable impact points for every book saved from landfill disposal.
-                  </p>
-                </div>
-              </div>
-              <div class="pt-3 flex justify-start">
-                <div class="action-circle-btn bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30">
-                  <i class="fa-solid fa-arrow-right text-xs"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. LIVE RECENT BOOK LISTINGS PREVIEW -->
-        <div class="dashboard-card p-6 space-y-4">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="font-bold text-lg text-white">Circular Book Feed</h3>
-              <p class="text-xs text-slate-400">All books listed genuinely by students in the network.</p>
-            </div>
-            <button onclick="setActiveNav('explore')" class="text-xs text-cyan-400 hover:underline font-semibold">
-              Browse All Books →
-            </button>
-          </div>
-
-          <div id="homeMarketplacePreview" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Dynamic Content or Clean Empty State -->
-          </div>
-        </div>
-
-        <!-- 4. BOTTOM SUSTAINABILITY BANNER -->
-        <div class="dashboard-card p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-6 bg-gradient-to-r from-[#0C1733] via-[#0E1B3E] to-[#0A132C]">
-          <div class="flex items-center gap-4">
-            <div class="relative h-14 w-14 rounded-full bg-gradient-to-tr from-teal-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-teal-500/25 flex-shrink-0">
-              <i class="fa-solid fa-earth-americas text-slate-900 text-2xl"></i>
-              <div class="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-emerald-400 flex items-center justify-center text-[10px] text-slate-900 font-bold border-2 border-[#0D1733]">
-                🌱
-              </div>
-            </div>
-            <div>
-              <h3 class="font-extrabold text-white text-sm sm:text-base flex items-center gap-1.5">
-                Together for a <span class="text-emerald-400">Greener Planet</span>
-              </h3>
-              <p class="text-xs text-slate-400 mt-0.5">Every book recirculated saves 1.2kg carbon footprint and ~200L water.</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-6 sm:gap-8 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-8">
-            <div class="text-center sm:text-left">
-              <div id="statTotalBooks" class="text-lg font-black text-cyan-400">0</div>
-              <div class="text-[10px] text-slate-400 uppercase font-semibold">Active Books</div>
-            </div>
-            <div class="text-center sm:text-left">
-              <div id="statCarbonPrevented" class="text-lg font-black text-emerald-400">0.0 kg</div>
-              <div class="text-[10px] text-slate-400 uppercase font-semibold">CO2 Prevented</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- RIGHT SIDEBAR (4 cols) -->
-      <div class="lg:col-span-4 flex flex-col gap-6">
-
-        <!-- INTERPALS SCHOLAR LOUNGE QUICK WIDGET -->
-        <div class="dashboard-card p-5 space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-3">
-            <div class="flex items-center gap-2">
-              <span class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-              <h3 class="font-bold text-sm text-white">Scholar Lounge</h3>
-            </div>
-            <span class="text-[10px] bg-cyan-500/20 text-cyan-300 font-semibold px-2 py-0.5 rounded-full">Global Peers</span>
-          </div>
-
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Connect with verified students for textbook exchanges, language practice, and study groups.
-          </p>
-
-          <div id="penpalSidebarList" class="space-y-3">
-            <!-- Dynamic Active Peers -->
-          </div>
-
-          <button onclick="setActiveNav('community')" class="w-full py-2.5 rounded-xl bg-[#16244C] hover:bg-[#1C2E60] border border-white/10 text-cyan-300 font-bold text-xs flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-earth-americas text-xs"></i>
-            <span>Explore Scholar Lounge Directory</span>
-          </button>
-        </div>
-
-        <!-- RECENT MESSAGES INBOX -->
-        <div class="dashboard-card p-5 space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-3">
-            <h3 class="font-bold text-sm text-white flex items-center gap-2">
-              <i class="fa-regular fa-comment-dots text-cyan-400"></i> Active Conversations
-            </h3>
-            <button onclick="setActiveNav('messages')" class="text-[11px] text-cyan-400 hover:underline">Open Lounge Chat</button>
-          </div>
-
-          <div id="sidebarChatInbox" class="space-y-2">
-            <!-- Dynamic Recent Messages or Empty State -->
-          </div>
-        </div>
-
-        <!-- ESG IMPACT SCORE WIDGET -->
-        <div class="dashboard-card p-5 space-y-3 bg-gradient-to-br from-[#101B3B] to-[#0A182E] border-emerald-500/20 cursor-pointer" onclick="openEsgModal()">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-leaf"></i> Dynamic ESG Meter
-            </span>
-            <span id="esgRankBadge" class="text-[10px] text-slate-400 font-mono">Eco-Initiate</span>
-          </div>
-          <div class="w-full bg-slate-800 rounded-full h-2">
-            <div id="esgProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2 rounded-full w-[5%] transition-all duration-500"></div>
-          </div>
-          <div class="flex justify-between text-[11px] text-slate-300 pt-1">
-            <span id="esgCountSubtitle">0 Contributions</span>
-            <span id="sidebarEsgPoints" class="font-bold text-emerald-400">0 PTS</span>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </main>
-
-  <!-- ============================================== -->
-  <!-- MODAL: EXPLORE BOOKS MARKETPLACE               -->
-  <!-- ============================================== -->
-  <div id="modalExplore" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
-      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center">
-            <i class="fa-solid fa-book-open text-lg"></i>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">Circular Book Marketplace</h2>
-            <p class="text-xs text-slate-400">Real textbooks listed by peer scholars</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <button onclick="setActiveNav('sell')" class="px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">
-            + List Book
-          </button>
-          <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Filters & Search Bar -->
-      <div class="p-4 bg-[#0A1228] border-b border-white/5 flex flex-wrap gap-3 items-center justify-between">
-        <div class="flex-1 min-w-[240px] relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
-          <input type="text" id="marketSearchInput" oninput="renderMarketplace()" placeholder="Search title, author, subject or city..." class="w-full bg-[#121E3F] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
-        </div>
-        <div class="flex items-center gap-2">
-          <select id="marketTypeFilter" onchange="renderMarketplace()" class="bg-[#121E3F] border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
-            <option value="ALL">All Listing Types</option>
-            <option value="DONATE">Free Donation (₹0 / $0)</option>
-            <option value="SWAP">P2P Swap</option>
-            <option value="SELL">Second-Hand Sale</option>
-          </select>
-          <select id="marketGenreFilter" onchange="renderMarketplace()" class="bg-[#121E3F] border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
-            <option value="ALL">All Subjects</option>
-            <option value="Physics">Physics</option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="Computer Science">Computer Science</option>
-            <option value="Chemistry">Chemistry</option>
-            <option value="Biology">Biology</option>
-            <option value="Literature">Literature</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="p-6 overflow-y-auto flex-1">
-        <div id="fullMarketplaceGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          <!-- Dynamically Rendered -->
-        </div>
-      </div>
-    </div>
+  <div class="stats">
+    <div class="stat"><span class="symbol">▤</span><div class="value" id="statBooks">0</div><small>Books listed in this session</small></div>
+    <div class="stat"><span class="symbol">♧</span><div class="value" id="statReused">0</div><small>Books marked reused</small></div>
+    <div class="stat"><span class="symbol">✧</span><div class="value" id="statCredits">0</div><small>Your green credits</small></div>
+    <div class="stat"><span class="symbol">⬡</span><div class="value" id="statLevel">1</div><small>Your seller level</small></div>
   </div>
 
-  <!-- ============================================== -->
-  <!-- MODAL: LIST / DONATE A BOOK                    -->
-  <!-- ============================================== -->
-  <div id="modalSell" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden">
-      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center">
-            <i class="fa-solid fa-plus text-lg"></i>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">List a Book for Recirculation</h2>
-            <p class="text-xs text-slate-400">Earn ESG green credits and save resources</p>
-          </div>
-        </div>
-        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
+  <div class="section-head">
+    <div><h2>Discover learning resources</h2><div class="muted small">Explore the books available in your current catalogue.</div></div>
+    <button class="btn" data-go="marketplace">View all →</button>
+  </div>
+  <div class="book-grid" id="dashboardBooks"></div>
 
-      <form id="sellBookForm" onsubmit="handleSellSubmit(event)" class="p-6 space-y-4 overflow-y-auto flex-1 text-xs">
-        <div>
-          <label class="block font-semibold text-slate-300 mb-1">Book Title *</label>
-          <input type="text" id="formTitle" required placeholder="e.g. Fundamentals of Physics 11th Edition" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-cyan-400">
-        </div>
+  <div class="section-head"><h2>Your circular learning journey</h2></div>
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;gap:12px">
+      <div><h3 id="levelTitle">Level 1 · Starter</h3><p class="muted small" id="levelDescription">Explore, donate and swap books.</p></div>
+      <span class="tag green" id="creditBadge">0 credits</span>
+    </div>
+    <div class="progress"><div id="levelProgress" style="width:0%"></div></div>
+    <small class="muted" id="progressText">Progress is calculated from local demo activity.</small>
+    <div class="actions"><button class="btn" data-go="account">View progression</button></div>
+  </div>
+</section>
 
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-300 mb-1">Author / Publication</label>
-            <input type="text" id="formAuthor" placeholder="e.g. Halliday & Resnick" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-cyan-400">
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-300 mb-1">Subject / Field *</label>
-            <select id="formSubject" required class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-400">
-              <option value="Physics">Physics</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="Biology">Biology</option>
-              <option value="Literature">Literature</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
+<!-- MARKETPLACE -->
+<section class="page" id="marketplace">
+  <div class="eyebrow">CIRCULAR ECONOMY</div>
+  <h1>Book Marketplace</h1>
+  <p class="muted">Discover books to buy, donate or exchange with fellow learners.</p>
+  <div class="filters" id="filters">
+    <button class="btn filter active" data-filter="All">All books</button>
+    <button class="btn filter" data-filter="Donate">Donate</button>
+    <button class="btn filter" data-filter="Swap">Swap</button>
+    <button class="btn filter" data-filter="Sell">Direct sell</button>
+  </div>
+  <div class="book-grid" id="marketBooks"></div>
+</section>
 
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-300 mb-1">Listing Type *</label>
-            <select id="formType" required onchange="togglePriceField()" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-400">
-              <option value="DONATE">Free Donation (+100 ESG Pts)</option>
-              <option value="SWAP">P2P Swap (+60 ESG Pts)</option>
-              <option value="SELL">Sell (+40 ESG Pts)</option>
-            </select>
-          </div>
-          <div id="priceWrapper" style="display: none;">
-            <label class="block font-semibold text-slate-300 mb-1">Price (₹ or $)</label>
-            <input type="text" id="formPrice" placeholder="e.g. ₹250 or $12" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-cyan-400">
-          </div>
+<!-- LIST BOOK -->
+<section class="page" id="sell">
+  <div class="eyebrow">GIVE A BOOK ANOTHER CHAPTER</div>
+  <h1>List a Book</h1>
+  <p class="muted">Add a resource to your local catalogue. Direct selling requires Level 3 or above.</p>
+  <div class="two-col">
+    <div class="panel">
+      <form id="bookForm">
+        <div class="field"><label for="bookTitle">Book title</label><input id="bookTitle" required maxlength="100" placeholder="e.g. Mathematics Class 9"></div>
+        <div class="field"><label for="bookSubject">Subject</label><input id="bookSubject" required maxlength="60" placeholder="e.g. Mathematics"></div>
+        <div class="field"><label for="bookCondition">Book condition</label>
+          <select id="bookCondition"><option>Like New</option><option>Good</option><option>Used</option></select>
         </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-300 mb-1">Condition</label>
-            <select id="formCondition" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-400">
-              <option value="Grade A+ (Like New)">Grade A+ (Like New)</option>
-              <option value="Grade A (Good, Minimal Notes)">Grade A (Good, Minimal Notes)</option>
-              <option value="Grade B (Highlighted / Fair)">Grade B (Highlighted / Fair)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-300 mb-1">Your City / Campus</label>
-            <input type="text" id="formLocation" placeholder="e.g. Noida / Tokyo / Online" class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-cyan-400">
-          </div>
+        <div class="field"><label for="bookType">Listing type</label>
+          <select id="bookType"><option>Donate</option><option>Swap</option><option>Sell</option></select>
         </div>
-
-        <div>
-          <label class="block font-semibold text-slate-300 mb-1">Description & Hand-off Note</label>
-          <textarea id="formDescription" rows="2" placeholder="Mention edition, missing pages, or preferred campus pickup spot..." class="w-full bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-cyan-400"></textarea>
-        </div>
-
-        <div class="pt-2 flex justify-end gap-3">
-          <button type="button" onclick="closeAllModals()" class="px-4 py-2 rounded-xl text-slate-400 hover:text-white font-semibold">Cancel</button>
-          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-slate-950 font-bold shadow-lg shadow-teal-500/25">
-            Publish & Claim ESG Points
-          </button>
-        </div>
+        <div class="field"><label for="bookPrice">Price in ₹ (selling only)</label><input id="bookPrice" type="number" min="1" max="100000" placeholder="e.g. 150"></div>
+        <div class="notice" id="sellNotice">Donations and swaps are available in the starter demo. Selling is restricted below Level 3.</div>
+        <div class="actions"><button class="btn primary" type="submit">Add listing</button></div>
       </form>
     </div>
-  </div>
-
-  <!-- ============================================== -->
-  <!-- MODAL: GEMINI AI STUDY ASSISTANT               -->
-  <!-- ============================================== -->
-  <div id="modalAi" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-4xl h-[85vh] flex flex-col overflow-hidden">
-      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-teal-400 text-slate-950 flex items-center justify-center font-bold">
-            <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">Shiori Gemini AI Study Assistant</h2>
-            <p class="text-xs text-slate-400">Textbook summaries, exam preparation quizzes & concept explanations</p>
-          </div>
-        </div>
-        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <!-- Quick prompts -->
-      <div class="px-6 py-2.5 bg-[#0A1228] border-b border-white/5 flex gap-2 overflow-x-auto text-[11px]">
-        <button onclick="sendQuickAiPrompt('Summarize Newton\'s Laws with 3 real-world examples and formulas')" class="px-3 py-1 rounded-full bg-[#152347] border border-cyan-400/20 text-cyan-300 hover:bg-cyan-500/20 transition-all whitespace-nowrap">
-          💡 Summarize Newton's Laws
-        </button>
-        <button onclick="sendQuickAiPrompt('Generate a 3-question multiple choice quiz on Organic Chemistry Reactions with explanations')" class="px-3 py-1 rounded-full bg-[#152347] border border-cyan-400/20 text-cyan-300 hover:bg-cyan-500/20 transition-all whitespace-nowrap">
-          🧪 Organic Chemistry Quiz
-        </button>
-        <button onclick="sendQuickAiPrompt('Explain the fundamental theorem of Calculus step by step for high school revision')" class="px-3 py-1 rounded-full bg-[#152347] border border-cyan-400/20 text-cyan-300 hover:bg-cyan-500/20 transition-all whitespace-nowrap">
-          📐 Calculus Fundamentals
-        </button>
-      </div>
-
-      <!-- Chat History -->
-      <div id="aiChatBox" class="flex-1 p-6 overflow-y-auto space-y-4">
-        <div class="flex items-start gap-3">
-          <div class="h-8 w-8 rounded-lg bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 flex-shrink-0 text-xs">
-            🤖
-          </div>
-          <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-4 max-w-2xl text-xs leading-relaxed text-slate-200">
-            Welcome scholar! I'm your Gemini-powered Academic Companion. Type any textbook chapter, formula, or exam topic to receive a structured summary or practice quiz.
-          </div>
-        </div>
-      </div>
-
-      <!-- Input Area -->
-      <div class="p-4 border-t border-white/10 bg-[#0C152F] flex gap-2">
-        <input type="text" id="aiInputPrompt" onkeypress="if(event.key==='Enter') sendAiMessage()" placeholder="Ask about any textbook chapter, concept, or test question..." class="flex-1 bg-[#121E3F] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400">
-        <button onclick="sendAiMessage()" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-bold text-xs shadow-lg shadow-cyan-500/20 hover:scale-105 transition-all">
-          <i class="fa-solid fa-paper-plane"></i>
-        </button>
-      </div>
+    <div class="panel">
+      <h2>Listing guidelines</h2>
+      <p class="muted small">Share accurate information so other students can make informed decisions.</p>
+      <hr>
+      <h3>01 · Describe honestly</h3><p class="muted small">Choose the correct condition and edition.</p>
+      <h3>02 · Respect learners</h3><p class="muted small">Never publish private contact details or sensitive information.</p>
+      <h3>03 · Keep it educational</h3><p class="muted small">List genuine educational resources you are permitted to share.</p>
+      <h3>04 · Sustainable circulation</h3><p class="muted small">Reuse books where possible instead of discarding them.</p>
     </div>
   </div>
+</section>
 
-  <!-- ============================================== -->
-  <!-- MODAL: INTERPALS SCHOLAR CHAT WITH GUARDIAN AI -->
-  <!-- ============================================== -->
-  <div id="modalMessages" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4">
-    <div class="dashboard-card w-full max-w-6xl h-[90vh] flex flex-col overflow-hidden">
-      <!-- Header -->
-      <div class="p-4 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center">
-            <i class="fa-solid fa-comments text-lg"></i>
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h2 class="text-lg font-bold text-white">Scholar Lounge P2P Chat</h2>
-              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-semibold flex items-center gap-1">
-                <i class="fa-solid fa-shield"></i> Guardian AI Protected
-              </span>
-            </div>
-            <p class="text-xs text-slate-400">Real-time student communications with 3-Strike Safety Shield</p>
-          </div>
+<!-- SCHOLAR LOUNGE -->
+<section class="page" id="lounge">
+  <div class="eyebrow">STUDENT COMMUNITY</div>
+  <h1>Shiori Scholar Lounge</h1>
+  <p class="muted">A place for academic questions, learning tips and textbook discussions.</p>
+  <div class="notice">This single-file version stores messages only in the current page session. It does not connect to other students or provide private messaging.</div>
+  <div class="panel" style="margin-top:18px">
+    <h2>Academic discussion</h2>
+    <div class="chat-log" id="chatLog">
+      <div class="empty">No discussions yet. Start with a study-related question or tip.</div>
+    </div>
+    <form id="chatForm">
+      <div class="field"><label for="chatInput">Your message</label><textarea id="chatInput" required maxlength="1000" placeholder="Ask an academic question or share a study tip..."></textarea></div>
+      <div class="actions"><button class="btn primary" type="submit">Post message</button></div>
+    </form>
+    <p class="muted small">Messages are checked by a basic demo filter. This is not continuous AI moderation.</p>
+  </div>
+</section>
+
+<!-- AI ASSISTANT -->
+<section class="page" id="assistant">
+  <div class="eyebrow">YOUR PERSONAL STUDY COMPANION</div>
+  <h1>Gemini AI Study Assistant</h1>
+  <p class="muted">Understand concepts, summarise your own notes and practise with quizzes.</p>
+  <div class="two-col">
+    <div class="panel">
+      <form id="aiForm">
+        <div class="field"><label for="aiTask">What would you like to do?</label>
+          <select id="aiTask">
+            <option value="explain">Explain a concept</option>
+            <option value="summary">Summarise my notes</option>
+            <option value="quiz">Generate a practice quiz</option>
+          </select>
         </div>
-        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <!-- Split Layout -->
-      <div class="flex-1 grid grid-cols-12 overflow-hidden">
-        
-        <!-- Left Penpal List (4 cols) -->
-        <div class="col-span-12 md:col-span-4 border-r border-white/10 bg-[#091124] flex flex-col">
-          <div class="p-3 border-b border-white/5">
-            <input type="text" id="chatSearchInput" oninput="renderChatList()" placeholder="Filter peer connections..." class="w-full bg-[#101B3B] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-          </div>
-          <div id="activeChatList" class="flex-1 overflow-y-auto divide-y divide-white/5">
-            <!-- Active Peer Chats -->
-          </div>
-        </div>
-
-        <!-- Right Main Chat Window (8 cols) -->
-        <div class="col-span-12 md:col-span-8 flex flex-col bg-[#0A132C]">
-          
-          <div id="chatHeader" class="p-4 border-b border-white/10 bg-[#0C1633] flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div id="chatHeaderAvatar" class="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold text-white">
-                ?
-              </div>
-              <div>
-                <h3 id="chatHeaderName" class="font-bold text-sm text-white">Scholar Channel</h3>
-                <div id="chatHeaderMeta" class="text-[10px] text-cyan-400 flex items-center gap-2">
-                  <span>Languages & Location details</span>
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-full border border-white/5">
-                <i class="fa-solid fa-lock text-[9px] text-cyan-400 mr-1"></i> Student Safe
-              </span>
-            </div>
-          </div>
-
-          <!-- Messages Screen -->
-          <div id="chatMessagesBox" class="flex-1 p-5 overflow-y-auto space-y-3">
-            <!-- Messages rendered here -->
-          </div>
-
-          <!-- Input Bar -->
-          <div class="p-3 border-t border-white/10 bg-[#0C152F] flex items-center gap-2">
-            <button onclick="attachBookInquiryPrompt()" title="Propose Book Swap" class="h-10 w-10 rounded-xl bg-[#152347] border border-white/10 text-cyan-400 flex items-center justify-center hover:bg-cyan-500/20 text-xs">
-              <i class="fa-solid fa-book"></i>
-            </button>
-            <input type="text" id="chatMessageInput" onkeypress="if(event.key==='Enter') sendPenpalMessage()" placeholder="Type a respectful message or study request..." class="flex-1 bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-            <button onclick="sendPenpalMessage()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-xs shadow-md shadow-purple-600/30">
-              Send
-            </button>
-          </div>
-
-        </div>
-
-      </div>
+        <div class="field"><label for="aiTopic">Topic or study notes</label><textarea id="aiTopic" required maxlength="12000" placeholder="Enter your topic or notes here..."></textarea></div>
+        <button class="btn primary" type="submit" id="aiSubmit">Generate study help ✧</button>
+      </form>
+      <p class="muted small">Connect a secure backend to enable real Gemini API responses.</p>
+    </div>
+    <div class="panel">
+      <h2>Study response</h2>
+      <div id="aiOutput" class="output">Your study response will appear here.</div>
+      <p class="muted small" id="aiStatus">AI service: not connected</p>
     </div>
   </div>
+</section>
 
-  <!-- ============================================== -->
-  <!-- MODAL: SCHOLAR LOUNGE DIRECTORY                -->
-  <!-- ============================================== -->
-  <div id="modalCommunity" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
-      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center">
-            <i class="fa-solid fa-earth-americas text-lg"></i>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">Shiori Scholar Lounge Directory</h2>
-            <p class="text-xs text-slate-400">Interpals-style global student networking for textbook swaps & language study</p>
-          </div>
-        </div>
-        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+<!-- GUARDIAN -->
+<section class="page" id="guardian">
+  <div class="eyebrow">COMMUNITY SAFETY</div>
+  <h1>Shiori Guardian AI</h1>
+  <p class="muted">A prototype of the proposed community safety workflow.</p>
+  <div class="notice warn">Important: the browser demo uses a small rule-based filter. It cannot reliably detect bullying, threats, harassment or other violations. It does not monitor private chats or automatically block real accounts.</div>
+  <div class="two-col" style="margin-top:18px">
+    <div class="panel">
+      <h2>Safety checker</h2>
+      <div class="field"><label for="moderationInput">Text to check</label><textarea id="moderationInput" maxlength="2000" placeholder="Enter a message to test the demo filter..."></textarea></div>
+      <button class="btn primary" id="checkSafety">Check message</button>
+      <div id="moderationOutput" class="output" style="margin-top:14px">No check performed yet.</div>
+    </div>
+    <div class="panel">
+      <h2>Three-strike policy</h2>
+      <p class="muted small">Proposed workflow. Real sanctions should include evidence, review and an appeal process.</p>
+      <div class="stat"><small>Demo strike counter</small><div class="value" id="strikeCount">0 / 3</div><div class="progress"><div id="strikeProgress" style="width:0%;background:var(--orange)"></div></div></div>
+      <div class="actions">
+        <button class="btn" id="resetStrikes">Reset demo counter</button>
       </div>
-
-      <!-- Filters -->
-      <div class="p-4 bg-[#0A1228] border-b border-white/5 flex flex-wrap gap-3 items-center">
-        <input type="text" id="communitySearchInput" oninput="renderCommunityDirectory()" placeholder="Filter by scholar name, country, or study subject..." class="flex-1 min-w-[200px] bg-[#121E3F] border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
-        <select id="communityLangFilter" onchange="renderCommunityDirectory()" class="bg-[#121E3F] border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-200">
-          <option value="ALL">All Languages</option>
-          <option value="English">English</option>
-          <option value="Hindi">Hindi</option>
-          <option value="Japanese">Japanese</option>
-          <option value="German">German</option>
-          <option value="Spanish">Spanish</option>
-        </select>
-      </div>
-
-      <div class="p-6 overflow-y-auto flex-1">
-        <div id="communityDirectoryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          <!-- Dynamic Peer Cards -->
-        </div>
-      </div>
+      <p class="muted small">The counter is a demonstration only, not an account sanction.</p>
     </div>
   </div>
+</section>
 
-  <!-- ============================================== -->
-  <!-- MODAL: ESG DASHBOARD                           -->
-  <!-- ============================================== -->
-  <div id="modalEsg" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
-      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-            <i class="fa-solid fa-leaf text-lg"></i>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">Your Dynamic ESG Green Credit Vault</h2>
-            <p class="text-xs text-slate-400">Verifiable eco-points earned strictly through actual activities</p>
-          </div>
+<!-- GREEN IMPACT -->
+<section class="page" id="impact">
+  <div class="eyebrow">ESG GREEN ENGINE</div>
+  <h1>Knowledge grows. Waste shrinks.</h1>
+  <p class="muted">Track estimated environmental benefits from books marked as reused.</p>
+  <div class="stats">
+    <div class="stat"><span class="symbol">♧</span><div class="value" id="impactBooks">0</div><small>Books marked reused</small></div>
+    <div class="stat"><span class="symbol">🌳</span><div class="value" id="impactTrees">0.00</div><small>Illustrative tree-equivalent</small></div>
+    <div class="stat"><span class="symbol">☁</span><div class="value" id="impactCO2">0.0 kg</div><small>Illustrative CO₂ estimate</small></div>
+    <div class="stat"><span class="symbol">✧</span><div class="value" id="impactCredits">0</div><small>Green credits</small></div>
+  </div>
+  <div class="panel">
+    <h2>How the estimates work</h2>
+    <p class="muted small">For demonstration only, this prototype uses 0.5 kg CO₂e per reused book and 0.01 tree-equivalent per book. These are configurable illustrative assumptions, not verified lifecycle measurements or official ESG figures.</p>
+    <hr>
+    <h3>Build a trustworthy impact system</h3>
+    <p class="muted small">A production version should document its methodology, distinguish estimated from verified impact, prevent duplicate claims and retain auditable records of completed exchanges.</p>
+  </div>
+</section>
+
+<!-- ACCOUNT -->
+<section class="page" id="account">
+  <div class="eyebrow">YOUR LEARNING PROFILE</div>
+  <h1>Account & Seller Progression</h1>
+  <div class="two-col">
+    <div class="panel">
+      <h2>Profile settings</h2>
+      <form id="profileForm">
+        <div class="field"><label for="studentName">Display name</label><input id="studentName" maxlength="40" required placeholder="Your display name"></div>
+        <button class="btn primary" type="submit">Update display name</button>
+      </form>
+      <hr>
+      <h3>Current access</h3>
+      <div class="tag green" id="accountLevel">Level 1 · Starter</div>
+      <p class="muted small" id="accountAccess">Donations, swaps and demo lounge access.</p>
+    </div>
+    <div class="panel">
+      <h2>Seller unlock journey</h2>
+      <p class="muted small">This prototype uses local activity points to demonstrate progression. They are not verified ESG credits.</p>
+      <div id="levelList"></div>
+      <hr>
+      <h3>Progress points</h3>
+      <div class="value" id="accountPoints">0</div>
+      <small class="muted">Local demonstration points</small>
+      <div class="progress"><div id="accountProgress" style="width:0%"></div></div>
+      <p class="muted small">Direct selling appears at Level 3 in this demo. Production eligibility should use verified server-side rules and safe transaction controls.</p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">SHIORI GLOBAL · Books Today. A Brighter Tomorrow.<br>Educational prototype · No real accounts, payments or messaging enabled.</div>
+</div>
+</main>
+</div>
+
+<script>
+"use strict";
+
+/*
+  SHIORI GLOBAL FRONT-END PROTOTYPE
+
+  This app intentionally keeps demo data in memory.
+  Production requirements:
+  - Real authentication and database
+  - Server-side authorization and seller eligibility
+  - Secure Gemini API proxy
+  - Server-side moderation, reporting and appeals
+  - Real messaging and transaction workflows
+*/
+
+const $ = id => document.getElementById(id);
+
+const state = {
+  name: "Student",
+  points: 0,
+  strikes: 0,
+  books: [
+    {id:1,title:"Mathematics · Class 9",subject:"Mathematics",condition:"Good",type:"Swap",price:0,owner:"Community catalogue",art:"∑"},
+    {id:2,title:"Science · Class 9",subject:"Science",condition:"Like New",type:"Donate",price:0,owner:"Community catalogue",art:"⚛"},
+    {id:3,title:"English Grammar",subject:"English",condition:"Used",type:"Donate",price:0,owner:"Community catalogue",art:"Aa"}
+  ],
+  reused: 0,
+  filter: "All",
+  messages: [],
+  blockedDemo: false
+};
+
+let nextBookId = 4;
+
+function level() {
+  if (state.points >= 100) return 3;
+  if (state.points >= 30) return 2;
+  return 1;
+}
+
+function levelName() {
+  return ["", "Starter", "Contributor", "Verified Seller"][level()];
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  })[char]);
+}
+
+function go(page) {
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.toggle("active", p.id === page)
+  );
+  document.querySelectorAll(".nav-btn").forEach(b =>
+    b.classList.toggle("active", b.dataset.page === page)
+  );
+  $("sidebar").classList.remove("open");
+  if (page === "sell") updateSellNotice();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => go(button.dataset.page));
+});
+document.querySelectorAll("[data-go]").forEach(button => {
+  button.addEventListener("click", () => go(button.dataset.go));
+});
+$("menuBtn").addEventListener("click", () =>
+  $("sidebar").classList.toggle("open")
+);
+
+function bookCard(book) {
+  const selling = book.type === "Sell";
+  const eligible = level() >= 3;
+  let price = selling ? "₹" + Number(book.price).toLocaleString("en-IN") : book.type;
+
+  return `
+    <article class="book">
+      <div class="book-art" aria-hidden="true">${escapeHTML(book.art || "▤")}</div>
+      <div class="book-body">
+        <h3>${escapeHTML(book.title)}</h3>
+        <div class="muted small">${escapeHTML(book.subject)}</div>
+        <div>
+          <span class="tag">${escapeHTML(book.condition)}</span>
+          <span class="tag ${selling ? "orange" : "green"}">${escapeHTML(book.type)}</span>
         </div>
-        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
-        <div class="bg-gradient-to-r from-emerald-950/60 to-teal-950/60 p-5 rounded-2xl border border-emerald-500/30 flex items-center justify-between">
-          <div>
-            <div class="text-[11px] text-emerald-300 uppercase font-semibold">Total Verified Credits</div>
-            <div id="esgPointsBig" class="text-3xl font-black text-white mt-1">0 PTS</div>
-            <div id="esgEquivalenceSubtitle" class="text-slate-400 text-[11px] mt-1">List or donate books to earn your initial green badges!</div>
-          </div>
-          <div class="h-16 w-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-3xl">
-            🌱
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <h3 class="font-bold text-white text-sm">Real Point Award Matrix:</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="p-3 bg-[#121E3F] rounded-xl border border-white/5 space-y-1">
-              <div class="font-semibold text-emerald-400">+100 ESG PTS</div>
-              <div class="text-slate-300">Donate a textbook for free (₹0) to a peer</div>
-            </div>
-            <div class="p-3 bg-[#121E3F] rounded-xl border border-white/5 space-y-1">
-              <div class="font-semibold text-cyan-300">+60 ESG PTS</div>
-              <div class="text-slate-300">Complete a direct P2P book swap</div>
-            </div>
-            <div class="p-3 bg-[#121E3F] rounded-xl border border-white/5 space-y-1">
-              <div class="font-semibold text-blue-400">+40 ESG PTS</div>
-              <div class="text-slate-300">List an affordable second-hand textbook</div>
-            </div>
-            <div class="p-3 bg-[#121E3F] rounded-xl border border-white/5 space-y-1">
-              <div class="font-semibold text-purple-400">+25 ESG PTS</div>
-              <div class="text-slate-300">Answer peer inquiries in the Scholar Lounge</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-2 flex justify-end">
-          <button onclick="closeAllModals(); setActiveNav('sell');" class="px-6 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
-            List a Book Now
+        <div class="book-meta">Listed by: ${escapeHTML(book.owner)}</div>
+        <div class="book-footer">
+          <strong>${escapeHTML(price)}</strong>
+          <button class="btn" data-book-action="${book.id}"
+            ${selling && !eligible ? "disabled" : ""}>
+            ${selling ? "Enquire" : book.type === "Swap" ? "Request swap" : "Request book"}
           </button>
         </div>
       </div>
-    </div>
-  </div>
+    </article>`;
+}
 
-  <!-- ============================================== -->
-  <!-- MODAL: USER PROFILE                            -->
-  <!-- ============================================== -->
-  <div id="modalProfile" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="dashboard-card w-full max-w-md overflow-hidden">
-      <div class="p-5 border-b border-white/10 flex items-center justify-between bg-[#0C152F]">
-        <h2 class="text-lg font-bold text-white">Learner Profile</h2>
-        <button onclick="closeAllModals()" class="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
+function renderBooks() {
+  const query = $("globalSearch").value.trim().toLowerCase();
+  const matching = state.books.filter(book => {
+    const matchesQuery = `${book.title} ${book.subject} ${book.type}`.toLowerCase().includes(query);
+    const matchesFilter = state.filter === "All" || book.type === state.filter;
+    return matchesQuery && matchesFilter;
+  });
 
-      <div class="p-6 space-y-4 text-xs">
-        <div class="flex items-center gap-4">
-          <div class="h-16 w-16 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-xl font-bold text-white">
-            <span id="profileAvatarBig">ST</span>
-          </div>
-          <div>
-            <h3 id="profileNameDisplay" class="font-extrabold text-base text-white">Registered Student</h3>
-            <p id="profileRoleDisplay" class="text-slate-400">Active Scholar & Book Recirculator</p>
-            <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold">Verified Safe Account</span>
-          </div>
-        </div>
+  $("marketBooks").innerHTML = matching.length
+    ? matching.map(bookCard).join("")
+    : `<div class="empty">No matching books found. Try another search or filter.</div>`;
 
-        <div class="space-y-2 pt-2 border-t border-white/10">
-          <div class="flex justify-between text-slate-300">
-            <span>Location:</span>
-            <span id="profileLocationDisplay" class="font-semibold text-white">Campus / Global</span>
-          </div>
-          <div class="flex justify-between text-slate-300">
-            <span>ESG Green Credits:</span>
-            <span id="profileEsgDisplay" class="font-semibold text-emerald-400">0 PTS</span>
-          </div>
-          <div class="flex justify-between text-slate-300">
-            <span>Safety Guardian Status:</span>
-            <span id="profileSafetyStatus" class="font-semibold text-cyan-300">Clear (0 Strikes)</span>
-          </div>
-        </div>
+  $("dashboardBooks").innerHTML = state.books.slice(0,3).map(bookCard).join("");
 
-        <button onclick="resetAllPlatformData()" class="w-full py-2.5 rounded-xl bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/20 text-xs font-semibold transition-all">
-          <i class="fa-solid fa-trash mr-1.5"></i> Clear Cache & Reset All App State
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================================== -->
-  <!-- FOOTER                                         -->
-  <!-- ============================================== -->
-  <footer class="w-full border-t border-white/5 bg-[#050A18] py-6 px-4 lg:px-8 mt-12 text-slate-400 text-xs">
-    <div class="max-w-[1520px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <div class="h-6 w-6 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs font-bold">栞</div>
-        <span class="text-slate-200 font-semibold">Shiori GLOBAL</span>
-        <span>— Circular Learning Network with Guardian AI & Scholar Lounge</span>
-      </div>
-      <div class="flex gap-4 text-slate-400">
-        <button onclick="setActiveNav('explore')" class="hover:text-cyan-400">Marketplace</button>
-        <button onclick="setActiveNav('community')" class="hover:text-cyan-400">Scholar Lounge</button>
-        <button onclick="setActiveNav('ai')" class="hover:text-cyan-400">Gemini AI Tutor</button>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ============================================== -->
-  <!-- JAVASCRIPT STATE ENGINE                        -->
-  <!-- ============================================== -->
-  <script>
-    // -------------------------------------------------------------
-    // ZERO-DUMMY PERSISTENT STATE MANAGEMENT (LOCALSTORAGE)
-    // -------------------------------------------------------------
-
-    // Real dynamic datasets
-    let booksData = [];
-    let chatsData = {};
-    let activePenpalId = "p1";
-    let userEsgPoints = 0;
-    let guardianStrikes = 0;
-
-    // Scholar Lounge Network peers
-    const defaultPeers = [
-      {
-        id: "p1",
-        name: "Kenji Sato",
-        flag: "🇯🇵",
-        country: "Japan",
-        nativeLang: "Japanese",
-        learningLang: "English",
-        major: "Computer Science",
-        lastActive: "Online",
-        bio: "Looking to swap Computer Architecture & Algorithms textbooks!"
-      },
-      {
-        id: "p2",
-        name: "Aarav Sharma",
-        flag: "🇮🇳",
-        country: "India",
-        nativeLang: "Hindi / English",
-        learningLang: "German",
-        major: "Mechanical Engineering",
-        lastActive: "Active now",
-        bio: "Preparing for gate & physics exams. Happy to donate class notes."
-      },
-      {
-        id: "p3",
-        name: "Sofia Rossi",
-        flag: "🇮🇹",
-        country: "Italy",
-        nativeLang: "Italian",
-        learningLang: "Spanish",
-        major: "Classical Literature",
-        lastActive: "10m ago",
-        bio: "Avid reader and philosophy enthusiast. Let's practice languages!"
-      },
-      {
-        id: "p4",
-        name: "Elena Rostova",
-        flag: "🇩🇪",
-        country: "Germany",
-        nativeLang: "German",
-        learningLang: "English / Japanese",
-        major: "Biochemistry",
-        lastActive: "Active today",
-        bio: "Keen on sustainable lab practices & second-hand science books."
-      }
-    ];
-
-    function loadState() {
-      const storedBooks = localStorage.getItem('shiori_books_dynamic');
-      booksData = storedBooks ? JSON.parse(storedBooks) : [];
-
-      const storedChats = localStorage.getItem('shiori_chats_dynamic');
-      chatsData = storedChats ? JSON.parse(storedChats) : {};
-
-      const storedEsg = localStorage.getItem('shiori_esg_points');
-      userEsgPoints = storedEsg ? parseInt(storedEsg, 10) : 0;
-
-      const storedStrikes = localStorage.getItem('shiori_guardian_strikes');
-      guardianStrikes = storedStrikes ? parseInt(storedStrikes, 10) : 0;
-
-      // Lockout check
-      if (guardianStrikes >= 3) {
-        document.getElementById('guardianLockoutModal').classList.remove('hidden');
-      }
-
-      updateEsgDisplay();
-      updateGuardianShieldBadge();
-    }
-
-    function saveState() {
-      localStorage.setItem('shiori_books_dynamic', JSON.stringify(booksData));
-      localStorage.setItem('shiori_chats_dynamic', JSON.stringify(chatsData));
-      localStorage.setItem('shiori_esg_points', userEsgPoints.toString());
-      localStorage.setItem('shiori_guardian_strikes', guardianStrikes.toString());
-    }
-
-    function resetAllPlatformData() {
-      localStorage.removeItem('shiori_books_dynamic');
-      localStorage.removeItem('shiori_chats_dynamic');
-      localStorage.removeItem('shiori_esg_points');
-      localStorage.removeItem('shiori_guardian_strikes');
-      booksData = [];
-      chatsData = {};
-      userEsgPoints = 0;
-      guardianStrikes = 0;
-      updateEsgDisplay();
-      updateGuardianShieldBadge();
-      renderHomePreview();
-      renderMarketplace();
-      renderChatList();
-      renderSidebarChatInbox();
-      closeAllModals();
-      showToast('Cache Cleared', 'Platform state has been reset to pristine dynamic clean state.');
-    }
-
-    // -------------------------------------------------------------
-    // NAVIGATION & MODALS
-    // -------------------------------------------------------------
-    function closeAllModals() {
-      document.querySelectorAll('[id^="modal"]').forEach(m => m.classList.add('hidden'));
-    }
-
-    function setActiveNav(navKey) {
-      closeAllModals();
-      document.querySelectorAll('.nav-item').forEach(btn => {
-        btn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-all relative";
-      });
-
-      const activeBtn = document.getElementById(`nav-${navKey}`);
-      if (activeBtn) {
-        activeBtn.className = "nav-item flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white shadow transition-all relative";
-      }
-
-      if (navKey === 'explore') openMarketplaceModal();
-      else if (navKey === 'sell') openSellModal();
-      else if (navKey === 'ai') openAiAssistantModal();
-      else if (navKey === 'messages') openMessagesModal();
-      else if (navKey === 'community') openCommunityModal();
-    }
-
-    function openMarketplaceModal() {
-      renderMarketplace();
-      document.getElementById('modalExplore').classList.remove('hidden');
-    }
-
-    function openSellModal() {
-      document.getElementById('modalSell').classList.remove('hidden');
-    }
-
-    function openAiAssistantModal() {
-      document.getElementById('modalAi').classList.remove('hidden');
-    }
-
-    function openMessagesModal() {
-      renderChatList();
-      selectChatPenpal(activePenpalId);
-      document.getElementById('modalMessages').classList.remove('hidden');
-    }
-
-    function openCommunityModal() {
-      renderCommunityDirectory();
-      document.getElementById('modalCommunity').classList.remove('hidden');
-    }
-
-    function openEsgModal() {
-      document.getElementById('modalEsg').classList.remove('hidden');
-    }
-
-    function openProfileModal() {
-      document.getElementById('modalProfile').classList.remove('hidden');
-    }
-
-    // -------------------------------------------------------------
-    // MARKETPLACE (DYNAMIC ZERO-DUMMY LOGIC)
-    // -------------------------------------------------------------
-    function renderHomePreview() {
-      const container = document.getElementById('homeMarketplacePreview');
-      if (!container) return;
-
-      if (booksData.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-8 px-6 rounded-2xl bg-[#091228] border border-dashed border-white/10 text-center space-y-3">
-            <div class="h-12 w-12 mx-auto rounded-full bg-blue-600/20 text-cyan-400 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-book-open"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-sm text-white">No Books Listed in the Circular Network Yet</h4>
-              <p class="text-xs text-slate-400 mt-1 max-w-md mx-auto">Be the first student to recirculate a textbook or donate course notes to earn +100 ESG Green Points!</p>
-            </div>
-            <button onclick="setActiveNav('sell')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-xs shadow-md">
-              + List First Book
-            </button>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = booksData.slice(0, 3).map(book => `
-        <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-4 flex flex-col justify-between hover:border-cyan-400/40 transition-all group">
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-[10px]">
-              <span class="px-2 py-0.5 rounded-full font-bold ${book.type === 'DONATE' ? 'bg-emerald-500/20 text-emerald-300' : book.type === 'SWAP' ? 'bg-purple-500/20 text-purple-300' : 'bg-cyan-500/20 text-cyan-300'}">${book.type}</span>
-              <span class="text-slate-400">${book.location}</span>
-            </div>
-            <h4 class="font-bold text-xs text-white group-hover:text-cyan-300 transition-colors line-clamp-1">${book.title}</h4>
-            <p class="text-[11px] text-slate-400">${book.author}</p>
-          </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between mt-3">
-            <span class="font-extrabold text-sm text-cyan-400">${book.price}</span>
-            <button onclick="startBookInquiry('${book.id}')" class="px-3 py-1.5 rounded-lg bg-blue-600/30 hover:bg-blue-600 text-blue-200 text-[11px] font-semibold border border-blue-500/30 transition-all">
-              Inquire
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderMarketplace() {
-      const query = (document.getElementById('marketSearchInput')?.value || '').toLowerCase();
-      const typeFilter = document.getElementById('marketTypeFilter')?.value || 'ALL';
-      const genreFilter = document.getElementById('marketGenreFilter')?.value || 'ALL';
-      const grid = document.getElementById('fullMarketplaceGrid');
-      if (!grid) return;
-
-      const filtered = booksData.filter(b => {
-        const matchesQuery = b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query) || b.subject.toLowerCase().includes(query) || b.location.toLowerCase().includes(query);
-        const matchesType = typeFilter === 'ALL' || b.type === typeFilter;
-        const matchesGenre = genreFilter === 'ALL' || b.subject === genreFilter;
-        return matchesQuery && matchesType && matchesGenre;
-      });
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full py-16 text-center space-y-3">
-            <div class="h-14 w-14 mx-auto rounded-full bg-slate-800/80 text-slate-400 flex items-center justify-center text-xl">
-              <i class="fa-solid fa-box-open"></i>
-            </div>
-            <div class="text-white font-bold text-sm">No textbook listings match your filters</div>
-            <p class="text-slate-400 text-xs">Try clearing filters or be the first to publish a listing.</p>
-            <button onclick="setActiveNav('sell')" class="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold text-xs">
-              + Post New Listing
-            </button>
-          </div>
-        `;
-        return;
-      }
-
-      grid.innerHTML = filtered.map(book => `
-        <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-cyan-400/50 transition-all space-y-4">
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-[10px]">
-              <span class="px-2.5 py-1 rounded-full font-bold ${book.type === 'DONATE' ? 'bg-emerald-500/20 text-emerald-300' : book.type === 'SWAP' ? 'bg-purple-500/20 text-purple-300' : 'bg-cyan-500/20 text-cyan-300'}">${book.type}</span>
-              <span class="text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i>${book.location}</span>
-            </div>
-            <h3 class="font-bold text-sm text-white">${book.title}</h3>
-            <p class="text-xs text-slate-300">By ${book.author} (${book.subject})</p>
-            <p class="text-[11px] text-slate-400 leading-relaxed">${book.description}</p>
-          </div>
-          
-          <div class="pt-3 border-t border-white/10 flex items-center justify-between">
-            <div>
-              <span class="text-[10px] text-slate-400 block">Condition: ${book.condition}</span>
-              <span class="font-black text-base text-cyan-400">${book.price}</span>
-            </div>
-            <button onclick="startBookInquiry('${book.id}')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-xs shadow-md shadow-cyan-500/20">
-              Inquire / Swap
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function togglePriceField() {
-      const type = document.getElementById('formType').value;
-      const priceWrp = document.getElementById('priceWrapper');
-      priceWrp.style.display = type === 'SELL' ? 'block' : 'none';
-    }
-
-    function handleSellSubmit(e) {
-      e.preventDefault();
-      const type = document.getElementById('formType').value;
-      let ptsAwarded = 40;
-      let priceDisplay = document.getElementById('formPrice').value || "₹150";
-
-      if (type === 'DONATE') {
-        ptsAwarded = 100;
-        priceDisplay = "FREE DONATION (₹0)";
-      } else if (type === 'SWAP') {
-        ptsAwarded = 60;
-        priceDisplay = "P2P SWAP";
-      }
-
-      const newBook = {
-        id: "b_" + Date.now(),
-        title: document.getElementById('formTitle').value.trim(),
-        author: document.getElementById('formAuthor').value.trim() || 'Verified Student',
-        subject: document.getElementById('formSubject').value,
-        type: type,
-        price: priceDisplay,
-        condition: document.getElementById('formCondition').value,
-        location: document.getElementById('formLocation').value.trim() || "Local / Campus",
-        description: document.getElementById('formDescription').value.trim() || "No additional comments.",
-        createdAt: new Date().toISOString()
-      };
-
-      booksData.unshift(newBook);
-      userEsgPoints += ptsAwarded;
-      saveState();
-
-      updateEsgDisplay();
-      renderHomePreview();
-      renderMarketplace();
-      closeAllModals();
-
-      showToast('Book Listed in Network!', `"${newBook.title}" is live! Earned +${ptsAwarded} ESG Points 🌱`);
-      document.getElementById('sellBookForm').reset();
-      togglePriceField();
-    }
-
-    function startBookInquiry(bookId) {
-      const book = booksData.find(b => b.id === bookId);
+  document.querySelectorAll("[data-book-action]").forEach(button => {
+    button.addEventListener("click", () => {
+      const book = state.books.find(b => b.id === Number(button.dataset.bookAction));
       if (!book) return;
 
-      closeAllModals();
-      openMessagesModal();
-      document.getElementById('chatMessageInput').value = `Hello! I would like to inquire about your book "${book.title}" (${book.price}). Is it available for campus exchange?`;
-    }
-
-    // -------------------------------------------------------------
-    // SHIORI GUARDIAN AI (3-STRIKE SAFETY SHIELD ENGINE)
-    // -------------------------------------------------------------
-    const safetyBlockList = [
-      "abuse", "harass", "hate", "kill", "threat", "scam", "stupid",
-      "idiot", "fraud", "drugs", "cheat", "bastard", "nude", "curse",
-      "send money", "wire cash", "crypto payment"
-    ];
-
-    function evaluateSafety(text) {
-      const lower = text.toLowerCase();
-      for (const word of safetyBlockList) {
-        if (lower.includes(word)) {
-          return { safe: false, triggerWord: word };
-        }
-      }
-      return { safe: true };
-    }
-
-    function applyGuardianStrike(reason) {
-      guardianStrikes += 1;
-      saveState();
-      updateGuardianShieldBadge();
-
-      if (guardianStrikes === 1) {
-        showToast('⚠️ Guardian AI: Strike 1 Warning', `Inappropriate language or unsafe request detected ("${reason}"). Please adhere to student community safety guidelines.`);
-      } else if (guardianStrikes === 2) {
-        showToast('🚨 Guardian AI: Strike 2 Final Notice', `Second safety breach recorded. 1 more violation will result in immediate account suspension.`);
-      } else if (guardianStrikes >= 3) {
-        document.getElementById('guardianLockoutModal').classList.remove('hidden');
-      }
-    }
-
-    function updateGuardianShieldBadge() {
-      const badge = document.getElementById('strikeBadge');
-      if (badge) {
-        badge.innerText = guardianStrikes;
-        if (guardianStrikes === 0) badge.className = "absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-emerald-500 text-[9px] font-black text-slate-950";
-        else if (guardianStrikes === 1) badge.className = "absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-amber-500 text-[9px] font-black text-slate-950";
-        else badge.className = "absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-red-500 text-[9px] font-black text-white animate-pulse";
-      }
-
-      const profStatus = document.getElementById('profileSafetyStatus');
-      if (profStatus) {
-        profStatus.innerText = guardianStrikes === 0 ? "Clear (0 Strikes)" : `${guardianStrikes} Strike(s) Active`;
-        profStatus.className = guardianStrikes === 0 ? "font-semibold text-emerald-400" : "font-semibold text-red-400";
-      }
-    }
-
-    function showGuardianStatus() {
-      showToast('Guardian AI Status', `Safety Shield is Active. Strikes: ${guardianStrikes}/3. Messages monitored in real-time for student protection.`);
-    }
-
-    function guardianResetSession() {
-      guardianStrikes = 0;
-      saveState();
-      updateGuardianShieldBadge();
-      document.getElementById('guardianLockoutModal').classList.add('hidden');
-      showToast('Safety Oath Accepted', 'Your account has been reinstated. Welcome back to safe circular learning!');
-    }
-
-    // -------------------------------------------------------------
-    // SCHOLAR LOUNGE & INTERPALS MESSAGES
-    // -------------------------------------------------------------
-    function renderPenpalsSidebar() {
-      const list = document.getElementById('penpalSidebarList');
-      if (!list) return;
-
-      list.innerHTML = defaultPeers.slice(0, 3).map(p => `
-        <div onclick="quickStartChat('${p.id}')" class="p-3 bg-[#101B3B] hover:bg-[#16244C] rounded-xl border border-white/5 cursor-pointer flex items-center justify-between transition-all">
-          <div class="flex items-center gap-3">
-            <div class="h-9 w-9 rounded-full bg-blue-600/30 border border-cyan-400/30 flex items-center justify-center text-sm font-bold text-white relative">
-              ${p.flag}
-              <span class="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 border-2 border-[#0D1733]"></span>
-            </div>
-            <div>
-              <div class="font-bold text-xs text-white flex items-center gap-1.5">
-                ${p.name}
-                <span class="text-[10px] text-slate-400 font-normal">(${p.country})</span>
-              </div>
-              <div class="text-[10px] text-cyan-300">N: ${p.nativeLang} • L: ${p.learningLang}</div>
-            </div>
-          </div>
-          <i class="fa-solid fa-chevron-right text-slate-500 text-xs"></i>
-        </div>
-      `).join('');
-    }
-
-    function renderChatList() {
-      const filter = (document.getElementById('chatSearchInput')?.value || '').toLowerCase();
-      const container = document.getElementById('activeChatList');
-      if (!container) return;
-
-      const filtered = defaultPeers.filter(p => p.name.toLowerCase().includes(filter) || p.country.toLowerCase().includes(filter));
-
-      container.innerHTML = filtered.map(p => {
-        const msgs = chatsData[p.id] || [];
-        const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].text : "No messages yet — start conversation";
-        const isActive = p.id === activePenpalId;
-
-        return `
-          <div onclick="selectChatPenpal('${p.id}')" class="p-3.5 cursor-pointer transition-all flex items-start gap-3 ${isActive ? 'bg-[#15234A] border-l-4 border-cyan-400' : 'hover:bg-[#101A38]'}">
-            <div class="h-10 w-10 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-base flex-shrink-0 relative">
-              ${p.flag}
-              <span class="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-400 border-2 border-[#091124]"></span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex justify-between items-center">
-                <h4 class="font-bold text-xs text-white truncate">${p.name}</h4>
-                <span class="text-[9px] text-slate-400">${p.lastActive}</span>
-              </div>
-              <p class="text-[11px] text-slate-400 truncate mt-0.5">${lastMsg}</p>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      renderSidebarChatInbox();
-    }
-
-    function renderSidebarChatInbox() {
-      const box = document.getElementById('sidebarChatInbox');
-      if (!box) return;
-
-      const activeList = defaultPeers.filter(p => (chatsData[p.id] || []).length > 0);
-
-      if (activeList.length === 0) {
-        box.innerHTML = `
-          <div class="py-5 text-center text-slate-500 text-xs bg-[#091124] rounded-xl border border-white/5 p-3">
-            <i class="fa-regular fa-comment-dots text-base text-slate-600 block mb-1"></i>
-            No active peer chats yet.<br>Click any scholar to initiate a book swap!
-          </div>
-        `;
+      if (book.type === "Sell" && level() < 3) {
+        alert("Direct selling is locked until Level 3.");
         return;
       }
 
-      box.innerHTML = activeList.slice(0, 3).map(p => {
-        const msgs = chatsData[p.id] || [];
-        const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].text : "";
-        return `
-          <div onclick="quickStartChat('${p.id}')" class="p-2.5 rounded-xl bg-[#101B3B] hover:bg-[#16244C] cursor-pointer flex items-center gap-3 border border-white/5">
-            <span class="text-lg">${p.flag}</span>
-            <div class="flex-1 min-w-0">
-              <div class="font-bold text-xs text-white">${p.name}</div>
-              <div class="text-[10px] text-slate-400 truncate">${lastMsg}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function selectChatPenpal(pId) {
-      activePenpalId = pId;
-      const p = defaultPeers.find(item => item.id === pId) || defaultPeers[0];
-
-      document.getElementById('chatHeaderAvatar').innerText = p.flag;
-      document.getElementById('chatHeaderName').innerText = `${p.name} (${p.country})`;
-      document.getElementById('chatHeaderMeta').innerHTML = `
-        <span>Native: <strong>${p.nativeLang}</strong></span> • 
-        <span>Learning: <strong>${p.learningLang}</strong></span>
-      `;
-
-      renderChatList();
-      renderChatMessages();
-    }
-
-    function renderChatMessages() {
-      const box = document.getElementById('chatMessagesBox');
-      if (!box) return;
-
-      const msgs = chatsData[activePenpalId] || [];
-
-      if (msgs.length === 0) {
-        box.innerHTML = `
-          <div class="py-14 text-center text-slate-400 text-xs space-y-2">
-            <div class="text-3xl">👋</div>
-            <div class="font-bold text-white">Welcome to Scholar Lounge Chat</div>
-            <p class="max-w-xs mx-auto text-slate-400 text-[11px]">
-              Introduce yourself, ask about textbooks in their library, or practice language exchange!
-            </p>
-          </div>
-        `;
+      if (book.owner === state.name) {
+        alert("This is your own listing.");
         return;
       }
 
-      box.innerHTML = msgs.map(m => `
-        <div class="flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}">
-          <div class="max-w-[75%] px-4 py-2.5 rounded-2xl text-xs leading-relaxed ${m.sender === 'me' ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-br-none shadow-md' : 'bg-[#121E3F] border border-white/10 text-slate-200 rounded-bl-none'}">
-            ${m.text}
-          </div>
-        </div>
-      `).join('');
+      alert(
+        "Demo request for: " + book.title +
+        "\n\nNo order or message has been created. Connect a real backend to contact the verified book owner."
+      );
+    });
+  });
+}
 
-      box.scrollTop = box.scrollHeight;
-    }
+$("globalSearch").addEventListener("input", renderBooks);
 
-    function sendPenpalMessage() {
-      if (guardianStrikes >= 3) {
-        document.getElementById('guardianLockoutModal').classList.remove('hidden');
-        return;
-      }
+$("filters").addEventListener("click", event => {
+  const button = event.target.closest("[data-filter]");
+  if (!button) return;
+  state.filter = button.dataset.filter;
+  document.querySelectorAll("[data-filter]").forEach(b =>
+    b.classList.toggle("active", b === button)
+  );
+  renderBooks();
+});
 
-      const input = document.getElementById('chatMessageInput');
-      const text = input.value.trim();
-      if (!text) return;
+function updateSellNotice() {
+  const isSell = $("bookType").value === "Sell";
+  $("sellNotice").className = "notice" + (isSell && level() < 3 ? " warn" : "");
+  $("sellNotice").textContent = isSell && level() < 3
+    ? "Direct selling is locked. Reach Level 3 in this prototype to demonstrate seller access."
+    : isSell
+      ? "Level 3 seller interface available. Real verification and payment processing are not enabled."
+      : "Donations and swaps are available in this front-end prototype.";
+  $("bookPrice").disabled = !isSell;
+  $("bookPrice").required = isSell;
+}
+$("bookType").addEventListener("change", updateSellNotice);
 
-      // Real-Time Guardian AI Interception Check
-      const check = evaluateSafety(text);
-      if (!check.safe) {
-        applyGuardianStrike(check.triggerWord);
-        input.value = '';
-        return;
-      }
+$("bookForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const type = $("bookType").value;
 
-      if (!chatsData[activePenpalId]) chatsData[activePenpalId] = [];
-      chatsData[activePenpalId].push({ sender: 'me', text: text });
-      userEsgPoints += 5; // Reward safe academic communication
-      saveState();
+  if (type === "Sell" && level() < 3) {
+    alert("Direct selling requires Level 3 in this prototype.");
+    return;
+  }
 
-      input.value = '';
-      renderChatMessages();
-      renderChatList();
-      updateEsgDisplay();
+  const title = $("bookTitle").value.trim();
+  const subject = $("bookSubject").value.trim();
+  const condition = $("bookCondition").value;
+  const price = Number($("bookPrice").value);
 
-      // Simulated realistic peer response
-      setTimeout(() => {
-        const peer = defaultPeers.find(p => p.id === activePenpalId) || defaultPeers[0];
-        const responses = [
-          `Hi! That sounds great. Let's arrange a safe campus pickup for that textbook.`,
-          `Thanks for reaching out! Happy to exchange my study guide notes with you.`,
-          `Awesome! I am currently studying ${peer.major}. How is your semester going?`
-        ];
-        const replyText = responses[Math.floor(Math.random() * responses.length)];
-        chatsData[activePenpalId].push({ sender: 'them', text: replyText });
-        saveState();
-        renderChatMessages();
-        renderChatList();
-      }, 1200);
-    }
+  if (!title || !subject) return;
+  if (type === "Sell" && (!Number.isFinite(price) || price <= 0 || price > 100000)) {
+    alert("Enter a valid selling price.");
+    return;
+  }
 
-    function quickStartChat(pId) {
-      closeAllModals();
-      openMessagesModal();
-      selectChatPenpal(pId);
-    }
+  state.books.unshift({
+    id: nextBookId++,
+    title, subject, condition, type,
+    price: type === "Sell" ? price : 0,
+    owner: state.name,
+    art: "▤"
+  });
 
-    function attachBookInquiryPrompt() {
-      document.getElementById('chatMessageInput').value = "Hey! I'd love to propose a book swap or share course flashcards with you.";
-    }
+  // Demo contribution points. A production server must verify actions.
+  state.points += 10;
 
-    function renderCommunityDirectory() {
-      const search = (document.getElementById('communitySearchInput')?.value || '').toLowerCase();
-      const langFilter = document.getElementById('communityLangFilter')?.value || 'ALL';
-      const grid = document.getElementById('communityDirectoryGrid');
-      if (!grid) return;
+  $("bookForm").reset();
+  updateSellNotice();
+  render();
+  alert("Listing added to this session's catalogue.");
+  go("marketplace");
+});
 
-      const filtered = defaultPeers.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(search) || p.country.toLowerCase().includes(search) || p.major.toLowerCase().includes(search);
-        const matchesLang = langFilter === 'ALL' || p.nativeLang.includes(langFilter) || p.learningLang.includes(langFilter);
-        return matchesSearch && matchesLang;
-      });
+function renderChat() {
+  $("chatLog").innerHTML = state.messages.length
+    ? state.messages.map(m => `
+        <div class="message ${m.mine ? "mine" : ""}">
+          <strong>${escapeHTML(m.author)}</strong>
+          <div style="margin-top:6px">${escapeHTML(m.text)}</div>
+        </div>`).join("")
+    : `<div class="empty">No discussions yet. Start with a study-related question or tip.</div>`;
+}
 
-      grid.innerHTML = filtered.map(p => `
-        <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-5 space-y-3 flex flex-col justify-between hover:border-purple-400/50 transition-all">
-          <div class="space-y-2">
-            <div class="flex items-center gap-3">
-              <span class="text-2xl">${p.flag}</span>
-              <div>
-                <h3 class="font-bold text-sm text-white">${p.name}</h3>
-                <span class="text-[10px] text-slate-400">${p.country} • ${p.major}</span>
-              </div>
-            </div>
-            <p class="text-[11px] text-slate-300 leading-relaxed">${p.bio}</p>
-            <div class="pt-2 flex flex-col gap-1 text-[10px]">
-              <div class="text-slate-400">Native: <span class="text-white font-semibold">${p.nativeLang}</span></div>
-              <div class="text-slate-400">Target: <span class="text-cyan-300 font-semibold">${p.learningLang}</span></div>
-            </div>
-          </div>
+function basicModeration(text) {
+  // Illustrative keyword filter only; not a reliable safety classifier.
+  const patterns = [
+    /\b(kill yourself|go die)\b/i,
+    /\b(i will hurt you|i will attack you)\b/i,
+    /\b(send me your password|share your password)\b/i
+  ];
+  return patterns.some(pattern => pattern.test(text));
+}
 
-          <button onclick="quickStartChat('${p.id}')" class="w-full py-2 rounded-xl bg-purple-600/30 hover:bg-purple-600 text-purple-200 font-bold text-xs border border-purple-500/30 transition-all">
-            Connect in Lounge
-          </button>
-        </div>
-      `).join('');
-    }
+$("chatForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const input = $("chatInput");
+  const message = input.value.trim();
+  if (!message) return;
 
-    // -------------------------------------------------------------
-    // GEMINI AI STUDY ASSISTANT (API INTEGRATED)
-    // -------------------------------------------------------------
-    async function sendAiMessage() {
-      const input = document.getElementById('aiInputPrompt');
-      const prompt = input.value.trim();
-      if (!prompt) return;
+  if (basicModeration(message)) {
+    alert("The demo safety filter flagged this message. It was not posted.");
+    return;
+  }
 
-      appendAiChatBubble('user', prompt);
-      input.value = '';
+  state.messages.push({author:state.name,text:message,mine:true});
+  input.value = "";
+  renderChat();
+});
 
-      const loadingId = 'aiLoadingIndicator';
-      const chatBox = document.getElementById('aiChatBox');
-      const loadDiv = document.createElement('div');
-      loadDiv.id = loadingId;
-      loadDiv.className = 'flex items-start gap-3';
-      loadDiv.innerHTML = `
-        <div class="h-8 w-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs flex-shrink-0 animate-spin">
-          🌀
-        </div>
-        <div class="bg-[#121E3F] border border-white/10 rounded-2xl p-4 text-xs text-slate-400">
-          Shiori Gemini AI is analyzing textbook curriculum...
-        </div>
-      `;
-      chatBox.appendChild(loadDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
+function renderStrikes() {
+  $("strikeCount").textContent = state.strikes + " / 3";
+  $("strikeProgress").style.width = (state.strikes / 3 * 100) + "%";
+}
 
-      try {
-        const apiKey = ""; // Handled automatically at runtime
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+$("checkSafety").addEventListener("click", () => {
+  const text = $("moderationInput").value.trim();
+  if (!text) {
+    $("moderationOutput").textContent = "Enter a message to test.";
+    return;
+  }
 
-        const systemPrompt = "You are the Shiori AI Academic Tutor for high school and university students. Provide concise, clear, and structured explanations, chapter summaries, formula breakdowns, or quiz questions with answers.";
+  const flagged = basicModeration(text);
+  if (flagged) {
+    state.strikes = Math.min(3,state.strikes + 1);
+    $("moderationOutput").textContent =
+      state.strikes === 1 ? "Strike 1/3: Demo warning. Please review the community guidelines." :
+      state.strikes === 2 ? "Strike 2/3: Demo alert. A human review would be appropriate." :
+      "Strike 3/3: Demo threshold reached. Real account suspension is not implemented.";
+    $("moderationOutput").className = "output notice warn";
+  } else {
+    $("moderationOutput").textContent =
+      "No configured keyword was detected. This does not guarantee that the message is safe.";
+    $("moderationOutput").className = "output";
+  }
+  renderStrikes();
+});
 
-        const payload = {
-          contents: [{ parts: [{ text: prompt }] }],
-          systemInstruction: { parts: [{ text: systemPrompt }] }
-        };
+$("resetStrikes").addEventListener("click", () => {
+  state.strikes = 0;
+  $("moderationOutput").textContent = "Demo counter reset.";
+  $("moderationOutput").className = "output";
+  renderStrikes();
+});
 
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+$("profileForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const name = $("studentName").value.trim();
+  if (!name) return;
+  state.name = name;
+  render();
+  alert("Display name updated for this session.");
+});
 
-        const data = await response.json();
-        document.getElementById(loadingId)?.remove();
+function renderLevels() {
+  const current = level();
+  const levels = [
+    {n:1,title:"Starter",points:"0–29",description:"Explore, donate and swap."},
+    {n:2,title:"Contributor",points:"30–99",description:"Recognise community participation."},
+    {n:3,title:"Verified Seller",points:"100+",description:"Demo direct-sell access."}
+  ];
 
-        const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to retrieve explanation right now. Please try again with a specific concept.";
-        appendAiChatBubble('ai', responseText);
+  $("levelList").innerHTML = levels.map(item => `
+    <div style="padding:12px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <strong>${item.n}. ${item.title}</strong>
+        <span class="tag ${item.n <= current ? "green" : ""}">
+          ${item.n < current ? "Completed" : item.n === current ? "Current" : "Locked"}
+        </span>
+      </div>
+      <p class="muted small">${item.description} · ${item.points} points</p>
+    </div>`).join("");
 
-      } catch (err) {
-        document.getElementById(loadingId)?.remove();
-        appendAiChatBubble('ai', "I encountered a network hiccup. Quick study tip: Use Feynman's technique—explain concepts out loud as if teaching a beginner!");
-      }
-    }
+  const thresholds = [0,30,100];
+  const nextThreshold = current === 1 ? 30 : current === 2 ? 100 : 100;
+  const progress = current === 3 ? 100 :
+    Math.min(100, (state.points - thresholds[current-1]) /
+      (nextThreshold - thresholds[current-1]) * 100);
 
-    function sendQuickAiPrompt(text) {
-      document.getElementById('aiInputPrompt').value = text;
-      sendAiMessage();
-    }
+  $("levelProgress").style.width = progress + "%";
+  $("accountProgress").style.width = progress + "%";
+  $("progressText").textContent = current === 3
+    ? "Level 3 demo milestone reached."
+    : Math.max(0,nextThreshold - state.points) + " more points to the next demo level.";
+}
 
-    function appendAiChatBubble(role, text) {
-      const chatBox = document.getElementById('aiChatBox');
-      if (!chatBox) return;
+function render() {
+  const current = level();
+  $("profileName").textContent = state.name;
+  $("avatar").textContent = state.name.charAt(0).toUpperCase();
+  $("profileLevel").textContent = "Level " + current + " · " + levelName();
 
-      const isUser = role === 'user';
-      const bubble = document.createElement('div');
-      bubble.className = `flex items-start gap-3 ${isUser ? 'justify-end' : ''}`;
+  $("statBooks").textContent = state.books.length;
+  $("statReused").textContent = state.reused;
+  $("statCredits").textContent = state.points;
+  $("statLevel").textContent = current;
 
-      bubble.innerHTML = isUser ? `
-        <div class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl rounded-tr-none p-4 max-w-xl text-xs leading-relaxed shadow-md">
-          ${text}
-        </div>
-      ` : `
-        <div class="h-8 w-8 rounded-lg bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 flex-shrink-0 text-xs">
-          🤖
-        </div>
-        <div class="bg-[#121E3F] border border-white/10 rounded-2xl rounded-tl-none p-4 max-w-xl text-xs leading-relaxed text-slate-200">
-          ${text.replace(/\n/g, '<br>')}
-        </div>
-      `;
+  $("levelTitle").textContent = "Level " + current + " · " + levelName();
+  $("levelDescription").textContent = current === 3
+    ? "Demo seller tier reached."
+    : current === 2
+      ? "Keep contributing to unlock the seller demo tier."
+      : "Explore, donate and swap books.";
+  $("creditBadge").textContent = state.points + " points";
 
-      chatBox.appendChild(bubble);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+  $("accountLevel").textContent = "Level " + current + " · " + levelName();
+  $("accountPoints").textContent = state.points;
+  $("accountAccess").textContent = current >= 3
+    ? "Demo direct-sell interface unlocked. No real seller verification is performed."
+    : "Donations, swaps and demo lounge access. Direct selling remains locked.";
 
-    // -------------------------------------------------------------
-    // ESG CREDITS & METRICS UPDATE ENGINE
-    // -------------------------------------------------------------
-    function updateEsgDisplay() {
-      const ptsFormatted = `${userEsgPoints.toLocaleString()} Points`;
-      document.getElementById('headerEsgPoints').innerText = `ESG Score: ${ptsFormatted}`;
-      document.getElementById('sidebarEsgPoints').innerText = `${userEsgPoints.toLocaleString()} PTS`;
-      document.getElementById('esgPointsBig').innerText = `${userEsgPoints.toLocaleString()} PTS`;
+  const co2 = state.reused * 0.5;
+  $("impactBooks").textContent = state.reused;
+  $("impactTrees").textContent = (state.reused * 0.01).toFixed(2);
+  $("impactCO2").textContent = co2.toFixed(1) + " kg";
+  $("impactCredits").textContent = state.points;
 
-      const profEsg = document.getElementById('profileEsgDisplay');
-      if (profEsg) profEsg.innerText = `${userEsgPoints.toLocaleString()} PTS`;
+  $("statReused").textContent = state.reused;
+  $("statCredits").textContent = state.points;
 
-      // Recalculate Environmental Stats
-      const totalBooks = booksData.length;
-      document.getElementById('statTotalBooks').innerText = totalBooks;
-      const co2Kg = (totalBooks * 1.2).toFixed(1);
-      document.getElementById('statCarbonPrevented').innerText = `${co2Kg} kg`;
+  renderBooks();
+  renderLevels();
+  renderChat();
+  renderStrikes();
+  updateSellNotice();
+}
 
-      const progressPct = Math.min(Math.round((userEsgPoints / 500) * 100), 100);
-      document.getElementById('esgProgressBar').style.width = `${Math.max(progressPct, 5)}%`;
+$("aiForm").addEventListener("submit", async event => {
+  event.preventDefault();
 
-      let rank = "Eco-Initiate";
-      if (userEsgPoints >= 400) rank = "Planet Guardian";
-      else if (userEsgPoints >= 200) rank = "Green Scholar";
-      else if (userEsgPoints >= 80) rank = "Book Recirculator";
+  const task = $("aiTask").value;
+  const topic = $("aiTopic").value.trim();
+  if (!topic) return;
 
-      document.getElementById('esgRankBadge').innerText = rank;
-      document.getElementById('esgCountSubtitle').innerText = `${totalBooks} Books Active`;
+  const instructions = {
+    explain:"Explain this concept clearly for a student. Use simple language, examples and a short recap.",
+    summary:"Summarise these study notes. Use key points, definitions and a concise revision summary.",
+    quiz:"Create 5 practice questions from this topic. Include multiple-choice options and an answer key at the end."
+  };
 
-      if (userEsgPoints > 0) {
-        document.getElementById('esgEquivalenceSubtitle').innerText = `You've helped offset ~${co2Kg} kg of CO2 emissions!`;
-      }
-    }
+  $("aiOutput").textContent =
+    "Study request prepared.\n\nTask: " + instructions[task] +
+    "\n\nTopic length: " + topic.length + " characters.";
+  $("aiStatus").textContent =
+    "AI service not connected. Configure the backend endpoint to generate an actual AI response.";
 
-    // Interactive Toast Notification
-    function showToast(title, msg) {
-      const toastBox = document.getElementById('toastBox');
-      if (!toastBox) return;
+  /*
+    Production integration:
+    Send {task, topic} to your authenticated backend, e.g. POST /api/study.
+    The backend should call the Gemini API using a server-side API key.
+    Never put a Gemini API key in this HTML file.
+  */
+});
 
-      const toast = document.createElement('div');
-      toast.className = 'pointer-events-auto bg-[#0C152F] border border-cyan-400/40 shadow-2xl p-4 rounded-2xl text-xs text-white max-w-sm flex items-start gap-3 transition-all animate-bounce';
-      toast.innerHTML = `
-        <div class="h-8 w-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-sm flex-shrink-0">
-          🔔
-        </div>
-        <div>
-          <div class="font-bold text-white text-xs">${title}</div>
-          <div class="text-slate-300 text-[11px] mt-0.5">${msg}</div>
-        </div>
-      `;
-
-      toastBox.appendChild(toast);
-      setTimeout(() => {
-        toast.remove();
-      }, 4000);
-    }
-
-    // Boot App
-    window.onload = function() {
-      loadState();
-      renderHomePreview();
-      renderPenpalsSidebar();
-      renderSidebarChatInbox();
-    };
-  </script>
+render();
+</script>
 </body>
 </html>
