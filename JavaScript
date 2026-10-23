@@ -1,0 +1,580 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  BookOpen, Leaf, Shield, Award, Sparkles, MessageSquare, 
+  Send, AlertTriangle, CheckCircle2, Lock, Unlock, Plus, 
+  BookMarked, HelpCircle, Layers, Trash2, RefreshCw
+} from 'lucide-react';
+
+const INITIAL_BOOKS = [
+  {
+    id: 'b1',
+    title: 'Campbell Biology (12th Edition)',
+    author: 'Urry, Cain, Wasserman',
+    subject: 'Biology / Pre-Med',
+    type: 'sell',
+    price: 34.00,
+    origPrice: 195.00,
+    condition: 'Like New',
+    seller: { name: 'Aarav Patel', school: 'IIT Delhi / Pre-Med', level: 3, avatar: 'AP', verified: true },
+    carbonSaved: '2.4 kg CO₂',
+    treesSaved: '0.18 Trees',
+    description: 'Highlighted only in chapter 4. Complete online access code sticker unscratched.',
+    tags: ['NEET', 'Biochem', 'University']
+  },
+  {
+    id: 'b2',
+    title: 'Calculus: Early Transcendentals',
+    author: 'James Stewart',
+    subject: 'Mathematics',
+    type: 'swap',
+    price: 0,
+    origPrice: 140.00,
+    condition: 'Good',
+    seller: { name: 'Elena Rostova', school: 'St. Petersburg Tech', level: 2, avatar: 'ER', verified: true },
+    carbonSaved: '3.1 kg CO₂',
+    treesSaved: '0.22 Trees',
+    description: 'Open to swapping for Linear Algebra Done Right. Clean binding.',
+    tags: ['Calculus', 'STEM', 'Undergrad']
+  },
+  {
+    id: 'b3',
+    title: 'Introduction to Algorithms (CLRS 3rd Ed)',
+    author: 'Cormen, Leiserson, Rivest',
+    subject: 'Computer Science',
+    type: 'sell',
+    price: 42.00,
+    origPrice: 110.00,
+    condition: 'Like New',
+    seller: { name: 'Marcus Chen', school: 'NUS Singapore', level: 3, avatar: 'MC', verified: true },
+    carbonSaved: '4.2 kg CO₂',
+    treesSaved: '0.31 Trees',
+    description: 'Algorithms Bible. Kept in smoke-free study room.',
+    tags: ['Algorithms', 'LeetCode', 'CS']
+  }
+];
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('marketplace');
+  const [userLevel, setUserLevel] = useState(2);
+  const [esgCredits, setEsgCredits] = useState(48);
+  const [books, setBooks] = useState(INITIAL_BOOKS);
+  const [filterType, setFilterType] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // New Listing State
+  const [showListModal, setShowListModal] = useState(false);
+  const [newBookForm, setNewBookForm] = useState({
+    title: '', author: '', subject: 'Computer Science', type: 'swap', price: '20', condition: 'Like New', description: '', tags: 'Exam Prep'
+  });
+
+  // Scholar Lounge Chat & Guardian AI
+  const [currentChannel, setCurrentChannel] = useState('cs');
+  const [chatMessages, setChatMessages] = useState({
+    cs: [
+      { id: 'm1', sender: 'Devon K.', avatar: 'DK', level: 2, text: 'Does anyone have the Cormen CLRS 3rd edition handy for algorithms exam?', time: '10:24 AM' },
+      { id: 'm2', sender: 'Marcus Chen', avatar: 'MC', level: 3, text: 'Hey Devon, I just listed my CLRS 3rd Ed on the marketplace!', time: '10:26 AM' }
+    ],
+    general: [
+      { id: 'm3', sender: 'Shiori Guardian AI', avatar: 'SG', level: 99, isSystem: true, text: 'Welcome to Shiori Scholar Lounge. Keep conversations academic and respectful.', time: '08:00 AM' }
+    ]
+  });
+  const [messageInput, setMessageInput] = useState('');
+  const [strikes, setStrikes] = useState(0);
+  const [guardianWarning, setGuardianWarning] = useState(null);
+  const [showSuspendedModal, setShowSuspendedModal] = useState(false);
+
+  // Gemini Study AI State
+  const [apiKeyInput, setApiKeyInput] = useState('');
+  const [geminiQuery, setGeminiQuery] = useState('');
+  const [geminiMode, setGeminiMode] = useState('summary');
+  const [geminiLoading, setGeminiLoading] = useState(false);
+  const [geminiResponse, setGeminiResponse] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const isSellerUnlocked = userLevel >= 3;
+
+  const toggleUserLevel = (lvl) => {
+    setUserLevel(lvl);
+    if (lvl === 3) {
+      setEsgCredits(prev => Math.max(prev, 50));
+      showToast('🎉 Level 3 Achieved: Amazon-Style Direct Sell UNLOCKED!');
+    } else {
+      showToast(`Switched to Student Level ${lvl} Mode.`);
+    }
+  };
+
+  // Guardian AI Filter
+  const unsafePatterns = /(idiot|stupid|cheat|hack|leak exam|pirate|scam|hate|kill)/i;
+
+  const handleSendMessage = () => {
+    if (strikes >= 3) {
+      setShowSuspendedModal(true);
+      return;
+    }
+    const text = messageInput.trim();
+    if (!text) return;
+
+    if (unsafePatterns.test(text)) {
+      const nextStrike = strikes + 1;
+      setStrikes(nextStrike);
+      if (nextStrike === 1) {
+        setGuardianWarning({ title: 'Guardian AI: Strike 1 / 3 (Soft Advisory)', message: 'Message flagged for non-academic content.' });
+      } else if (nextStrike === 2) {
+        setGuardianWarning({ title: 'Guardian AI: Strike 2 / 3 (Firm Warning)', message: 'Repeated violation. One more incident will suspend your chat.' });
+      } else {
+        setShowSuspendedModal(true);
+      }
+      setMessageInput('');
+      return;
+    }
+
+    const newMsg = {
+      id: `m_${Date.now()}`,
+      sender: 'Rohan Verma',
+      avatar: 'RV',
+      level: userLevel,
+      text,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setChatMessages(prev => ({
+      ...prev,
+      [currentChannel]: [...(prev[currentChannel] || []), newMsg]
+    }));
+    setMessageInput('');
+  };
+
+  // Gemini AI Assistant Handler
+  const handleGeminiAssist = async () => {
+    if (!geminiQuery.trim()) return;
+    setGeminiLoading(true);
+    setGeminiResponse(null);
+
+    try {
+      const apiKey = apiKeyInput.trim();
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+      const payload = {
+        contents: [{ parts: [{ text: geminiQuery }] }],
+        systemInstruction: { parts: [{ text: "You are Shiori Global Academic AI Companion. Deliver crisp summaries and concept breakdowns." }] }
+      };
+
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (text) {
+        setGeminiResponse(text);
+      } else {
+        throw new Error('Fallback triggered');
+      }
+    } catch (err) {
+      setTimeout(() => {
+        setGeminiResponse(`### 📚 Gemini 3 Flash Simulation Response\n\n**Topic:** ${geminiQuery}\n\n1. **Core Concept:** Foundational mastery and circular recirculation.\n2. **Key Takeaway:** High-yield preparation for competitive examinations and university coursework.\n\n*(Connect your valid Gemini API Key above for live multi-modal generation)*`);
+      }, 600);
+    } finally {
+      setGeminiLoading(false);
+    }
+  };
+
+  const handleCreateListing = (e) => {
+    e.preventDefault();
+    if (!newBookForm.title) return;
+    if (newBookForm.type === 'sell' && !isSellerUnlocked) {
+      showToast('❌ You must reach Student Level 3 to unlock Amazon-style Direct Sell.');
+      return;
+    }
+
+    const newBook = {
+      id: `b_${Date.now()}`,
+      title: newBookForm.title,
+      author: newBookForm.author || 'Academic Author',
+      subject: newBookForm.subject,
+      type: newBookForm.type,
+      price: newBookForm.type === 'sell' ? parseFloat(newBookForm.price) || 20 : 0,
+      origPrice: 100,
+      condition: newBookForm.condition,
+      seller: { name: 'Rohan Verma', school: 'National University', level: userLevel, avatar: 'RV', verified: userLevel >= 3 },
+      carbonSaved: '2.5 kg CO₂',
+      treesSaved: '0.19 Trees',
+      description: newBookForm.description || 'Verified textbook circulated on Shiori Global network.',
+      tags: newBookForm.tags.split(',').map(t => t.trim())
+    };
+
+    setBooks([newBook, ...books]);
+    setEsgCredits(prev => prev + 15);
+    setShowListModal(false);
+    showToast('✨ Book successfully listed! Earned +15 ESG Credits.');
+  };
+
+  const filteredBooks = books.filter(b => {
+    const matchesFilter = filterType === 'all' ? true : b.type === filterType;
+    const matchesSearch = b.title.toLowerCase().includes(searchQuery.toLowerCase()) || b.subject.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col font-sans">
+      {/* Toast */}
+      {toastMessage && (
+        <div className="fixed top-5 right-5 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 border border-emerald-400">
+          <Sparkles className="w-5 h-5 text-emerald-200" />
+          <span className="font-semibold text-sm">{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-emerald-900/40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('marketplace')}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-lg">
+              <BookOpen className="w-6 h-6 text-slate-950 stroke-[2.5]" />
+            </div>
+            <div>
+              <div className="flex items-center space-x-1.5">
+                <span className="text-xl font-black text-white">Shiori</span>
+                <span className="text-xs font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">GLOBAL</span>
+              </div>
+              <p className="text-xs text-slate-400">Books Today. A Brighter Tomorrow.</p>
+            </div>
+          </div>
+
+          <nav className="hidden md:flex items-center space-x-1 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800">
+            <button onClick={() => setActiveTab('marketplace')} className={`px-3.5 py-2 rounded-lg text-xs font-semibold ${activeTab === 'marketplace' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-slate-200'}`}>Marketplace</button>
+            <button onClick={() => setActiveTab('lounge')} className={`px-3.5 py-2 rounded-lg text-xs font-semibold ${activeTab === 'lounge' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-slate-200'}`}>Scholar Lounge</button>
+            <button onClick={() => setActiveTab('esg')} className={`px-3.5 py-2 rounded-lg text-xs font-semibold ${activeTab === 'esg' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-slate-200'}`}>ESG Green Engine</button>
+            <button onClick={() => setActiveTab('assistant')} className={`px-3.5 py-2 rounded-lg text-xs font-semibold ${activeTab === 'assistant' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-slate-200'}`}>Gemini Study AI</button>
+          </nav>
+
+          <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1.5 rounded-lg">
+              <Leaf className="w-4 h-4 text-emerald-400" />
+              <span className="text-xs font-bold text-emerald-300">{esgCredits} ESG</span>
+            </div>
+            <button onClick={() => setShowListModal(true)} className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center space-x-1.5 shadow-lg">
+              <Plus className="w-4 h-4 stroke-[3]" />
+              <span>List Book</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Seller Unlock Tier Banner */}
+      <section className="bg-gradient-to-r from-slate-950 via-emerald-950/40 to-slate-950 border-b border-emerald-900/30 px-4 py-3">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+          <div className="flex items-center space-x-3">
+            <div className={`p-2 rounded-lg ${isSellerUnlocked ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-slate-800 text-slate-300'}`}>
+              {isSellerUnlocked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+            </div>
+            <div>
+              <span className="font-bold text-white">
+                {isSellerUnlocked ? 'Amazon-Style Direct Sell Tier: ACTIVE & UNLOCKED' : 'Amazon-Style Direct Sell Tier: LOCKED (Starter Tier: Swaps & Donations)'}
+              </span>
+              <p className="text-[11px] text-slate-400">
+                {isSellerUnlocked ? 'Authorized to sell textbooks peer-to-peer with dynamic escrow and verified badges.' : `Unlock Criteria: 50 ESG credits (Current: ${esgCredits}/50).`}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 bg-slate-900 p-1.5 rounded-xl border border-slate-700">
+            <span className="text-[10px] text-slate-400 uppercase font-bold">Simulator:</span>
+            <button onClick={() => toggleUserLevel(1)} className={`px-2 py-1 rounded text-[11px] ${userLevel === 1 ? 'bg-emerald-600 text-white' : 'text-slate-400'}`}>Level 1</button>
+            <button onClick={() => toggleUserLevel(2)} className={`px-2 py-1 rounded text-[11px] ${userLevel === 2 ? 'bg-emerald-600 text-white' : 'text-slate-400'}`}>Level 2</button>
+            <button onClick={() => toggleUserLevel(3)} className={`px-2 py-1 rounded text-[11px] ${userLevel === 3 ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}>Level 3 (Sell Unlocked)</button>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Container */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {activeTab === 'marketplace' && (
+          <div className="space-y-6">
+            {/* Search & Filters */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+              <div className="relative w-full sm:w-96">
+                <input 
+                  type="text" 
+                  placeholder="Search by title, subject, or author..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none"
+                />
+              </div>
+              <div className="flex items-center space-x-2 w-full sm:w-auto overflow-x-auto">
+                {['all', 'sell', 'swap', 'donation'].map(type => (
+                  <button
+                    key={type}
+                    onClick={() => setFilterType(type)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-semibold capitalize transition ${
+                      filterType === type ? 'bg-emerald-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Book Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredBooks.map(book => (
+                <div key={book.id} className="bg-slate-950/80 border border-slate-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition flex flex-col shadow-xl">
+                  <div className="p-5 flex-1 space-y-4">
+                    <div className="flex items-start justify-between">
+                      <span className={`text-[10px] uppercase font-bold px-2.5 py-1 rounded-full border ${
+                        book.type === 'sell' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+                        book.type === 'swap' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
+                        'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                      }`}>
+                        {book.type === 'sell' ? `₹${book.price}` : book.type}
+                      </span>
+                      <span className="text-xs text-slate-400 font-medium">{book.condition}</span>
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold text-white text-base line-clamp-1">{book.title}</h3>
+                      <p className="text-xs text-slate-400 mt-0.5">{book.author} • <span className="text-emerald-400">{book.subject}</span></p>
+                    </div>
+
+                    <p className="text-xs text-slate-300 line-clamp-2">{book.description}</p>
+
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {book.tags.map((t, idx) => (
+                        <span key={idx} className="text-[10px] bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-800">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="px-5 py-3 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between text-xs">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-7 h-7 rounded-full bg-emerald-600/30 text-emerald-300 font-bold flex items-center justify-center text-xs">
+                        {book.seller.avatar}
+                      </div>
+                      <div>
+                        <p className="font-bold text-slate-200">{book.seller.name}</p>
+                        <p className="text-[10px] text-slate-400">{book.seller.school}</p>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => showToast(`Inquiry sent to ${book.seller.name} for "${book.title}"!`)}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-lg font-semibold transition shadow"
+                    >
+                      Inquire
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'lounge' && (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[72vh]">
+            <div className="lg:col-span-1 bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex flex-col space-y-2">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 px-2">Scholar Channels</h3>
+              {[
+                { id: 'cs', name: 'Computer-Science', icon: '💻' },
+                { id: 'med', name: 'Medical-Biochem', icon: '🧬' },
+                { id: 'general', name: 'General-Lounge', icon: '☕' }
+              ].map(ch => (
+                <button
+                  key={ch.id}
+                  onClick={() => setCurrentChannel(ch.id)}
+                  className={`flex items-center space-x-3 w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
+                    currentChannel === ch.id ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                  }`}
+                >
+                  <span className="text-base">{ch.icon}</span>
+                  <span>{ch.name}</span>
+                </button>
+              ))}
+              <div className="mt-auto p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
+                <div className="flex items-center space-x-1.5 text-emerald-400 font-bold">
+                  <Shield className="w-4 h-4" />
+                  <span>Guardian AI Active</span>
+                </div>
+                <p>Real-time moderation enforcing 3-strike community standards.</p>
+              </div>
+            </div>
+
+            <div className="lg:col-span-3 bg-slate-950/80 border border-slate-800 rounded-2xl flex flex-col overflow-hidden">
+              <div className="p-4 bg-slate-900/80 border-b border-slate-800 flex items-center justify-between">
+                <h3 className="font-bold text-sm text-white"># {currentChannel.toUpperCase()} Scholar Lounge</h3>
+                <span className="text-xs text-emerald-400 flex items-center space-x-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span>Secure Encrypted Peer Chat</span>
+                </span>
+              </div>
+
+              <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                {(chatMessages[currentChannel] || []).map(msg => (
+                  <div key={msg.id} className={`flex items-start space-x-3 ${msg.isSystem ? 'bg-emerald-950/30 border border-emerald-900/50 p-3 rounded-xl' : ''}`}>
+                    <div className="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-emerald-400 flex-shrink-0">
+                      {msg.avatar}
+                    </div>
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <span className="font-bold text-xs text-white">{msg.sender}</span>
+                        <span className="text-[10px] text-slate-500">{msg.time}</span>
+                      </div>
+                      <p className="text-xs text-slate-300 mt-1">{msg.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="p-3 bg-slate-900 border-t border-slate-800 flex items-center space-x-2">
+                <input 
+                  type="text" 
+                  placeholder="Type academic query or message..."
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                  className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none"
+                />
+                <button onClick={handleSendMessage} className="bg-emerald-600 hover:bg-emerald-500 text-white p-2.5 rounded-xl transition">
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'esg' && (
+          <div className="space-y-6 max-w-4xl mx-auto">
+            <div className="bg-gradient-to-r from-emerald-950/60 to-teal-950/60 border border-emerald-800/60 p-8 rounded-3xl shadow-2xl space-y-4">
+              <div className="flex items-center space-x-3">
+                <Leaf className="w-8 h-8 text-emerald-400" />
+                <h2 className="text-2xl font-black text-white">ESG Green Impact Engine</h2>
+              </div>
+              <p className="text-sm text-slate-300">Every textbook recirculated on Shiori Global prevents new paper manufacturing emissions and landfill accumulation.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                <div className="bg-slate-950/80 p-5 rounded-2xl border border-emerald-900/40 text-center">
+                  <p className="text-3xl font-black text-emerald-400">4.8 kg</p>
+                  <p className="text-xs text-slate-400 mt-1">CO₂ Emissions Prevented</p>
+                </div>
+                <div className="bg-slate-950/80 p-5 rounded-2xl border border-emerald-900/40 text-center">
+                  <p className="text-3xl font-black text-emerald-400">0.36</p>
+                  <p className="text-xs text-slate-400 mt-1">Trees Saved</p>
+                </div>
+                <div className="bg-slate-950/80 p-5 rounded-2xl border border-emerald-900/40 text-center">
+                  <p className="text-3xl font-black text-emerald-400">{esgCredits}</p>
+                  <p className="text-xs text-slate-400 mt-1">Earned ESG Credits</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'assistant' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <Sparkles className="w-6 h-6 text-emerald-400" />
+                  <h3 className="font-bold text-base text-white">Gemini 3 Flash Study Assistant</h3>
+                </div>
+                <input 
+                  type="password" 
+                  placeholder="Paste Gemini API Key (Optional)" 
+                  value={apiKeyInput}
+                  onChange={(e) => setApiKeyInput(e.target.value)}
+                  className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs w-64 text-white"
+                />
+              </div>
+
+              <div className="space-y-3">
+                <textarea 
+                  rows="3" 
+                  placeholder="Enter book title, chapter, or complex academic concept..." 
+                  value={geminiQuery}
+                  onChange={(e) => setGeminiQuery(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-xs text-white focus:border-emerald-500 focus:outline-none"
+                />
+                <button 
+                  onClick={handleGeminiAssist}
+                  disabled={geminiLoading}
+                  className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs flex items-center space-x-2 shadow-lg"
+                >
+                  {geminiLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                  <span>{geminiLoading ? 'Generating Analysis...' : 'Generate AI Study Summary'}</span>
+                </button>
+              </div>
+
+              {geminiResponse && (
+                <div className="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-6 text-xs text-slate-200 leading-relaxed whitespace-pre-wrap">
+                  {geminiResponse}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* List Book Modal */}
+      {showListModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <h3 className="font-bold text-lg text-white">List a Textbook on Shiori GLOBAL</h3>
+            <form onSubmit={handleCreateListing} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-slate-400 mb-1">Book Title</label>
+                <input type="text" required placeholder="e.g. Organic Chemistry" value={newBookForm.title} onChange={e => setNewBookForm({...newBookForm, title: e.target.value})} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-400 mb-1">Author</label>
+                  <input type="text" placeholder="Author name" value={newBookForm.author} onChange={e => setNewBookForm({...newBookForm, author: e.target.value})} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white" />
+                </div>
+                <div>
+                  <label className="block text-slate-400 mb-1">Subject</label>
+                  <input type="text" placeholder="Subject" value={newBookForm.subject} onChange={e => setNewBookForm({...newBookForm, subject: e.target.value})} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-400 mb-1">Listing Type</label>
+                  <select value={newBookForm.type} onChange={e => setNewBookForm({...newBookForm, type: e.target.value})} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white">
+                    <option value="swap">Book Swap</option>
+                    <option value="donation">Free Donation</option>
+                    <option value="sell">Direct Sell (Level 3+)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-slate-400 mb-1">Price (₹ / $)</label>
+                  <input type="number" value={newBookForm.price} onChange={e => setNewBookForm({...newBookForm, price: e.target.value})} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-slate-400 mb-1">Description</label>
+                <textarea rows="2" placeholder="Condition, highlights, notes..." value={newBookForm.description} onChange={e => setNewBookForm({...newBookForm, description: e.target.value})} className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white" />
+              </div>
+              <div className="flex justify-end space-x-3 pt-2">
+                <button type="button" onClick={() => setShowListModal(false)} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl font-semibold">Cancel</button>
+                <button type="submit" className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold">Publish Listing</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Account Suspended Modal */}
+      {showSuspendedModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-amber-500/50 rounded-3xl max-w-md w-full p-6 text-center space-y-4">
+            <AlertTriangle className="w-12 h-12 text-amber-400 mx-auto" />
+            <h3 className="font-bold text-lg text-white">Shiori Guardian AI: Account Suspended</h3>
+            <p className="text-xs text-slate-300">You have reached 3 strikes due to community guideline violations. Chat access is temporarily restricted.</p>
+            <button onClick={() => { setStrikes(0); setShowSuspendedModal(false); showToast('Strike count reset for demonstration.'); }} className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs">Appeal / Reset Demo</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
