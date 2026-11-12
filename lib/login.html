@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shiori GLOBAL - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-white p-6 rounded-2xl shadow-lg border border-purple-100">
+    <h1 class="text-3xl font-bold text-center text-purple-900">Shiori GLOBAL 🌍</h1>
+    <p class="text-center text-sm text-gray-500 mb-6">Books Today. A Brighter Tomorrow.</p>
+
+    <div class="flex gap-2 mb-6">
+      <button id="btn-signup-tab" class="flex-1 bg-purple-600 text-white py-2 rounded-full font-bold">Sign Up</button>
+      <button id="btn-login-tab" class="flex-1 bg-gray-100 text-gray-700 py-2 rounded-full font-bold">Login</button>
+    </div>
+
+    <form id="auth-form" class="space-y-3">
+      <div id="signup-fields" class="space-y-3">
+        <input id="display_name" placeholder="Display Name (e.g. Aprajita)" class="w-full border p-3 rounded-xl text-slate-800" />
+        <input id="school_name" placeholder="School Name" class="w-full border p-3 rounded-xl text-slate-800" />
+        <input id="grade_level" placeholder="Grade - e.g. Class 10" class="w-full border p-3 rounded-xl text-slate-800" />
+        <input id="age" type="number" placeholder="Age" class="w-full border p-3 rounded-xl text-slate-800" />
+        <input id="guardian_email" placeholder="Guardian / Parent Email" class="w-full border border-orange-300 p-3 rounded-xl bg-orange-50 text-slate-800" />
+      </div>
+      
+      <input id="email" type="email" placeholder="School Email (.edu / email)" class="w-full border p-3 rounded-xl text-slate-800" required />
+      <input id="password" type="password" placeholder="Password" class="w-full border p-3 rounded-xl text-slate-800" required />
+
+      <button type="submit" id="submit-btn" class="w-full bg-purple-600 text-white py-3 rounded-xl font-bold shadow-md hover:bg-purple-700 transition">
+        Create Account
+      </button>
+    </form>
+    
+    <p id="msg" class="text-center text-sm text-purple-700 mt-4 font-semibold"></p>
+  </div>
+
+  <script type="module">
+    import { signUpStudent, loginStudent } from './lib/auth.js'
+
+    let isSignup = true
+    const signupFields = document.getElementById('signup-fields')
+    const submitBtn = document.getElementById('submit-btn')
+    const msg = document.getElementById('msg')
+
+    document.getElementById('btn-signup-tab').onclick = () => {
+      isSignup = true
+      signupFields.classList.remove('hidden')
+      submitBtn.innerText = "Create Account"
+    }
+
+    document.getElementById('btn-login-tab').onclick = () => {
+      isSignup = false
+      signupFields.classList.add('hidden')
+      submitBtn.innerText = "Login"
+    }
+
+    document.getElementById('auth-form').onsubmit = async (e) => {
+      e.preventDefault()
+      msg.innerText = "Please wait..."
+      
+      try {
+        if (isSignup) {
+          const age = Number(document.getElementById('age').value)
+          const res = await signUpStudent({
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            display_name: document.getElementById('display_name').value,
+            school_name: document.getElementById('school_name').value,
+            grade_level: document.getElementById('grade_level').value,
+            age: age,
+            guardian_email: document.getElementById('guardian_email').value
+          })
+          msg.innerText = res.needsGuardian ? "Signup successful! Guardian email set." : "Signup successful! Ab login karo."
+        } else {
+          await loginStudent(
+            document.getElementById('email').value,
+            document.getElementById('password').value
+          )
+          msg.innerText = "Login successful! Redirecting..."
+          window.location.href = "index.html"
+        }
+      } catch (err) {
+        msg.innerText = "Error: " + err.message
+      }
+    }
+  </script>
+</body>
+</html>
