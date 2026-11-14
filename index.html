@@ -1,210 +1,85 @@
-import React, { useState } from 'react';
-import { ShieldCheck, UserCheck, AlertCircle, Sparkles, BookOpen, Lock } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shiori GLOBAL - Circular Textbook Network</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
 
-export default function ShioriAuth() {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    fullName: '',
-    institution: '',
-    grade: '',
-    city: '',
-    state: '',
-    mobile: '',
-    email: '',
-    idProof: null,
-    under18: false,
-    guardianEmail: ''
-  });
+  <!-- Navbar -->
+  <nav class="bg-white shadow-sm border-b border-purple-100 px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <span class="text-2xl font-extrabold text-purple-900">Shiori GLOBAL 🌍</span>
+    </div>
+    <div id="nav-actions" class="flex items-center gap-3">
+      <a href="login.html" class="bg-purple-600 text-white px-5 py-2 rounded-full font-bold hover:bg-purple-700 transition">
+        Student Login / Sign Up
+      </a>
+    </div>
+  </nav>
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
+  <!-- Hero Section -->
+  <header class="max-w-4xl mx-auto text-center py-14 px-4">
+    <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+      Student-Led Circular Economy
+    </span>
+    <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mt-4 leading-tight">
+      Books Today. <span class="text-purple-600">A Brighter Tomorrow.</span>
+    </h1>
+    <p class="text-slate-600 mt-4 text-lg max-w-2xl mx-auto">
+      Pass on your old textbooks, earn ESG XP, save trees, and help fellow students learn without the heavy cost.
+    </p>
+    <div class="mt-8 flex justify-center gap-4">
+      <a href="login.html" class="bg-purple-600 text-white px-7 py-3 rounded-xl font-bold shadow-md hover:bg-purple-700 transition">
+        Join Shiori Network 🚀
+      </a>
+    </div>
+  </header>
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setStep(2); // Move to OTP 2FA Verification Step
-  };
+  <!-- Live Marketplace Preview -->
+  <main class="max-w-5xl mx-auto px-4 pb-16">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-slate-900">Available Textbooks 📚</h2>
+      <span class="text-sm text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full font-semibold">
+        🌱 1 Book Shared = 2.5 kg CO₂ Saved
+      </span>
+    </div>
 
-  return (
-    <div className="min-h-screen bg-[#0a0f1d] text-white flex flex-col justify-center items-center p-4">
-      {/* Brand Header */}
-      <div className="text-center mb-8">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <BookOpen className="w-8 h-8 text-[#00f2fe]" />
-          <h1 className="text-3xl font-bold tracking-wider bg-gradient-to-r from-[#00f2fe] to-emerald-400 bg-clip-text text-transparent">
-            Shiori GLOBAL
-          </h1>
+    <div id="books-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Sample Cards (Will connect to Supabase next!) -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • Science</span>
+        <h3 class="text-lg font-bold mt-3">NCERT Science Textbook</h3>
+        <p class="text-sm text-slate-500 mt-1">Condition: Like New • Delhi</p>
+        <div class="mt-4 pt-3 border-t flex justify-between items-center">
+          <span class="font-bold text-emerald-600">Free / Exchange</span>
+          <a href="login.html" class="text-sm font-bold text-purple-600 hover:underline">Request →</a>
         </div>
-        <p className="text-slate-400 text-sm">Books Today. A Brighter Tomorrow.</p>
       </div>
 
-      {/* Auth Card */}
-      <div className="w-full max-w-xl bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4 opacity-10">
-          <ShieldCheck className="w-32 h-32 text-[#00f2fe]" />
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • Maths</span>
+        <h3 class="text-lg font-bold mt-3">Mathematics Standard + Exemplar</h3>
+        <p class="text-sm text-slate-500 mt-1">Condition: Good • Verified Student</p>
+        <div class="mt-4 pt-3 border-t flex justify-between items-center">
+          <span class="font-bold text-emerald-600">₹120 (60% Off)</span>
+          <a href="login.html" class="text-sm font-bold text-purple-600 hover:underline">Request →</a>
         </div>
+      </div>
 
-        {step === 1 ? (
-          <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
-            <div className="border-b border-slate-800 pb-3 mb-4">
-              <h2 className="text-xl font-semibold text-emerald-400 flex items-center gap-2">
-                <UserCheck className="w-5 h-5" /> Student Verification & Registration
-              </h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Strict safety protocol: Information is encrypted and hidden from public profile.
-              </p>
-            </div>
-
-            {/* Grid Fields */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Full Name *</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  required
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Aprajita Singh"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-[#00f2fe]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">School / College Name *</label>
-                <input
-                  type="text"
-                  name="institution"
-                  required
-                  value={formData.institution}
-                  onChange={handleChange}
-                  placeholder="e.g. St. Xavier School"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-[#00f2fe]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Standard / Grade *</label>
-                <input
-                  type="text"
-                  name="grade"
-                  required
-                  value={formData.grade}
-                  onChange={handleChange}
-                  placeholder="Class 10th"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-[#00f2fe]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">City & State *</label>
-                <input
-                  type="text"
-                  name="city"
-                  required
-                  value={formData.city}
-                  onChange={handleChange}
-                  placeholder="New Delhi, Delhi"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-[#00f2fe]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Mobile Number (2FA) *</label>
-                <input
-                  type="tel"
-                  name="mobile"
-                  required
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  placeholder="+91 XXXXX XXXXX"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-[#00f2fe]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Institutional Email / Student ID *</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="student@school.edu.in"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-[#00f2fe]"
-                />
-              </div>
-            </div>
-
-            {/* Under 18 Guardian Consent */}
-            <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800 space-y-2 mt-2">
-              <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
-                <input
-                  type="checkbox"
-                  name="under18"
-                  checked={formData.under18}
-                  onChange={handleChange}
-                  className="accent-emerald-500 rounded"
-                />
-                I am under 18 years old (Requires Parent/Guardian Consent)
-              </label>
-
-              {formData.under18 && (
-                <input
-                  type="email"
-                  name="guardianEmail"
-                  required={formData.under18}
-                  value={formData.guardianEmail}
-                  onChange={handleChange}
-                  placeholder="Parent / Guardian Email Address"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-400"
-                />
-              )}
-            </div>
-
-            {/* Action Button */}
-            <button
-              type="submit"
-              className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-[#00f2fe] hover:opacity-90 text-slate-950 font-bold py-3 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20"
-            >
-              <Lock className="w-4 h-4" /> Request Student Verification & Send OTP
-            </button>
-          </form>
-        ) : (
-          /* Step 2: 6-Digit OTP Screen */
-          <div className="text-center py-8 space-y-4 relative z-10">
-            <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto text-emerald-400">
-              <Sparkles className="w-8 h-8" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-100">Enter 6-Digit Verification Code</h3>
-            <p className="text-xs text-slate-400 max-w-sm mx-auto">
-              We have sent a security OTP code to <span className="text-[#00f2fe]">{formData.email}</span>.
-            </p>
-
-            <div className="flex justify-center gap-2 my-4">
-              {[...Array(6)].map((_, i) => (
-                <input
-                  key={i}
-                  type="text"
-                  maxLength="1"
-                  className="w-10 h-12 bg-slate-950 border border-slate-800 rounded-lg text-center text-lg font-bold text-emerald-400 focus:border-[#00f2fe] focus:outline-none"
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => alert("Verified Successfully! Welcome to Shiori GLOBAL.")}
-              className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl transition"
-            >
-              Verify Badge & Access Shiori
-            </button>
-          </div>
-        )}
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • SST</span>
+        <h3 class="text-lg font-bold mt-3">Complete Social Science Set</h3>
+        <p class="text-sm text-slate-500 mt-1">Condition: Gently Used • Verified</p>
+        <div class="mt-4 pt-3 border-t flex justify-between items-center">
+          <span class="font-bold text-emerald-600">Free / Exchange</span>
+          <a href="login.html" class="text-sm font-bold text-purple-600 hover:underline">Request →</a>
+        </div>
       </div>
     </div>
-  );
-}
+  </main>
+
+</body>
+</html>
