@@ -3,87 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiori GLOBAL - Login</title>
+  <title>Shiori GLOBAL - Student Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-white p-6 rounded-2xl shadow-lg border border-purple-100">
-    <h1 class="text-3xl font-bold text-center text-purple-900">Shiori GLOBAL 🌍</h1>
-    <p class="text-center text-sm text-gray-500 mb-6">Books Today. A Brighter Tomorrow.</p>
+<body class="bg-slate-50 text-slate-800 font-sans">
 
-    <div class="flex gap-2 mb-6">
-      <button id="btn-signup-tab" class="flex-1 bg-purple-600 text-white py-2 rounded-full font-bold">Sign Up</button>
-      <button id="btn-login-tab" class="flex-1 bg-gray-100 text-gray-700 py-2 rounded-full font-bold">Login</button>
+  <!-- Top App Bar -->
+  <nav class="bg-purple-900 text-white px-6 py-4 flex justify-between items-center shadow-md">
+    <div class="flex items-center gap-2">
+      <span class="text-xl font-extrabold">Shiori GLOBAL 🌍</span>
+      <span class="text-xs bg-purple-700 px-2.5 py-0.5 rounded-full">Student App</span>
     </div>
-
-    <form id="auth-form" class="space-y-3">
-      <div id="signup-fields" class="space-y-3">
-        <input id="display_name" placeholder="Display Name (e.g. Aprajita)" class="w-full border p-3 rounded-xl text-slate-800" />
-        <input id="school_name" placeholder="School Name" class="w-full border p-3 rounded-xl text-slate-800" />
-        <input id="grade_level" placeholder="Grade - e.g. Class 10" class="w-full border p-3 rounded-xl text-slate-800" />
-        <input id="age" type="number" placeholder="Age" class="w-full border p-3 rounded-xl text-slate-800" />
-        <input id="guardian_email" placeholder="Guardian / Parent Email" class="w-full border border-orange-300 p-3 rounded-xl bg-orange-50 text-slate-800" />
-      </div>
-      
-      <input id="email" type="email" placeholder="School Email (.edu / email)" class="w-full border p-3 rounded-xl text-slate-800" required />
-      <input id="password" type="password" placeholder="Password" class="w-full border p-3 rounded-xl text-slate-800" required />
-
-      <button type="submit" id="submit-btn" class="w-full bg-purple-600 text-white py-3 rounded-xl font-bold shadow-md hover:bg-purple-700 transition">
-        Create Account
+    <div class="flex items-center gap-4">
+      <span id="user-badge" class="text-sm font-semibold text-purple-200">Welcome, Student!</span>
+      <button id="logout-btn" class="bg-white text-purple-900 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-purple-100">
+        Logout
       </button>
-    </form>
-    
-    <p id="msg" class="text-center text-sm text-purple-700 mt-4 font-semibold"></p>
+    </div>
+  </nav>
+
+  <!-- Navigation Tabs -->
+  <div class="bg-white border-b px-6 flex gap-6 text-sm font-bold">
+    <button onclick="showTab('market')" id="tab-market" class="py-3 border-b-2 border-purple-600 text-purple-700">📚 Book Feed</button>
+    <button onclick="showTab('list')" id="tab-list" class="py-3 text-slate-500 hover:text-purple-700">➕ List a Book</button>
+    <button onclick="showTab('lounge')" id="tab-lounge" class="py-3 text-slate-500 hover:text-purple-700">💬 Shiori Lounge</button>
+    <button onclick="showTab('esg')" id="tab-esg" class="py-3 text-slate-500 hover:text-purple-700">🌱 My ESG Impact</button>
   </div>
 
+  <!-- Main Workspace -->
+  <main class="max-w-5xl mx-auto p-6">
+
+    <!-- TAB 1: Book Feed -->
+    <section id="view-market">
+      <h2 class="text-xl font-bold mb-4">Available Textbooks Near You</h2>
+      <div id="feed-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-white p-5 rounded-2xl shadow-sm border">
+          <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">Class 10 • Science</span>
+          <h3 class="font-bold text-lg mt-2">NCERT Science + Lab Manual</h3>
+          <p class="text-sm text-slate-500 mt-1">Shared by: Aarav • Condition: Good</p>
+          <button onclick="alert('Request sent to student! Check Shiori Lounge to chat.')" class="mt-4 w-full bg-purple-600 text-white py-2 rounded-xl text-sm font-bold hover:bg-purple-700">
+            Request Book
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: List a Book -->
+    <section id="view-list" class="hidden max-w-lg bg-white p-6 rounded-2xl shadow-sm border">
+      <h2 class="text-xl font-bold mb-4">Share Your Textbook (+50 ESG XP)</h2>
+      <form id="add-book-form" class="space-y-3">
+        <input type="text" id="book-title" placeholder="Book Title (e.g. RD Sharma Class 10)" required class="w-full border p-2.5 rounded-xl text-sm" />
+        <input type="text" id="book-subject" placeholder="Class & Subject (e.g. Class 10 Maths)" required class="w-full border p-2.5 rounded-xl text-sm" />
+        <select id="book-type" class="w-full border p-2.5 rounded-xl text-sm">
+          <option value="Free / Exchange">Free / Exchange</option>
+          <option value="Low Cost (₹100)">Low Cost (₹100)</option>
+        </select>
+        <button type="submit" class="w-full bg-emerald-600 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700">
+          Publish Book 🚀
+        </button>
+      </form>
+    </section>
+
+    <!-- TAB 3: Shiori Lounge (Chat) -->
+    <section id="view-lounge" class="hidden max-w-2xl bg-white p-6 rounded-2xl shadow-sm border">
+      <h2 class="text-xl font-bold mb-2">💬 Shiori Student Lounge</h2>
+      <p class="text-xs text-slate-500 mb-4">Connect with fellow students to exchange books & study tips.</p>
+      <div id="chat-box" class="h-60 overflow-y-auto bg-slate-50 p-4 rounded-xl border space-y-2 text-sm mb-3">
+        <div class="bg-purple-100 text-purple-900 p-2.5 rounded-lg w-fit"><b>Shiori Bot:</b> Welcome to Shiori Lounge! Ask for any textbook here. 🌱</div>
+      </div>
+      <div class="flex gap-2">
+        <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 border p-2.5 rounded-xl text-sm" />
+        <button onclick="sendMessage()" class="bg-purple-600 text-white px-5 rounded-xl font-bold text-sm">Send</button>
+      </div>
+    </section>
+
+    <!-- TAB 4: ESG Impact -->
+    <section id="view-esg" class="hidden grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border text-center">
+        <p class="text-sm text-slate-500">ESG XP Earned</p>
+        <h3 id="xp-count" class="text-3xl font-extrabold text-purple-700 mt-1">50 XP</h3>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border text-center">
+        <p class="text-sm text-slate-500">CO₂ Saved</p>
+        <h3 class="text-3xl font-extrabold text-emerald-600 mt-1">2.5 kg</h3>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border text-center">
+        <p class="text-sm text-slate-500">Trees Protected</p>
+        <h3 class="text-3xl font-extrabold text-amber-600 mt-1">1 Sapling 🌱</h3>
+      </div>
+    </section>
+
+  </main>
+
   <script type="module">
-    import { signUpStudent, loginStudent } from './lib/auth.js'
+    import { supabase } from './lib/supabase.js';
 
-    let isSignup = true
-    const signupFields = document.getElementById('signup-fields')
-    const submitBtn = document.getElementById('submit-btn')
-    const msg = document.getElementById('msg')
-
-    document.getElementById('btn-signup-tab').onclick = () => {
-      isSignup = true
-      signupFields.classList.remove('hidden')
-      submitBtn.innerText = "Create Account"
+    // Check logged in user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('user-badge').innerText = user.email;
     }
 
-    document.getElementById('btn-login-tab').onclick = () => {
-      isSignup = false
-      signupFields.classList.add('hidden')
-      submitBtn.innerText = "Login"
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.location.href = 'login.html';
+    });
+
+    // Add Book to Feed
+    document.getElementById('add-book-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('book-title').value;
+      const subject = document.getElementById('book-subject').value;
+      const type = document.getElementById('book-type').value;
+
+      const card = `
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-emerald-200">
+          <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded">${subject}</span>
+          <h3 class="font-bold text-lg mt-2">${title}</h3>
+          <p class="text-sm text-slate-500 mt-1">Type: ${type} • Just Added</p>
+          <span class="mt-3 inline-block text-xs font-bold text-purple-600">✓ Listed by You</span>
+        </div>`;
+      document.getElementById('feed-grid').insertAdjacentHTML('afterbegin', card);
+      document.getElementById('xp-count').innerText = '100 XP';
+      e.target.reset();
+      showTab('market');
+    });
+  </script>
+
+  <script>
+    function showTab(name) {
+      ['market', 'list', 'lounge', 'esg'].forEach(t => {
+        document.getElementById('view-' + t).classList.add('hidden');
+        document.getElementById('tab-' + t).className = 'py-3 text-slate-500 hover:text-purple-700';
+      });
+      document.getElementById('view-' + name).classList.remove('hidden');
+      document.getElementById('tab-' + name).className = 'py-3 border-b-2 border-purple-600 text-purple-700';
     }
 
-    document.getElementById('auth-form').onsubmit = async (e) => {
-      e.preventDefault()
-      msg.innerText = "Please wait..."
-      
-      try {
-        if (isSignup) {
-          const age = Number(document.getElementById('age').value)
-          const res = await signUpStudent({
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            display_name: document.getElementById('display_name').value,
-            school_name: document.getElementById('school_name').value,
-            grade_level: document.getElementById('grade_level').value,
-            age: age,
-            guardian_email: document.getElementById('guardian_email').value
-          })
-          msg.innerText = res.needsGuardian ? "Signup successful! Guardian email set." : "Signup successful! Ab login karo."
-        } else {
-          await loginStudent(
-            document.getElementById('email').value,
-            document.getElementById('password').value
-          )
-          msg.innerText = "Login successful! Redirecting..."
-          window.location.href = "index.html"
-        }
-      } catch (err) {
-        msg.innerText = "Error: " + err.message
-      }
+    function sendMessage() {
+      const input = document.getElementById('chat-input');
+      if (!input.value.trim()) return;
+      const box = document.getElementById('chat-box');
+      box.insertAdjacentHTML('beforeend', `<div class="bg-white border p-2.5 rounded-lg ml-auto w-fit"><b>You:</b> ${input.value}</div>`);
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
     }
   </script>
 </body>
