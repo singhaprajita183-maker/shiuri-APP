@@ -7,22 +7,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans">
-
-  <!-- Navbar -->
   <nav class="bg-white shadow-sm border-b border-purple-100 px-6 py-4 flex justify-between items-center">
-    <div class="flex items-center gap-2">
-      <span class="text-2xl font-extrabold text-purple-900">Shiori GLOBAL 🌍</span>
-    </div>
-    <div id="nav-actions" class="flex items-center gap-3">
-      <a href="login.html" class="bg-purple-600 text-white px-5 py-2 rounded-full font-bold hover:bg-purple-700 transition">
-        Student Login / Sign Up
-      </a>
-    </div>
+    <span class="text-2xl font-extrabold text-purple-900">Shiori GLOBAL 🌍</span>
+    <a href="login.html" class="bg-purple-600 text-white px-5 py-2 rounded-full font-bold hover:bg-purple-700 transition">
+      Student Login / Sign Up
+    </a>
   </nav>
 
-  <!-- Hero Section -->
   <header class="max-w-4xl mx-auto text-center py-14 px-4">
-    <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+    <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full uppercase">
       Student-Led Circular Economy
     </span>
     <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mt-4 leading-tight">
@@ -31,14 +24,13 @@
     <p class="text-slate-600 mt-4 text-lg max-w-2xl mx-auto">
       Pass on your old textbooks, earn ESG XP, save trees, and help fellow students learn without the heavy cost.
     </p>
-    <div class="mt-8 flex justify-center gap-4">
+    <div class="mt-8">
       <a href="login.html" class="bg-purple-600 text-white px-7 py-3 rounded-xl font-bold shadow-md hover:bg-purple-700 transition">
         Join Shiori Network 🚀
       </a>
     </div>
   </header>
 
-  <!-- Live Marketplace Preview -->
   <main class="max-w-5xl mx-auto px-4 pb-16">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-bold text-slate-900">Available Textbooks 📚</h2>
@@ -46,9 +38,7 @@
         🌱 1 Book Shared = 2.5 kg CO₂ Saved
       </span>
     </div>
-
-    <div id="books-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Sample Cards (Will connect to Supabase next!) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
         <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • Science</span>
         <h3 class="text-lg font-bold mt-3">NCERT Science Textbook</h3>
@@ -58,7 +48,6 @@
           <a href="login.html" class="text-sm font-bold text-purple-600 hover:underline">Request →</a>
         </div>
       </div>
-
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
         <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • Maths</span>
         <h3 class="text-lg font-bold mt-3">Mathematics Standard + Exemplar</h3>
@@ -68,7 +57,6 @@
           <a href="login.html" class="text-sm font-bold text-purple-600 hover:underline">Request →</a>
         </div>
       </div>
-
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
         <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • SST</span>
         <h3 class="text-lg font-bold mt-3">Complete Social Science Set</h3>
@@ -80,6 +68,5 @@
       </div>
     </div>
   </main>
-
 </body>
 </html>
