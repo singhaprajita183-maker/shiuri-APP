@@ -1,72 +1,271 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiori GLOBAL - Circular Textbook Network</title>
+  <title>Shiori GLOBAL — Pass On Textbooks. Power a Greener Campus.</title>
+  <meta name="description" content="Student-first circular textbook sharing network with verified campus swaps, AI study summaries, and real-time CO2 impact tracking." />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans">
-  <nav class="bg-white shadow-sm border-b border-purple-100 px-6 py-4 flex justify-between items-center">
-    <span class="text-2xl font-extrabold text-purple-900">Shiori GLOBAL 🌍</span>
-    <a href="login.html" class="bg-purple-600 text-white px-5 py-2 rounded-full font-bold hover:bg-purple-700 transition">
-      Student Login / Sign Up
-    </a>
-  </nav>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-200 selection:text-emerald-950">
 
-  <header class="max-w-4xl mx-auto text-center py-14 px-4">
-    <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full uppercase">
-      Student-Led Circular Economy
-    </span>
-    <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mt-4 leading-tight">
-      Books Today. <span class="text-purple-600">A Brighter Tomorrow.</span>
-    </h1>
-    <p class="text-slate-600 mt-4 text-lg max-w-2xl mx-auto">
-      Pass on your old textbooks, earn ESG XP, save trees, and help fellow students learn without the heavy cost.
-    </p>
-    <div class="mt-8">
-      <a href="login.html" class="bg-purple-600 text-white px-7 py-3 rounded-xl font-bold shadow-md hover:bg-purple-700 transition">
-        Join Shiori Network 🚀
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 font-extrabold text-xl tracking-tight text-slate-900">
+        <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-sm">🌱</span>
+        Shiori <span class="text-emerald-600">GLOBAL</span>
       </a>
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+        <a href="#how-it-works" class="hover:text-emerald-600 transition">How it works</a>
+        <a href="#live-books" class="hover:text-emerald-600 transition">Campus Books</a>
+        <a href="#compare" class="hover:text-emerald-600 transition">Why Shiori</a>
+        <a href="#pricing" class="hover:text-emerald-600 transition">Pricing</a>
+        <a href="#faq" class="hover:text-emerald-600 transition">Safety & FAQ</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="login.html" class="text-sm font-semibold text-slate-700 hover:text-emerald-600 px-3 py-2">Log in</a>
+        <a href="login.html" class="text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg shadow-sm transition">
+          Start Free Swap →
+        </a>
+      </div>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 pb-16">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold text-slate-900">Available Textbooks 📚</h2>
-      <span class="text-sm text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full font-semibold">
-        🌱 1 Book Shared = 2.5 kg CO₂ Saved
-      </span>
+  <!-- HERO SECTION -->
+  <section class="pt-16 pb-20 px-4 sm:px-6 bg-gradient-to-b from-emerald-50/70 via-white to-slate-50">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/80 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6">
+        <span>🌍 Built for Class 9–12 & University Students</span>
+        <span>·</span>
+        <span>0% Swap Fee</span>
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.1] mb-6">
+        We connect students with textbooks that <span class="text-emerald-600">already need a new desk.</span>
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+        Shiori GLOBAL finds verified seniors on your campus passing on NCERTs, reference guides, and lab manuals—so you save money, track real CO₂ impact, and study smarter with AI.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
+        <a href="login.html" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base shadow-lg shadow-emerald-600/20 transition">
+          Find or List a Book Free →
+        </a>
+        <a href="#live-books" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-semibold text-base border border-slate-300 transition">
+          Browse Campus Listings
+        </a>
+      </div>
+      <p class="text-xs text-slate-500 font-medium">
+        Verified Student IDs only · Safe campus handover zones · Guardian-approved privacy
+      </p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • Science</span>
-        <h3 class="text-lg font-bold mt-3">NCERT Science Textbook</h3>
-        <p class="text-sm text-slate-500 mt-1">Condition: Like New • Delhi</p>
-        <div class="mt-4 pt-3 border-t flex justify-between items-center">
-          <span class="font-bold text-emerald-600">Free / Exchange</span>
-          <a href="login.html" class="text-sm font-bold text-purple-600 hover:underline">Request →</a>
-        </div>
+  </section>
+
+  <!-- 1-2-3 STEP FLOW -->
+  <section id="how-it-works" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">How It Works</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">One campus network. First book today.</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 font-extrabold flex items-center justify-center mb-5">1/3</div>
+        <h3 class="text-xl font-bold text-slate-900 mb-2">List your finished books</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Snap a quick photo or enter your textbook title. Choose Free Swap, Donation, or Affordable Peer Resale.</p>
       </div>
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • Maths</span>
-        <h3 class="text-lg font-bold mt-3">Mathematics Standard + Exemplar</h3>
-        <p class="text-sm text-slate-500 mt-1">Condition: Good • Verified Student</p>
-        <div class="mt-4 pt-3 border-t flex justify-between items-center">
-          <span class="font-bold text-emerald-600">₹120 (60% Off)</span>
-          <a href="login.html" class="text-sm font-bold text-purple-600 hover:underline">Request →</a>
-        </div>
+      <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 font-extrabold flex items-center justify-center mb-5">2/3</div>
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Match with verified students</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Our campus matcher connects you with verified students in your school or 2 km zone—no middlemen, no scrap dealers.</p>
       </div>
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Class 10 • SST</span>
-        <h3 class="text-lg font-bold mt-3">Complete Social Science Set</h3>
-        <p class="text-sm text-slate-500 mt-1">Condition: Gently Used • Verified</p>
-        <div class="mt-4 pt-3 border-t flex justify-between items-center">
-          <span class="font-bold text-emerald-600">Free / Exchange</span>
-          <a href="login.html" class="text-sm font-bold text-purple-600 hover:underline">Request →</a>
+      <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 font-extrabold flex items-center justify-center mb-5">3/3</div>
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Swap safely & track ESG impact</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Meet at your school library or safe campus gate. Every completed swap adds verified CO₂ and paper savings to your profile.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE CAMPUS BOOK CARDS (RAISED HAND SIGNAL STYLE) -->
+  <section id="live-books" class="py-20 px-4 sm:px-6 bg-white border-y border-slate-200">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Live Campus Feed</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Students raising their hand to share.</h2>
+        </div>
+        <p class="text-sm text-slate-600 max-w-md">Every listing shows book condition, campus match score, and exact carbon savings before you request.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-emerald-400 transition">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">FREE SWAP</span>
+            <span class="text-xs font-semibold text-slate-500">98% Campus Match</span>
+          </div>
+          <h3 class="font-bold text-lg text-slate-900">NCERT Class 10 Science + Exemplar</h3>
+          <p class="text-xs text-slate-500 mt-1">Listed by Aarav S. · Verified Class 11 Senior</p>
+          <div class="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between text-xs">
+            <span class="font-semibold text-emerald-700">🌿 Saves 1.4 kg CO₂</span>
+            <a href="login.html" class="font-bold text-slate-900 hover:text-emerald-600">Request Swap →</a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-emerald-400 transition">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">FREE DONATION</span>
+            <span class="text-xs font-semibold text-slate-500">95% Campus Match</span>
+          </div>
+          <h3 class="font-bold text-lg text-slate-900">RD Sharma Mathematics Class 10</h3>
+          <p class="text-xs text-slate-500 mt-1">Listed by Ananya M. · Verified Student</p>
+          <div class="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between text-xs">
+            <span class="font-semibold text-emerald-700">🌿 Saves 2.1 kg CO₂</span>
+            <a href="login.html" class="font-bold text-slate-900 hover:text-emerald-600">Request Book →</a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/60 hover:border-emerald-400 transition">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">PEER SHARE · ₹120</span>
+            <span class="text-xs font-semibold text-slate-500">92% Campus Match</span>
+          </div>
+          <h3 class="font-bold text-lg text-slate-900">Class 10 SST All-in-One + Map Book</h3>
+          <p class="text-xs text-slate-500 mt-1">Listed by Kabir R. · Level 3 Verified Seller</p>
+          <div class="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between text-xs">
+            <span class="font-semibold text-emerald-700">🌿 Saves 1.2 kg CO₂</span>
+            <a href="login.html" class="font-bold text-slate-900 hover:text-emerald-600">Reserve Now →</a>
+          </div>
         </div>
       </div>
     </div>
-  </main>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section id="compare" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Shiori GLOBAL vs. Traditional Scrap & Bookstores</h2>
+      <p class="text-slate-600 mt-2">See why students and schools choose circular sharing over selling books as raddi.</p>
+    </div>
+    <div class="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b border-slate-200 bg-slate-50 text-sm">
+            <th class="p-4 font-bold text-slate-700">What You Get</th>
+            <th class="p-4 font-extrabold text-emerald-700">Shiori GLOBAL</th>
+            <th class="p-4 font-semibold text-slate-500">Local Scrap / Second-Hand Shop</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 text-sm">
+          <tr>
+            <td class="p-4 font-medium">Free Peer-to-Peer Book Swaps</td>
+            <td class="p-4 font-bold text-emerald-600">Yes (0% Platform Fee)</td>
+            <td class="p-4 text-slate-500">No</td>
+          </tr>
+          <tr>
+            <td class="p-4 font-medium">Verified Student & Campus Safety</td>
+            <td class="p-4 font-bold text-emerald-600">Yes (Student ID + Safe Zones)</td>
+            <td class="p-4 text-slate-500">Unverified strangers</td>
+          </tr>
+          <tr>
+            <td class="p-4 font-medium">Live CO₂ & Paper Waste ESG Certificate</td>
+            <td class="p-4 font-bold text-emerald-600">Yes (Automatic Impact Score)</td>
+            <td class="p-4 text-slate-500">None</td>
+          </tr>
+          <tr>
+            <td class="p-4 font-medium">Built-in Gemini AI Chapter Summaries</td>
+            <td class="p-4 font-bold text-emerald-600">Yes (5 Free Daily Summaries)</td>
+            <td class="p-4 text-slate-500">No</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="py-20 px-4 sm:px-6 bg-slate-900 text-white">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Simple & Student-First</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold mt-2">Free for circular swaps. Upgrade only if you want AI superpowers.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Free -->
+        <div class="p-7 rounded-2xl bg-slate-800/80 border border-slate-700 flex flex-col justify-between">
+          <div>
+            <h3 class="text-lg font-bold">Student Free</h3>
+            <div class="text-3xl font-extrabold mt-2 mb-4">₹0 <span class="text-sm font-normal text-slate-400">/ forever</span></div>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li>✓ Unlimited free book swaps & donations</li>
+              <li>✓ 5 Gemini AI chapter summaries/day</li>
+              <li>✓ Personal CO₂ & ESG impact badge</li>
+            </ul>
+          </div>
+          <a href="login.html" class="mt-8 block text-center py-3 rounded-xl bg-slate-700 hover:bg-slate-600 font-semibold text-sm transition">Get Started Free</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="p-7 rounded-2xl bg-emerald-600 text-white shadow-xl flex flex-col justify-between relative">
+          <div>
+            <span class="text-xs font-bold uppercase bg-emerald-950/40 px-2.5 py-1 rounded-full">Exam Season Pass</span>
+            <h3 class="text-lg font-bold mt-3">Shiori Pro</h3>
+            <div class="text-3xl font-extrabold mt-2 mb-4">₹99 <span class="text-sm font-normal text-emerald-100">/ month</span></div>
+            <ul class="space-y-3 text-sm text-emerald-50">
+              <li>✓ Unlimited AI chapter summaries & quizzes</li>
+              <li>✓ Personalized Board Exam mock generator</li>
+              <li>✓ Step-by-step STEM problem solver</li>
+            </ul>
+          </div>
+          <a href="login.html" class="mt-8 block text-center py-3 rounded-xl bg-white text-emerald-900 hover:bg-emerald-50 font-bold text-sm transition">Unlock Shiori Pro</a>
+        </div>
+
+        <!-- Institutional -->
+        <div class="p-7 rounded-2xl bg-slate-800/80 border border-slate-700 flex flex-col justify-between">
+          <div>
+            <h3 class="text-lg font-bold">Campus ESG License</h3>
+            <div class="text-3xl font-extrabold mt-2 mb-4">Schools <span class="text-sm font-normal text-slate-400">/ B2B</span></div>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li>✓ Live school-wide textbook circularity analytics</li>
+              <li>✓ Downloadable annual ESG & CO₂ reports</li>
+              <li>✓ Verified campus-only student network</li>
+            </ul>
+          </div>
+          <a href="login.html" class="mt-8 block text-center py-3 rounded-xl bg-slate-700 hover:bg-slate-600 font-semibold text-sm transition">Partner With Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-20 px-4 sm:px-6 max-w-3xl mx-auto">
+    <h2 class="text-3xl font-extrabold text-slate-900 text-center mb-10">Before you start.</h2>
+    <div class="space-y-4">
+      <details class="p-5 bg-white rounded-xl border border-slate-200" open>
+        <summary class="font-bold text-slate-900 cursor-pointer">Is my home address or live GPS location shared?</summary>
+        <p class="text-sm text-slate-600 mt-2">Never. Shiori GLOBAL never stores continuous GPS or home addresses. All swaps happen via Safe-Exchange Pins inside school campuses or public libraries.</p>
+      </details>
+      <details class="p-5 bg-white rounded-xl border border-slate-200">
+        <summary class="font-bold text-slate-900 cursor-pointer">How are students verified?</summary>
+        <p class="text-sm text-slate-600 mt-2">Students verify using their school/college ID or institutional email. Once verified, raw ID photos are immediately deleted and only a verified status badge is kept.</p>
+      </details>
+      <details class="p-5 bg-white rounded-xl border border-slate-200">
+        <summary class="font-bold text-slate-900 cursor-pointer">Can students under 18 use Shiori GLOBAL?</summary>
+        <p class="text-sm text-slate-600 mt-2">Yes! Accounts for students under 18 include a Guardian Consent verification flow and strict Shiori Guardian AI moderation to keep the community 100% safe.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 bg-white py-10 px-4 sm:px-6 text-center text-sm text-slate-500">
+    <p class="font-bold text-slate-800 mb-1">Shiori GLOBAL 🌱</p>
+    <p>Circular Textbook Economy & Campus ESG Platform · Built by Aprajita Singh</p>
+    <p class="mt-3 text-xs">© 2026 Shiori GLOBAL. Student Privacy First.</p>
+  </footer>
+
 </body>
 </html>
