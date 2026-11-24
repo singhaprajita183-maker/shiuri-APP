@@ -1,0 +1,9 @@
+{
+  "name": "shiori-global",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shiori GLOBAL - Books Today. A Brighter Tomorrow.",
+  "scripts": {
+    "dev": "node server.mjs"
+  }
+}
