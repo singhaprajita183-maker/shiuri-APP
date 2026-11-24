@@ -1,156 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shiori GLOBAL - Student Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiori GLOBAL | Student Dashboard & Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#059669',
+                            dark: '#047857',
+                            light: '#10B981',
+                            bg: '#090D16',
+                            card: '#111827',
+                            border: '#1F2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans">
+<body class="bg-brand-bg text-slate-100 antialiased selection:bg-brand selection:text-white">
 
-  <!-- Top App Bar -->
-  <nav class="bg-purple-900 text-white px-6 py-4 flex justify-between items-center shadow-md">
-    <div class="flex items-center gap-2">
-      <span class="text-xl font-extrabold">Shiori GLOBAL 🌍</span>
-      <span class="text-xs bg-purple-700 px-2.5 py-0.5 rounded-full">Student App</span>
-    </div>
-    <div class="flex items-center gap-4">
-      <span id="user-badge" class="text-sm font-semibold text-purple-200">Welcome, Student!</span>
-      <button id="logout-btn" class="bg-white text-purple-900 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-purple-100">
-        Logout
-      </button>
-    </div>
-  </nav>
+    <!-- Top App Navigation -->
+    <nav class="sticky top-0 z-40 backdrop-blur-md bg-brand-bg/85 border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand to-brand-light flex items-center justify-center font-extrabold text-white text-sm shadow-md shadow-brand/20">
+                    S
+                </div>
+                <span class="text-base font-extrabold tracking-tight text-white">Shiori <span class="text-brand-light">GLOBAL</span></span>
+                <span class="hidden sm:inline-block text-xs bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-full text-slate-300 font-medium">Student Portal</span>
+            </div>
 
-  <!-- Navigation Tabs -->
-  <div class="bg-white border-b px-6 flex gap-6 text-sm font-bold">
-    <button onclick="showTab('market')" id="tab-market" class="py-3 border-b-2 border-purple-600 text-purple-700">📚 Book Feed</button>
-    <button onclick="showTab('list')" id="tab-list" class="py-3 text-slate-500 hover:text-purple-700">➕ List a Book</button>
-    <button onclick="showTab('lounge')" id="tab-lounge" class="py-3 text-slate-500 hover:text-purple-700">💬 Shiori Lounge</button>
-    <button onclick="showTab('esg')" id="tab-esg" class="py-3 text-slate-500 hover:text-purple-700">🌱 My ESG Impact</button>
-  </div>
-
-  <!-- Main Workspace -->
-  <main class="max-w-5xl mx-auto p-6">
-
-    <!-- TAB 1: Book Feed -->
-    <section id="view-market">
-      <h2 class="text-xl font-bold mb-4">Available Textbooks Near You</h2>
-      <div id="feed-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div class="bg-white p-5 rounded-2xl shadow-sm border">
-          <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">Class 10 • Science</span>
-          <h3 class="font-bold text-lg mt-2">NCERT Science + Lab Manual</h3>
-          <p class="text-sm text-slate-500 mt-1">Shared by: Aarav • Condition: Good</p>
-          <button onclick="alert('Request sent to student! Check Shiori Lounge to chat.')" class="mt-4 w-full bg-purple-600 text-white py-2 rounded-xl text-sm font-bold hover:bg-purple-700">
-            Request Book
-          </button>
+            <div class="flex items-center space-x-4">
+                <span id="user-badge" class="text-xs font-mono text-slate-400 hidden sm:inline">student@school.edu</span>
+                <button id="logout-btn" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3.5 py-2 rounded-xl transition">
+                    Logout
+                </button>
+            </div>
         </div>
-      </div>
-    </section>
+    </nav>
 
-    <!-- TAB 2: List a Book -->
-    <section id="view-list" class="hidden max-w-lg bg-white p-6 rounded-2xl shadow-sm border">
-      <h2 class="text-xl font-bold mb-4">Share Your Textbook (+50 ESG XP)</h2>
-      <form id="add-book-form" class="space-y-3">
-        <input type="text" id="book-title" placeholder="Book Title (e.g. RD Sharma Class 10)" required class="w-full border p-2.5 rounded-xl text-sm" />
-        <input type="text" id="book-subject" placeholder="Class & Subject (e.g. Class 10 Maths)" required class="w-full border p-2.5 rounded-xl text-sm" />
-        <select id="book-type" class="w-full border p-2.5 rounded-xl text-sm">
-          <option value="Free / Exchange">Free / Exchange</option>
-          <option value="Low Cost (₹100)">Low Cost (₹100)</option>
-        </select>
-        <button type="submit" class="w-full bg-emerald-600 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700">
-          Publish Book 🚀
-        </button>
-      </form>
-    </section>
+    <!-- App Tabs -->
+    <div class="bg-brand-card border-b border-brand-border px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex space-x-6 text-xs sm:text-sm font-bold overflow-x-auto">
+            <button onclick="switchTab('market')" id="tab-market" class="py-4 border-b-2 border-brand text-brand-light whitespace-nowrap transition">📚 Textbook Marketplace</button>
+            <button onclick="switchTab('scanner')" id="tab-scanner" class="py-4 text-slate-400 hover:text-white whitespace-nowrap transition">🤖 2-Step AI Scanner</button>
+            <button onclick="switchTab('list')" id="tab-list" class="py-4 text-slate-400 hover:text-white whitespace-nowrap transition">➕ List a Book</button>
+            <button onclick="switchTab('lounge')" id="tab-lounge" class="py-4 text-slate-400 hover:text-white whitespace-nowrap transition">💬 Shiori Lounge</button>
+            <button onclick="switchTab('esg')" id="tab-esg" class="py-4 text-slate-400 hover:text-white whitespace-nowrap transition">🌱 ESG Impact Tracker</button>
+        </div>
+    </div>
 
-    <!-- TAB 3: Shiori Lounge (Chat) -->
-    <section id="view-lounge" class="hidden max-w-2xl bg-white p-6 rounded-2xl shadow-sm border">
-      <h2 class="text-xl font-bold mb-2">💬 Shiori Student Lounge</h2>
-      <p class="text-xs text-slate-500 mb-4">Connect with fellow students to exchange books & study tips.</p>
-      <div id="chat-box" class="h-60 overflow-y-auto bg-slate-50 p-4 rounded-xl border space-y-2 text-sm mb-3">
-        <div class="bg-purple-100 text-purple-900 p-2.5 rounded-lg w-fit"><b>Shiori Bot:</b> Welcome to Shiori Lounge! Ask for any textbook here. 🌱</div>
-      </div>
-      <div class="flex gap-2">
-        <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 border p-2.5 rounded-xl text-sm" />
-        <button onclick="sendMessage()" class="bg-purple-600 text-white px-5 rounded-xl font-bold text-sm">Send</button>
-      </div>
-    </section>
+    <!-- Main Workspace Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
-    <!-- TAB 4: ESG Impact -->
-    <section id="view-esg" class="hidden grid grid-cols-1 md:grid-cols-3 gap-5">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border text-center">
-        <p class="text-sm text-slate-500">ESG XP Earned</p>
-        <h3 id="xp-count" class="text-3xl font-extrabold text-purple-700 mt-1">50 XP</h3>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border text-center">
-        <p class="text-sm text-slate-500">CO₂ Saved</p>
-        <h3 class="text-3xl font-extrabold text-emerald-600 mt-1">2.5 kg</h3>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border text-center">
-        <p class="text-sm text-slate-500">Trees Protected</p>
-        <h3 class="text-3xl font-extrabold text-amber-600 mt-1">1 Sapling 🌱</h3>
-      </div>
-    </section>
+        <!-- TAB 1: Amazon-Style Marketplace Feed -->
+        <section id="view-market" class="space-y-6">
+            <!-- Search & Filters Bar -->
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-brand-card border border-brand-border p-4 rounded-2xl">
+                <div class="w-full md:w-96">
+                    <input type="text" id="searchInput" onkeyup="filterBooks()" placeholder="Search by title, author, or subject..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand">
+                </div>
+                <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto text-xs">
+                    <button onclick="filterCategory('All')" class="cat-btn bg-brand text-white px-3.5 py-2 rounded-xl font-semibold transition">All Books</button>
+                    <button onclick="filterCategory('CBSE')" class="cat-btn bg-slate-900 border border-slate-800 text-slate-300 px-3.5 py-2 rounded-xl font-semibold hover:bg-slate-800 transition">CBSE</button>
+                    <button onclick="filterCategory('ICSE')" class="cat-btn bg-slate-900 border border-slate-800 text-slate-300 px-3.5 py-2 rounded-xl font-semibold hover:bg-slate-800 transition">ICSE</button>
+                    <button onclick="filterCategory('Competitive')" class="cat-btn bg-slate-900 border border-slate-800 text-slate-300 px-3.5 py-2 rounded-xl font-semibold hover:bg-slate-800 transition">Competitive Exams</button>
+                    <button onclick="filterCategory('Free Donation')" class="cat-btn bg-slate-900 border border-slate-800 text-emerald-400 px-3.5 py-2 rounded-xl font-semibold hover:bg-slate-800 transition">🎁 Free Donations</button>
+                </div>
+            </div>
 
-  </main>
+            <!-- Product Grid (Amazon Style Cards) -->
+            <div id="feedGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Sample Book Card 1 -->
+                <div class="book-card bg-brand-card border border-brand-border p-5 rounded-2xl flex flex-col justify-between" data-category="CBSE" data-title="NCERT Class 10 Science & Lab Manual">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded font-bold">CBSE • Class 10</span>
+                            <span class="text-xs font-bold text-brand-light">FREE SWAP</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white mt-3">NCERT Class 10 Science & Lab Manual</h3>
+                        <p class="text-xs text-slate-400 mt-1">Condition: Like New (No markings)</p>
+                        <p class="text-xs text-slate-500 mt-2">Shared by: Aarav S. · 1.2 km away</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center gap-2">
+                        <button onclick="requestBook('NCERT Class 10 Science')" class="flex-1 bg-brand hover:bg-brand-dark text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg shadow-brand/20">
+                            Request Book
+                        </button>
+                        <button onclick="addToLoungeChat('NCERT Class 10 Science')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
+                            💬
+                        </button>
+                    </div>
+                </div>
 
-  <script type="module">
-    import { supabase } from './lib/supabase.js';
+                <!-- Sample Book Card 2 -->
+                <div class="book-card bg-brand-card border border-brand-border p-5 rounded-2xl flex flex-col justify-between" data-category="Competitive" data-title="HC Concepts of Physics Vol 1 & 2">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <span class="text-[11px] font-mono text-purple-400 bg-purple-500/10 px-2.5 py-0.5 rounded font-bold">Competitive • JEE/NEET</span>
+                            <span class="text-xs font-bold text-emerald-400">100% FREE DONATION</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white mt-3">HC Concepts of Physics Vol 1 & 2</h3>
+                        <p class="text-xs text-slate-400 mt-1">Condition: Good (Slight notes)</p>
+                        <p class="text-xs text-slate-500 mt-2">Shared by: Priya R. · 2.4 km away</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center gap-2">
+                        <button onclick="requestBook('HC Concepts of Physics')" class="flex-1 bg-brand hover:bg-brand-dark text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg shadow-brand/20">
+                            Claim Free Donation
+                        </button>
+                        <button onclick="addToLoungeChat('HC Concepts of Physics')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
+                            💬
+                        </button>
+                    </div>
+                </div>
 
-    // Check logged in user
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      window.location.href = 'login.html';
-    } else {
-      document.getElementById('user-badge').innerText = user.email;
-    }
+                <!-- Sample Book Card 3 -->
+                <div class="book-card bg-brand-card border border-brand-border p-5 rounded-2xl flex flex-col justify-between" data-category="ICSE" data-title="Concise Mathematics Class 9 ICSE">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <span class="text-[11px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded font-bold">ICSE • Class 9</span>
+                            <span class="text-xs font-bold text-brand-light">SWAP / EXCHANGE</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white mt-3">Concise Mathematics Class 9 ICSE</h3>
+                        <p class="text-xs text-slate-400 mt-1">Condition: Excellent</p>
+                        <p class="text-xs text-slate-500 mt-2">Shared by: Rohan M. · 800m away</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center gap-2">
+                        <button onclick="requestBook('Concise Mathematics Class 9')" class="flex-1 bg-brand hover:bg-brand-dark text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg shadow-brand/20">
+                            Request Book
+                        </button>
+                        <button onclick="addToLoungeChat('Concise Mathematics Class 9')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
+                            💬
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    // Logout
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      window.location.href = 'login.html';
-    });
+        <!-- TAB 2: 2-Step AI Book Scanner -->
+        <section id="view-scanner" class="hidden max-w-2xl mx-auto space-y-6">
+            <div class="bg-brand-card border border-brand-border p-6 sm:p-8 rounded-2xl">
+                <span class="text-xs font-mono text-brand-light font-bold">Gemini Vision AI Engine</span>
+                <h2 class="text-xl font-extrabold text-white mt-1">2-Step AI Book Scanner</h2>
+                <p class="text-xs text-slate-400 mt-1.5">Upload a photo of the book cover and inside pages to auto-catalog and verify condition instantly.</p>
 
-    // Add Book to Feed
-    document.getElementById('add-book-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const title = document.getElementById('book-title').value;
-      const subject = document.getElementById('book-subject').value;
-      const type = document.getElementById('book-type').value;
+                <div class="mt-6 space-y-4">
+                    <div class="border-2 border-dashed border-slate-700 hover:border-brand p-8 rounded-xl text-center cursor-pointer transition bg-slate-900/50">
+                        <span class="text-3xl">📷</span>
+                        <p class="text-xs font-bold text-white mt-2">Click to upload or drag book cover photo</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Supports ISBN barcode detection & auto-description</p>
+                    </div>
+                    <button onclick="simulateAIScan()" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-brand/20">
+                        Run Gemini AI Cataloger ✨
+                    </button>
+                </div>
+                <div id="aiScanResult" class="mt-6 hidden bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-400">
+                    ✓ AI Detected: NCERT Biology Class 12 · Edition 2025 · Condition: Good (Verified)
+                </div>
+            </div>
+        </section>
 
-      const card = `
-        <div class="bg-white p-5 rounded-2xl shadow-sm border border-emerald-200">
-          <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded">${subject}</span>
-          <h3 class="font-bold text-lg mt-2">${title}</h3>
-          <p class="text-sm text-slate-500 mt-1">Type: ${type} • Just Added</p>
-          <span class="mt-3 inline-block text-xs font-bold text-purple-600">✓ Listed by You</span>
-        </div>`;
-      document.getElementById('feed-grid').insertAdjacentHTML('afterbegin', card);
-      document.getElementById('xp-count').innerText = '100 XP';
-      e.target.reset();
-      showTab('market');
-    });
-  </script>
+        <!-- TAB 3: List a Book (Free or Featured Boost) -->
+        <section id="view-list" class="hidden max-w-xl mx-auto space-y-6">
+            <div class="bg-brand-card border border-brand-border p-6 sm:p-8 rounded-2xl">
+                <h2 class="text-xl font-extrabold text-white">List Your Textbook</h2>
+                <p class="text-xs text-slate-400 mt-1">Swapping and donating is always 100% free to help fellow students.</p>
 
-  <script>
-    function showTab(name) {
-      ['market', 'list', 'lounge', 'esg'].forEach(t => {
-        document.getElementById('view-' + t).classList.add('hidden');
-        document.getElementById('tab-' + t).className = 'py-3 text-slate-500 hover:text-purple-700';
-      });
-      document.getElementById('view-' + name).classList.remove('hidden');
-      document.getElementById('tab-' + name).className = 'py-3 border-b-2 border-purple-600 text-purple-700';
-    }
+                <form id="addBookForm" class="mt-6 space-y-4" onsubmit="publishBook(event)">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Book Title</label>
+                        <input id="newTitle" type="text" placeholder="e.g. RD Sharma Mathematics Class 10" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+                            <select id="newCategory" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand">
+                                <option value="CBSE">CBSE</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="Competitive">Competitive Exams</option>
+                                <option value="Free Donation">Free Donation</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Listing Type</label>
+                            <select id="newType" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand">
+                                <option value="Free Swap">Free Swap / Exchange</option>
+                                <option value="100% Free Donation">100% Free Donation</option>
+                                <option value="Featured ($2 USD Boost)">Featured ($2 USD Optional Boost)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Condition Notes</label>
+                        <input id="newCondition" type="text" placeholder="e.g. Clean pages, no highlights" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand">
+                    </div>
+                    <button type="submit" class="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3.5 rounded-xl text-xs transition shadow-lg shadow-brand/20">
+                        Publish to Marketplace 🚀 (+50 ESG XP)
+                    </button>
+                </form>
+            </div>
+        </section>
 
-    function sendMessage() {
-      const input = document.getElementById('chat-input');
-      if (!input.value.trim()) return;
-      const box = document.getElementById('chat-box');
-      box.insertAdjacentHTML('beforeend', `<div class="bg-white border p-2.5 rounded-lg ml-auto w-fit"><b>You:</b> ${input.value}</div>`);
-      input.value = '';
-      box.scrollTop = box.scrollHeight;
-    }
-  </script>
+        <!-- TAB 4: Shiori Lounge (Chat) -->
+        <section id="view-lounge" class="hidden max-w-3xl mx-auto space-y-6">
+            <div class="bg-brand-card border border-brand-border p-6 sm:p-8 rounded-2xl">
+                <h2 class="text-xl font-extrabold text-white">💬 Shiori Student Lounge</h2>
+                <p class="text-xs text-slate-400 mt-1">Connect safely with verified book owners. Guarded 24/7 by Shiori Guardian AI.</p>
+
+                <div id="chatBox" class="mt-6 h-72 overflow-y-auto bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3 text-xs">
+                    <div class="bg-brand/10 border border-brand/20 text-brand-light p-3 rounded-xl">
+                        <b>Shiori Guardian AI:</b> Welcome to the Student Lounge! Request books from the marketplace and coordinate safe exchanges here.
+                    </div>
+                </div>
+                <div class="mt-4 flex gap-2">
+                    <input id="chatInput" type="text" placeholder="Type message to book owner..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-brand" onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <button onclick="sendChatMessage()" class="bg-brand hover:bg-brand-dark text-white px-6 rounded-xl font-bold text-xs transition">Send</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: ESG Impact Tracker -->
+        <section id="view-esg" class="hidden max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-brand-card border border-brand-border p-6 rounded-2xl text-center">
+                <p class="text-xs font-semibold text-slate-400">Total ESG XP Earned</p>
+                <h3 id="xpCount" class="text-3xl font-extrabold text-brand-light mt-2">150 XP</h3>
+                <span class="inline-block mt-3 text-[11px] bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full font-bold">Eco Scholar Lvl 2</span>
+            </div>
+            <div class="bg-brand-card border border-brand-border p-6 rounded-2xl text-center">
+                <p class="text-xs font-semibold text-slate-400">CO₂ Prevented</p>
+                <h3 class="text-3xl font-extrabold text-emerald-400 mt-2">4.2 kg</h3>
+                <span class="inline-block mt-3 text-[11px] bg-slate-800 text-slate-300 px-2.5 py-0.5 rounded-full">Equivalent to 2 trees</span>
+            </div>
+            <div class="bg-brand-card border border-brand-border p-6 rounded-2xl text-center">
+                <p class="text-xs font-semibold text-slate-400">Books Recirculated</p>
+                <h3 class="text-3xl font-extrabold text-cyan-400 mt-2">3 Books</h3>
+                <span class="inline-block mt-3 text-[11px] bg-cyan-500/10 text-cyan-400 px-2.5 py-0.5 rounded-full font-bold">Zero Paper Waste</span>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Tab Switcher
+        function switchTab(tab) {
+            ['market', 'scanner', 'list', 'lounge', 'esg'].forEach(t => {
+                document.getElementById('view-' + t).classList.add('hidden');
+                const btn = document.getElementById('tab-' + t);
+                btn.className = 'py-4 text-slate-400 hover:text-white whitespace-nowrap transition';
+            });
+            document.getElementById('view-' + tab).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-' + tab);
+            activeBtn.className = 'py-4 border-b-2 border-brand text-brand-light whitespace-nowrap transition';
+        }
+
+        // Category Filter for Amazon-style Marketplace
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.className = 'cat-btn bg-slate-900 border border-slate-800 text-slate-300 px-3.5 py-2 rounded-xl font-semibold hover:bg-slate-800 transition';
+            });
+            event.target.className = 'cat-btn bg-brand text-white px-3.5 py-2 rounded-xl font-semibold transition';
+
+            const cards = document.querySelectorAll('.book-card');
+            cards.forEach(card => {
+                if (cat === 'All' || card.getAttribute('data-category') === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Search Filter
+        function filterBooks() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.book-card');
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                if (title.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Request Book
+        function requestBook(title) {
+            alert(`Request sent for "${title}"! Check the Shiori Lounge to coordinate exchange with the student owner.`);
+            switchTab('lounge');
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="bg-brand/10 border border-brand/20 text-brand-light p-3 rounded-xl"><b>System:</b> Request initiated for <b>${title}</b>. Chatting enabled with owner.</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Add to Lounge Chat shortcut
+        function addToLoungeChat(title) {
+            switchTab('lounge');
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="bg-slate-900 border border-slate-800 p-3 rounded-xl text-slate-300"><b>You:</b> Hi! Is "${title}" still available for swap?</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Simulate AI Scan
+        function simulateAIScan() {
+            const res = document.getElementById('aiScanResult');
+            res.classList.remove('hidden');
+        }
+
+        // Publish Book
+        function publishBook(e) {
+            e.preventDefault();
+            const title = document.getElementById('newTitle').value;
+            const category = document.getElementById('newCategory').value;
+            const type = document.getElementById('newType').value;
+            const condition = document.getElementById('newCondition').value;
+
+            const grid = document.getElementById('feedGrid');
+            const newCard = document.createElement('div');
+            newCard.className = 'book-card bg-brand-card border border-brand-border p-5 rounded-2xl flex flex-col justify-between';
+            newCard.setAttribute('data-category', category);
+            newCard.setAttribute('data-title', title);
+            newCard.innerHTML = `
+                <div>
+                    <div class="flex justify-between items-start">
+                        <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded font-bold">${category}</span>
+                        <span class="text-xs font-bold text-brand-light">${type}</span>
+                    </div>
+                    <h3 class="text-base font-bold text-white mt-3">${title}</h3>
+                    <p class="text-xs text-slate-400 mt-1">Condition: ${condition}</p>
+                    <p class="text-xs text-slate-500 mt-2">Shared by: You · Just Now</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-800 flex items-center gap-2">
+                    <button onclick="requestBook('${title}')" class="flex-1 bg-brand hover:bg-brand-dark text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg shadow-brand/20">
+                        Request Book
+                    </button>
+                    <button onclick="addToLoungeChat('${title}')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2.5 rounded-xl text-xs font-bold transition">
+                        💬
+                    </button>
+                </div>
+            `;
+            grid.prepend(newCard);
+            alert('Book successfully published to marketplace! +50 ESG XP added.');
+            e.target.reset();
+            switchTab('market');
+        }
+
+        // Chat Send
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            if (!input.value.trim()) return;
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="bg-slate-900 border border-slate-800 p-3 rounded-xl text-white ml-auto w-fit"><b>You:</b> ${input.value}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
 </body>
 </html>
